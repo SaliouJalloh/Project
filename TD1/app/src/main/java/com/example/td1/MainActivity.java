@@ -2,6 +2,7 @@ package com.example.td1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView taille;
     private ImageView img;
     private Bitmap bitmap;
-    private Button button;
+    private Button button, to_gray1, to_gray2;
     private int width;
     private int height;
     private int tmp_color;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
             taille = findViewById(R.id.idtaille);
             img = findViewById(R.id.idimage);
             button = findViewById(R.id.idbutton);
+            to_gray1 = findViewById(R.id.idbuttonGray);
+            to_gray2 = findViewById(R.id.idbuttonGrays);
 
             // Convertion de l'image
 
@@ -48,11 +51,22 @@ public class MainActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent ActivityIntent = new Intent(MainActivity.this, Main2Activity.class);
+                    startActivity(ActivityIntent);
+                }
+            });
+            to_gray1.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
                     toGray(bitmap);
-                    // colorize(img_bp);
-                    //colorize_Without_Red(img_bp);
                     img.setImageBitmap(bitmap);
-
+                }
+            });
+            to_gray2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toGrays(bitmap);
+                    img.setImageBitmap(bitmap);
                 }
             });
 

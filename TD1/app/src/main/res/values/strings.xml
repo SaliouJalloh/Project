@@ -6,4 +6,7 @@
     <string name="lbltogray_1">TO_GRAY_1</string>
     <string name="lbl_to_gray_2">TO_GRAY_2</string>
     <string name="lbltext">Hello and welcom</string>
+    <string name="lbl_text_Hi">TextView</string>
+    <string name="lbl_size">TextView</string>
+    <string name="lbl_next_tp"><![CDATA[Next TP -->]]></string>
 </resources>
