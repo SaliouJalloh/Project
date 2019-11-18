@@ -12,22 +12,24 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/idtext"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="37dp"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/lbltext" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/idsize3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="31dp"
+            android:text="SIZE :" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/idnext3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="Next TP  -->" />
 
         <Button
             android:id="@+id/button5"

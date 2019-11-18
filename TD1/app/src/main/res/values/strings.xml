@@ -8,4 +8,6 @@
     <string name="lbltext">Hello and welcom</string>
     <string name="lbl_text_Hi">TextView</string>
     <string name="lbl_size">TextView</string>
+    <string name="lbl_next_tp"><![CDATA[Next TP -->]]></string>
+    <string name="lbl_next_tp2"><![CDATA[Next TP -->]]></string>
 </resources>

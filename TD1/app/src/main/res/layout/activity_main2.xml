@@ -12,14 +12,15 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/idtext"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:text="@string/lbl_text_Hi"
-            tools:text="Hello and Welcom" />
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/lbltext" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/idtaille2"
             android:layout_width="match_parent"
             android:layout_height="34dp"
             android:text="@string/lbl_size"
@@ -29,7 +30,7 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next TP -->" />
+            android:text="@string/lbl_next_tp2" />
 
         <Button
             android:id="@+id/button2"
@@ -42,6 +43,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Button" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="472dp"
+            android:contentDescription="TODO"
+            app:srcCompat="@drawable/fruit" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -14,23 +14,21 @@ import android.widget.TextView;
 public class Main2Activity extends AppCompatActivity {
 
     private TextView text;
-    private TextView taille;
+    private TextView Size;
     private ImageView img;
     private Bitmap bitmap;
-    private Button button, to_gray1, to_gray2;
-    private int width;
-    private int height;
-    private int tmp_color;
+    private Button nextbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
         // Ajout des widgets
-        text = findViewById(R.id.textView2);
-        taille = findViewById(R.id.textView3);
+        text = findViewById(R.id.idtext);
+        Size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
-        button = findViewById(R.id.idbutton);
+        nextbutton = findViewById(R.id.button);
 
         // Convertion de l'image
 
@@ -40,9 +38,9 @@ public class Main2Activity extends AppCompatActivity {
         // convertToMutable(img_bp);
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
-        taille.setText( "Taille : " + bitmap.getWidth() + "*" + bitmap.getHeight());
+        Size.setText( "Taille : " + bitmap.getWidth() + "*" + bitmap.getHeight());
 
-        button.setOnClickListener(new View.OnClickListener() {
+        nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent ActivityIntent = new Intent(Main2Activity.this, Main3Activity.class);
@@ -50,7 +48,7 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
     }
-
+/*
     public void colorize (Bitmap bmp){
 
     }
@@ -65,5 +63,5 @@ public class Main2Activity extends AppCompatActivity {
 
     public void Conserver(){
 
-    }
+    }*/
 }
