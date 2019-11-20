@@ -1,15 +1,16 @@
 package com.example.td1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -18,6 +19,9 @@ public class Main2Activity extends AppCompatActivity {
     private ImageView img;
     private Bitmap bitmap;
     private Button nextbutton;
+    private int width;
+    private int height;
+    private int tmp_color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +52,62 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
     }
-/*
+
     public void colorize (Bitmap bmp){
 
     }
 
-    public  void RGBToHSV(Bitmap bitmap){
+  /*  public  void RGBToHSV(Bitmap bitmap){
+
+        width = bitmap.getWidth();
+        height = bitmap.getHeight();
+        // The 3 basic color values in RGB
+
+        int red, green, bleu;
+
+        // Convert RGB to HSB
+
+        for(int x = 0; x < width; x++){
+            for (int y = 0; y < height; y++){
+                tmp_color = bitmap.getPixel(x,y);
+                red = Color.red(tmp_color);
+                green = Color.green(tmp_color);
+                bleu = Color.blue(tmp_color);
+
+                //float[] hsb = Color.RGBToHSV(red, green, bleu, null);
+/*
+                float hue = hsb[0];
+
+                float saturation = hsb[1];
+
+                float brightness = hsb[2];
+
+            }
+
+        }
 
     }
 
-    public void HSVToColor(Bitmap bitmap){
+    public void HSVToColor(Bitmap bitmap) {
 
-    }
+        // Convert HSB to RGB value
 
-    public void Conserver(){
+        width = bitmap.getWidth();
+        height = bitmap.getHeight();
+        // The 3 basic color values in RGB
 
+        int R, G, B;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int rgb = Color.HSBtoRGB(hue, saturation, brightness);
+
+                R = (rgb >> 16) & 0xFF;
+
+                G = (rgb >> 8) & 0xFF;
+
+                B = rgb & 0xFF;
+            }
+        }
     }*/
+
 }

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             to_gray2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toGrays(bitmap);
+                    toGray2(bitmap);
                     img.setImageBitmap(bitmap);
                 }
             });
@@ -74,49 +74,59 @@ public class MainActivity extends AppCompatActivity {
             height = bitmap.getHeight();
 
             for(int x = 0; x < width; ++x){
-                for (int y = height/2; y < height; ++y){
+                for (int y = height/2; y < height; y+=(height/2)){
                     bitmap.setPixel(x,y, Color.BLACK);
                 }
             }
     }
 
-    public Bitmap toGray(Bitmap bmp){
+    public void toGray(Bitmap bmp){
 
         width = bmp.getWidth();
         height = bmp.getHeight();
         int R, G, B, R_G_B;
 
-        for(int x = 0; x < width; ++x){
-            for (int y = 0; y < height; ++y){
+        for(int x = 0; x < width; x++){
+            for (int y = 0; y < height; y++){
                 tmp_color = bmp.getPixel(x,y);
-                R = 0; //  0.3R + 0.59G + 0.11B.
-                G = 0;
-                B = 0;
-                R_G_B = (R+G+B)/3;
+                R = Color.red(tmp_color); //  0.3R + 0.59G + 0.11B.
+                G = Color.green(tmp_color);
+                B = Color.blue(tmp_color);
 
-                bmp.setPixel(x,y,tmp_color);
+                R_G_B = (R+G+B)/3;
+                R_G_B = Color.rgb(R_G_B,R_G_B,R_G_B);
+
+                bmp.setPixel(x,y,R_G_B);
             }
         }
-        return bmp;
     }
 
-    public Bitmap toGrays(Bitmap bmp){
+    public void toGray2(Bitmap bmp){
 
         width = bmp.getWidth();
         height = bmp.getHeight();
+        int R, G, B, R_G_B ;
+
         int[] pixels = new int[width * height];
-        bmp.getPixels(pixels, 0, 0, 0, 0, width, height);
+        bmp.getPixels(pixels,0,width,0,0,width,height);
 
-        for(int x = 0; x < width; ++x){
-            for (int y = 0; y < height; ++y){
+        for(int x = 0; x < width; x++){
+            for (int y = 0; y < height; y++){
 
+                tmp_color = pixels[y*width+x];
 
+                R = Color.red(tmp_color);
+                G = Color.green(tmp_color);
+                B = Color.blue(tmp_color);
 
+                R_G_B = (R+G+B)/3;
+                R_G_B = Color.rgb(R_G_B,R_G_B,R_G_B);
 
-                bitmap.getPixels(pixels,0,0,0,0,0,0);
+                pixels[y*width+x] = R_G_B;
             }
         }
-        return bmp;
+        bmp.setPixels(pixels,0,width,0,0,width,height);
+
     }
 
 }
