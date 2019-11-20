@@ -20,27 +20,29 @@
             android:text="@string/lbltext" />
 
         <TextView
-            android:id="@+id/idsize3"
+            android:id="@+id/idtaille2"
             android:layout_width="match_parent"
             android:layout_height="31dp"
-            android:text="SIZE :" />
+            android:text="@string/lbl_size" />
 
         <Button
-            android:id="@+id/idnext3"
+            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next TP  -->" />
+            android:text="@string/lbl_next_tp2" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/idbutton5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="@string/lbl_decreases_contrast" />
 
-        <Button
-            android:id="@+id/button6"
+        <ImageView
+            android:id="@+id/idimage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:contentDescription="@string/lblimage"
+            app:srcCompat="@drawable/fruit" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

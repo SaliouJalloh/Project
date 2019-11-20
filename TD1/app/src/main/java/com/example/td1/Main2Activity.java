@@ -12,13 +12,16 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static android.os.Build.VERSION_CODES.O;
+
+
 public class Main2Activity extends AppCompatActivity {
 
     private TextView text;
     private TextView Size;
     private ImageView img;
     private Bitmap bitmap;
-    private Button nextbutton;
+    private Button nextbutton, colorized, conserve1, conserve2;
     private int width;
     private int height;
     private int tmp_color;
@@ -33,6 +36,9 @@ public class Main2Activity extends AppCompatActivity {
         Size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
         nextbutton = findViewById(R.id.button);
+        colorized = findViewById(R.id.idcolorize);
+        conserve1 = findViewById(R.id.idCanned1);
+        conserve2 = findViewById(R.id.idCanned2);
 
         // Convertion de l'image
 
@@ -51,63 +57,166 @@ public class Main2Activity extends AppCompatActivity {
                 startActivity(ActivityIntent);
             }
         });
+        colorized.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                colorize(bitmap);
+                img.setImageBitmap(bitmap);
+            }
+        });
+        conserve1.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                conserveColor(bitmap);
+                img.setImageBitmap(bitmap);
+            }
+        });
+        conserve2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                conserveColor(bitmap,Color.YELLOW);
+                img.setImageBitmap(bitmap);
+            }
+        });
     }
 
     public void colorize (Bitmap bmp){
+        width = bitmap.getWidth();
+        height = bitmap.getHeight();
+
+        int[] pixels = new int[width * height];
+        float [] hsv;
+        hsv = new float[3];
+        int R, G, B, color;
+
+        int r = (int) (Math.random()* (360-1) );
+
+        bmp.getPixels(pixels,0,width,0,0,width,height);
+
+
+        for (int x = 0; x < width; x++){
+            for (int y = 0; y <  height; y++){
+                color = pixels[x*width+y];
+
+                R = Color.red(color);
+                G = Color.green(color);
+                B = Color.blue(color);
+
+                hsv = RGBToHSV(R,G,B);
+                hsv[0] = r;
+
+                pixels[x*width+y] = Color.HSVToColor(hsv);
+
+            }
+        }
+        bmp.setPixels(pixels,0,width,0,0,width,height);
 
     }
 
-  /*  public  void RGBToHSV(Bitmap bitmap){
+    public  static float[] RGBToHSV(int red, int green, int bleu){
+        float h, s, v;
+        float min, max, delta;
 
-        width = bitmap.getWidth();
-        height = bitmap.getHeight();
-        // The 3 basic color values in RGB
+        float r = (float) red /255;
+        float g = (float) green/255;
+        float b = (float) bleu/255;
 
-        int red, green, bleu;
+        min = Math.min(Math.min(r,g), b);
+        max = Math.max(Math.max(r,g), b);
 
-        // Convert RGB to HSB
+        // composante V
+        v = max;
+        delta = max - min;
 
-        for(int x = 0; x < width; x++){
-            for (int y = 0; y < height; y++){
-                tmp_color = bitmap.getPixel(x,y);
-                red = Color.red(tmp_color);
-                green = Color.green(tmp_color);
-                bleu = Color.blue(tmp_color);
-
-                //float[] hsb = Color.RGBToHSV(red, green, bleu, null);
-/*
-                float hue = hsb[0];
-
-                float saturation = hsb[1];
-
-                float brightness = hsb[2];
-
-            }
-
+        //Composante S
+        if(max != 0) {
+            s = delta / max;
         }
+        else{
+            s = 0;
+            h = 0;
+            v = 0;
+            return new float[]{h,s,v};
+        }
+
+        //Composante H
+        if( r == max){
+            h = ((g-b) / delta);
+        }
+        else if (g == max){
+            h = 2 + (b - r) / delta;
+        }
+        else {
+            h = 4 + (r-g) / delta;
+        }
+        h = h * 60;
+
+        if (h < 0){
+            h = h + 360;
+        }
+        return new float[]{h,s,v};
 
     }
 
-    public void HSVToColor(Bitmap bitmap) {
-
-        // Convert HSB to RGB value
-
+    public void conserveColor(Bitmap bmp) {
         width = bitmap.getWidth();
         height = bitmap.getHeight();
-        // The 3 basic color values in RGB
 
-        int R, G, B;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int rgb = Color.HSBtoRGB(hue, saturation, brightness);
+        int R, G, B, max, color;
 
-                R = (rgb >> 16) & 0xFF;
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                tmp_color = bmp.getPixel(x, y);
 
-                G = (rgb >> 8) & 0xFF;
+                R = Color.red(tmp_color);
+                G = Color.green(tmp_color);
+                B = Color.blue(tmp_color);
 
-                B = rgb & 0xFF;
+                max = Math.max(Math.max(R, G), B);
+                if (R != max) {
+
+                    color = (R + G + B)/3;
+                    color = Color.rgb(color,color,color);
+                }
+                else{
+                    color = Color.rgb(R, G, B);
+                }
+                bmp.setPixel(x,y,color);
             }
         }
-    }*/
+    }
+
+    public void conserveColor(Bitmap bmp, int color) {
+        width = bitmap.getWidth();
+        height = bitmap.getHeight();
+
+        int R, G, B, tmp_color;
+        int pixels [] = new int[width*height];
+        float[] hsv;
+        hsv = new float[3];
+
+        int min = color - 15 + 360;
+        int max = (color + 15 + 360) % 360;
+        bmp.getPixels(pixels,0,width,0,0,width,height);
+
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                tmp_color = pixels[width*x+y];
+
+                R = Color.red(tmp_color);
+                G = Color.blue(tmp_color);
+                B = Color.blue(tmp_color);
+
+                hsv = RGBToHSV(R,G,B);
+
+                if((hsv[0] < min) && (hsv[0] > max)){
+                    hsv[1] = 0;
+                }
+                pixels[x*width+y] = Color.HSVToColor(hsv);
+            }
+        }
+        bmp.setPixels(pixels,0,width,0,0,width,height);
+    }
+
 
 }

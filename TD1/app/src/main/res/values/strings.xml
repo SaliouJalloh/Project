@@ -10,4 +10,8 @@
     <string name="lbl_size">TextView</string>
     <string name="lbl_next_tp"><![CDATA[Next TP -->]]></string>
     <string name="lbl_next_tp2"><![CDATA[Next TP -->]]></string>
+    <string name="lbl_colorize">Colorize</string>
+    <string name="lbl_canned_color_1">Canned_Color_1</string>
+    <string name="lbl_canned_color_2">CANNED_COLOR_2</string>
+    <string name="lbl_decreases_contrast">decreases contrast</string>
 </resources>
