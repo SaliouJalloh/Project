@@ -39,6 +39,12 @@
             android:text="@string/lbl_colorize" />
 
         <Button
+            android:id="@+id/idcolorize2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_colorize_2" />
+
+        <Button
             android:id="@+id/idCanned1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

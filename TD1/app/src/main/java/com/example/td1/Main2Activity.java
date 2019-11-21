@@ -21,7 +21,7 @@ public class Main2Activity extends AppCompatActivity {
     private TextView Size;
     private ImageView img;
     private Bitmap bitmap;
-    private Button nextbutton, colorized, conserve1, conserve2;
+    private Button nextbutton, colorized, colorized2,conserve1, conserve2;
     private int width;
     private int height;
     private int tmp_color;
@@ -37,6 +37,7 @@ public class Main2Activity extends AppCompatActivity {
         img = findViewById(R.id.idimage);
         nextbutton = findViewById(R.id.button);
         colorized = findViewById(R.id.idcolorize);
+        colorized2 = findViewById(R.id.idcolorize2);
         conserve1 = findViewById(R.id.idCanned1);
         conserve2 = findViewById(R.id.idCanned2);
 
@@ -50,6 +51,7 @@ public class Main2Activity extends AppCompatActivity {
 
         Size.setText( "Taille : " + bitmap.getWidth() + "*" + bitmap.getHeight());
 
+        //Branchement des bouttons
         nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +63,13 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 colorize(bitmap);
+                img.setImageBitmap(bitmap);
+            }
+        });
+        colorized2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                colorize_Without_Red(bitmap);
                 img.setImageBitmap(bitmap);
             }
         });
@@ -79,6 +88,8 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
     }
+
+    //Ecriture des differentes fonctions
 
     public void colorize (Bitmap bmp){
         width = bitmap.getWidth();
@@ -218,5 +229,27 @@ public class Main2Activity extends AppCompatActivity {
         bmp.setPixels(pixels,0,width,0,0,width,height);
     }
 
-
+    public void colorize_Without_Red(Bitmap bmp){
+        int width = bmp.getWidth();
+        int height=bmp.getHeight();
+        int a,r,g,b;
+        int color=0;
+        for(int i=0;i<width;i++){
+            for(int j=0;j<height;j++){
+                color=bmp.getPixel(i,j);
+                a = Color.alpha(color);
+                r = Color.red(color);
+                g = Color.green(color);
+                b = Color.blue(color);
+                int grv=(r+g+b)/3;
+                float[] hsv = new float[3];
+                Color.RGBToHSV(r, g, b, hsv);
+                int aleatoir=(int)Math.random()*(350 - 0);
+                color = Color.HSVToColor(grv, hsv);
+                if((hsv[0] > 20) && (hsv[0] < 340)){
+                    bmp.setPixel(i , j , Color.rgb(grv,grv,grv));
+                }
+            }
+        }
+    }
 }

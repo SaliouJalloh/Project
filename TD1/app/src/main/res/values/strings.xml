@@ -14,4 +14,5 @@
     <string name="lbl_canned_color_1">Canned_Color_1</string>
     <string name="lbl_canned_color_2">CANNED_COLOR_2</string>
     <string name="lbl_decreases_contrast">decreases contrast</string>
+    <string name="lbl_colorize_2">Colorize_2</string>
 </resources>
