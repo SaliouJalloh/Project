@@ -89,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
         for(int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){
                 tmp_color = bmp.getPixel(x,y);
-                R = Color.red(tmp_color); //  0.3R + 0.59G + 0.11B.
+                R = Color.red(tmp_color);
                 G = Color.green(tmp_color);
                 B = Color.blue(tmp_color);
 
-                R_G_B = (R+G+B)/3;
+                R_G_B = (R+G+B)/3; //  0.3R + 0.59G + 0.11B.
                 R_G_B = Color.rgb(R_G_B,R_G_B,R_G_B);
 
                 bmp.setPixel(x,y,R_G_B);

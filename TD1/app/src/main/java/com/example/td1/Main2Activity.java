@@ -106,7 +106,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
         for (int x = 0; x < width; x++){
-            for (int y = 0; y <  height; y++){
+            for (int y = 0; y < height; y++){
                 color = pixels[x*width+y];
 
                 R = Color.red(color);
@@ -122,6 +122,31 @@ public class Main2Activity extends AppCompatActivity {
         }
         bmp.setPixels(pixels,0,width,0,0,width,height);
 
+    }
+
+    public void colorize_Without_Red(Bitmap bmp){
+        int width = bmp.getWidth();
+        int height=bmp.getHeight();
+        int a,r,g,b;
+        int color=0;
+        float[] hsv = new float[3];
+        for(int i=0;i<width;i++){
+            for(int j=0;j<height;j++){
+                color=bmp.getPixel(i,j);
+                a = Color.alpha(color);
+                r = Color.red(color);
+                g = Color.green(color);
+                b = Color.blue(color);
+                int grv=(r+g+b)/3;
+
+                Color.RGBToHSV(r, g, b, hsv);
+                int aleatoir=(int)Math.random()*(350);
+                color = Color.HSVToColor(grv, hsv);
+                if((hsv[0] > 20) && (hsv[0] < 340)){
+                    bmp.setPixel(i , j , Color.rgb(grv,grv,grv));
+                }
+            }
+        }
     }
 
     public  static float[] RGBToHSV(int red, int green, int bleu){
@@ -229,27 +254,5 @@ public class Main2Activity extends AppCompatActivity {
         bmp.setPixels(pixels,0,width,0,0,width,height);
     }
 
-    public void colorize_Without_Red(Bitmap bmp){
-        int width = bmp.getWidth();
-        int height=bmp.getHeight();
-        int a,r,g,b;
-        int color=0;
-        for(int i=0;i<width;i++){
-            for(int j=0;j<height;j++){
-                color=bmp.getPixel(i,j);
-                a = Color.alpha(color);
-                r = Color.red(color);
-                g = Color.green(color);
-                b = Color.blue(color);
-                int grv=(r+g+b)/3;
-                float[] hsv = new float[3];
-                Color.RGBToHSV(r, g, b, hsv);
-                int aleatoir=(int)Math.random()*(350 - 0);
-                color = Color.HSVToColor(grv, hsv);
-                if((hsv[0] > 20) && (hsv[0] < 340)){
-                    bmp.setPixel(i , j , Color.rgb(grv,grv,grv));
-                }
-            }
-        }
-    }
+
 }
