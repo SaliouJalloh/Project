@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="413dp"
+        android:layout_height="731dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/idtext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/lbltext"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/idtaille"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lbltaille" />
+
+        <Button
+            android:id="@+id/idbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_next_tp" />
+
+        <Button
+            android:id="@+id/idbuttonGray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lbltogray_1" />
+
+        <Button
+            android:id="@+id/idbuttonGrays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_to_gray_2" />
+
+        <ImageView
+            android:id="@+id/idimage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/lblimage"
+            app:srcCompat="@drawable/fruit" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
