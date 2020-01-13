@@ -50,12 +50,6 @@
             android:layout_height="wrap_content"
             android:text="@string/lbl_canned_color_1" />
 
-        <Button
-            android:id="@+id/idCanned2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_canned_color_2" />
-
         <ImageView
             android:id="@+id/idimage"
             android:layout_width="match_parent"

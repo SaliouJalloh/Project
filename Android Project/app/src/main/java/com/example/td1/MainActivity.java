@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inMutable = true;
 
-            // convertToMutable(img_bp);
             bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
             taille.setText( "Taille : " + bitmap.getWidth() + "*" + bitmap.getHeight());
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toGray(Bitmap bmp){
-
         width = bmp.getWidth();
         height = bmp.getHeight();
         int R, G, B, gray;
@@ -93,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 G = Color.green(tmp_color);
                 B = Color.blue(tmp_color);
 
-                gray =  (int) (0.3*R + 0.59*G + 0.11*B);  //(R+G+B)/3; .
+                gray =  (int) (0.3*R + 0.59*G + 0.11*B);
                 gray = Color.rgb(gray,gray,gray);
 
                 bmp.setPixel(x,y,gray);
@@ -102,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toGray2(Bitmap bmp){
-
         width = bmp.getWidth();
         height = bmp.getHeight();
         int R, G, B, gray ;
@@ -110,23 +107,19 @@ public class MainActivity extends AppCompatActivity {
         int[] pixels = new int[width * height];
         bmp.getPixels(pixels,0,width,0,0,width,height);
 
-        for(int x = 0; x < width; x++){
-            for (int y = 0; y < height; y++){
-
-                tmp_color = pixels[y*width+x];
+        for(int x = 0; x < width*height; x++){
+                tmp_color = pixels[x];
 
                 R = Color.red(tmp_color);
                 G = Color.green(tmp_color);
                 B = Color.blue(tmp_color);
 
                 gray = (int) (0.3*R + 0.59*G + 0.11*B);
-                gray = Color.rgb(gray,gray,gray);
+                pixels[x] = Color.rgb(gray,gray,gray);
 
-                pixels[y*width+x] = gray;
-            }
         }
         bmp.setPixels(pixels,0,width,0,0,width,height);
-
     }
+
 
 }

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import static android.os.Build.VERSION_CODES.O;
+import static android.graphics.Color.RGBToHSV;
 
 
 public class Main2Activity extends AppCompatActivity {
@@ -21,7 +21,7 @@ public class Main2Activity extends AppCompatActivity {
     private TextView Size;
     private ImageView img;
     private Bitmap bitmap;
-    private Button nextbutton, colorized, colorized2,conserve1, conserve2;
+    private Button nextbutton, colorized, colorized2,conserve1;
     private int width;
     private int height;
     private int tmp_color;
@@ -39,14 +39,12 @@ public class Main2Activity extends AppCompatActivity {
         colorized = findViewById(R.id.idcolorize);
         colorized2 = findViewById(R.id.idcolorize2);
         conserve1 = findViewById(R.id.idCanned1);
-        conserve2 = findViewById(R.id.idCanned2);
 
         // Convertion de l'image
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
 
-        // convertToMutable(img_bp);
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
         Size.setText( "Taille : " + bitmap.getWidth() + "*" + bitmap.getHeight());
@@ -66,13 +64,15 @@ public class Main2Activity extends AppCompatActivity {
                 img.setImageBitmap(bitmap);
             }
         });
-        colorized2.setOnClickListener(new View.OnClickListener(){
+
+        colorized.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                colorize_Without_Red(bitmap);
+                colorized(bitmap);
                 img.setImageBitmap(bitmap);
             }
         });
+
         conserve1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -80,176 +80,143 @@ public class Main2Activity extends AppCompatActivity {
                 img.setImageBitmap(bitmap);
             }
         });
-        conserve2.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                conserveColor(bitmap,Color.YELLOW);
-                img.setImageBitmap(bitmap);
-            }
-        });
     }
 
-    //Ecriture des differentes fonctions
+    /*****************************************************/
+    // methode colorize sans ré-ecrire RGBToHSV() .
 
-    public void colorize (Bitmap bmp){
+    public void colorized (Bitmap bmp){
         width = bitmap.getWidth();
         height = bitmap.getHeight();
 
-        int[] pixels = new int[width * height];
-        float [] hsv;
-        hsv = new float[3];
-        int R, G, B, color;
+        int[] pixels = new int[width*height];
+        float [] hsv = new float[3];
+        int R, G, B;
 
-        int r = (int) (Math.random()* (360-1) );
-
+        int random = (int) (Math.random()*(360+1));
+        float rand = (float) random;
         bmp.getPixels(pixels,0,width,0,0,width,height);
 
+        for (int x = 0; x < width*height; x++){
+            tmp_color = pixels[x];
 
-        for (int x = 0; x < width; x++){
-            for (int y = 0; y < height; y++){
-                color = pixels[x*width+y];
+            R = Color.red(tmp_color);
+            G = Color.green(tmp_color);
+            B = Color.blue(tmp_color);
 
-                R = Color.red(color);
-                G = Color.green(color);
-                B = Color.blue(color);
+            RGBToHSV(R,G,B,hsv);
 
-                hsv = RGBToHSV(R,G,B);
-                hsv[0] = r;
+            hsv[0] = rand;
 
-                pixels[x*width+y] = Color.HSVToColor(hsv);
+            pixels[x] = Color.HSVToColor(hsv);
 
-            }
         }
         bmp.setPixels(pixels,0,width,0,0,width,height);
 
     }
 
-    public void colorize_Without_Red(Bitmap bmp){
-        int width = bmp.getWidth();
-        int height=bmp.getHeight();
-        int a,r,g,b;
-        int color=0;
-        float[] hsv = new float[3];
-        for(int i=0;i<width;i++){
-            for(int j=0;j<height;j++){
-                color=bmp.getPixel(i,j);
-                a = Color.alpha(color);
-                r = Color.red(color);
-                g = Color.green(color);
-                b = Color.blue(color);
-                int grv=(r+g+b)/3;
+    /*********************************************************************************/
 
-                Color.RGBToHSV(r, g, b, hsv);
-                int aleatoir=(int)Math.random()*(350);
-                color = Color.HSVToColor(grv, hsv);
-                if((hsv[0] > 20) && (hsv[0] < 340)){
-                    bmp.setPixel(i , j , Color.rgb(grv,grv,grv));
-                }
-            }
-        }
-    }
+    //Ré-ecrire de le methode RGBToHSV
 
-    public  static float[] RGBToHSV(int red, int green, int bleu){
-        float h, s, v;
-        float min, max, delta;
+    public void RGBToHSV_new(int red, int green, int blue, float[] h) {
+        float hh = 0;
+        float r = (float) red / 255;
+        float g = (float) green / 255;
+        float b = (float) blue / 255;
+        float cmax = Math.max(Math.max(r, g), b);
+        float cmin = Math.min(Math.min(r, g), b);
+        float diff = cmax - cmin;
 
-        float r = (float) red /255;
-        float g = (float) green/255;
-        float b = (float) bleu/255;
+        // Calcule de H
+        if (cmax == 0) {
+            h[0] = 0;
+            h[1] = 0;
+            h[2] = 0;
+            return;
+        } else if (cmax == r)
+            hh = (g - b) / diff;
+        else if (cmax == g)
+            hh = (r - g) / diff + 2;
+        else if (cmax == b)
+            hh = 4 + (r - g) / diff;
 
-        min = Math.min(Math.min(r,g), b);
-        max = Math.max(Math.max(r,g), b);
+        hh *= 60.0;
 
-        // composante V
-        v = max;
-        delta = max - min;
+        //Calcule de S
+        if (hh < 0)
+            hh += 360;
 
-        //Composante S
-        if(max != 0) {
-            s = delta / max;
-        }
-        else{
-            s = 0;
-            h = 0;
-            v = 0;
-            return new float[]{h,s,v};
-        }
+        float s = diff / cmax;
 
-        //Composante H
-        if( r == max){
-            h = ((g-b) / delta);
-        }
-        else if (g == max){
-            h = 2 + (b - r) / delta;
-        }
-        else {
-            h = 4 + (r-g) / delta;
-        }
-        h = h * 60;
-
-        if (h < 0){
-            h = h + 360;
-        }
-        return new float[]{h,s,v};
+        h[0] = hh;
+        h[1] = s;
+        h[2] = cmax;
 
     }
+
+    /*********************************************************************************/
+
+    //Ré-ecrire de le methode colorize avec la nouvelle methode RGBToHSV
+
+    public void colorize (Bitmap bmp){
+        width = bitmap.getWidth();
+        height = bitmap.getHeight();
+
+        int[] pixels = new int[width*height];
+        float [] hsv = new float[3];
+        int R, G, B;
+
+        int random = (int) (Math.random()*(360+1));
+        float rand = (float) random;
+        bmp.getPixels(pixels,0,width,0,0,width,height);
+
+        for (int x = 0; x < width*height; x++){
+            tmp_color = pixels[x];
+
+            R = Color.red(tmp_color);
+            G = Color.green(tmp_color);
+            B = Color.blue(tmp_color);
+
+            RGBToHSV_new(R,G,B,hsv);
+
+            hsv[0] = rand;
+
+            pixels[x] = Color.HSVToColor(hsv);
+
+        }
+        bmp.setPixels(pixels,0,width,0,0,width,height);
+
+    }
+
+    /**********************************************************************/
 
     public void conserveColor(Bitmap bmp) {
         width = bitmap.getWidth();
         height = bitmap.getHeight();
 
-        int R, G, B, max, color;
-
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y) {
-                tmp_color = bmp.getPixel(x, y);
-
-                R = Color.red(tmp_color);
-                G = Color.green(tmp_color);
-                B = Color.blue(tmp_color);
-
-                max = Math.max(Math.max(R, G), B);
-                if (R != max) {
-
-                    color = (R + G + B)/3;
-                    color = Color.rgb(color,color,color);
-                }
-                else{
-                    color = Color.rgb(R, G, B);
-                }
-                bmp.setPixel(x,y,color);
-            }
-        }
-    }
-
-    public void conserveColor(Bitmap bmp, int color) {
-        width = bitmap.getWidth();
-        height = bitmap.getHeight();
-
-        int R, G, B, tmp_color;
+        int R, G, B, gray;
         int pixels [] = new int[width*height];
-        float[] hsv;
-        hsv = new float[3];
+        float[] hsv = new float[3];
 
-        int min = color - 15 + 360;
-        int max = (color + 15 + 360) % 360;
         bmp.getPixels(pixels,0,width,0,0,width,height);
 
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y) {
-                tmp_color = pixels[width*x+y];
+        for (int x = 0; x < width*height; ++x) {
 
-                R = Color.red(tmp_color);
-                G = Color.blue(tmp_color);
-                B = Color.blue(tmp_color);
+            tmp_color = pixels[x];
 
-                hsv = RGBToHSV(R,G,B);
+            R = Color.red(tmp_color);
+            G = Color.blue(tmp_color);
+            B = Color.blue(tmp_color);
 
-                if((hsv[0] < min) && (hsv[0] > max)){
-                    hsv[1] = 0;
-                }
-                pixels[x*width+y] = Color.HSVToColor(hsv);
+            RGBToHSV(R,G,B,hsv);
+
+            if (hsv[0]>20 && hsv[0]<345){
+                gray = (int) ((0.3 * R) + (0.59 * G) + (0.11 * B));
+                pixels[x] = Color.rgb( gray, gray, gray);
             }
+            pixels[x] = Color.HSVToColor(hsv);
+
         }
         bmp.setPixels(pixels,0,width,0,0,width,height);
     }
