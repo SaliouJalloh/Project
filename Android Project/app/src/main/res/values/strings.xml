@@ -9,10 +9,14 @@
     <string name="lbl_text_Hi">TextView</string>
     <string name="lbl_size">TextView</string>
     <string name="lbl_next_tp"><![CDATA[Next TP -->]]></string>
-    <string name="lbl_next_tp2"><![CDATA[Next TP -->]]></string>
     <string name="lbl_colorize">Colorize</string>
     <string name="lbl_canned_color_1">Canned_Color_1</string>
     <string name="lbl_canned_color_2">CANNED_COLOR_2</string>
     <string name="lbl_decreases_contrast">decreases contrast</string>
     <string name="lbl_colorize_2">Colorize_2</string>
+    <string name="lbl_decreases_contrast_lut">decreases contrast LUT</string>
+    <string name="lbl_increases_contrast">increases contrast</string>
+    <string name="lbl_increases_contrast_lut">increases contrast lut</string>
+    <string name="lbl_next_tp2"><![CDATA[NEXT TP -->]]></string>
+    <string name="lbl_next_tp3"><![CDATA[NEXT TP -->]]></string>
 </resources>

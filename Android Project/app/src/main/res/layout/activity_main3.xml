@@ -23,24 +23,37 @@
             android:id="@+id/idtaille2"
             android:layout_width="match_parent"
             android:layout_height="31dp"
-            android:text="@string/lbl_size" />
+            android:text="@string/lbl_size"
+            tools:text="SIZE :" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/idnext3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_next_tp2" />
+            android:text="@string/lbl_next_tp3" />
 
         <Button
             android:id="@+id/idbutton5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_decreases_contrast" />
+            android:text="@string/lbl_increases_contrast" />
+
+        <Button
+            android:id="@+id/idbutton6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_increases_contrast_lut" />
+
+        <Button
+            android:id="@+id/idbutton7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_decreases_contrast_lut" />
 
         <ImageView
             android:id="@+id/idimage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="433dp"
             android:contentDescription="@string/lblimage"
             app:srcCompat="@drawable/fruit" />
 

@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView taille;
     private ImageView img;
     private Bitmap bitmap;
-    private Button button, to_gray1, to_gray2;
+    private Button nextbutton1, to_gray1, to_gray2;
     private int width;
     private int height;
     private int tmp_color;
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             text = findViewById(R.id.idtext);
             taille = findViewById(R.id.idtaille);
             img = findViewById(R.id.idimage);
-            button = findViewById(R.id.idbutton);
+            nextbutton1 = findViewById(R.id.idbutton);
             to_gray1 = findViewById(R.id.idbuttonGray);
             to_gray2 = findViewById(R.id.idbuttonGrays);
 
@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
             bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
-            taille.setText( "Taille : " + bitmap.getWidth() + "*" + bitmap.getHeight());
+            taille.setText( "SIZE : " + bitmap.getWidth() + "*" + bitmap.getHeight());
 
-            button.setOnClickListener(new View.OnClickListener() {
+            nextbutton1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent ActivityIntent = new Intent(MainActivity.this, Main2Activity.class);

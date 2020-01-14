@@ -21,7 +21,7 @@ public class Main2Activity extends AppCompatActivity {
     private TextView Size;
     private ImageView img;
     private Bitmap bitmap;
-    private Button nextbutton, colorized, colorized2,conserve1;
+    private Button nextbutton2, colorized, colorized2,conserve1;
     private int width;
     private int height;
     private int tmp_color;
@@ -35,7 +35,7 @@ public class Main2Activity extends AppCompatActivity {
         text = findViewById(R.id.idtext);
         Size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
-        nextbutton = findViewById(R.id.button);
+        nextbutton2 = findViewById(R.id.idnext2);
         colorized = findViewById(R.id.idcolorize);
         colorized2 = findViewById(R.id.idcolorize2);
         conserve1 = findViewById(R.id.idCanned1);
@@ -47,16 +47,17 @@ public class Main2Activity extends AppCompatActivity {
 
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
-        Size.setText( "Taille : " + bitmap.getWidth() + "*" + bitmap.getHeight());
+        Size.setText( "SIZE : " + bitmap.getWidth() + "*" + bitmap.getHeight());
 
         //Branchement des bouttons
-        nextbutton.setOnClickListener(new View.OnClickListener() {
+        nextbutton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent ActivityIntent = new Intent(Main2Activity.this, Main3Activity.class);
                 startActivity(ActivityIntent);
             }
         });
+
         colorized.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
