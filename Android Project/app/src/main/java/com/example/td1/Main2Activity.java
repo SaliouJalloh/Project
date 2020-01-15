@@ -35,7 +35,7 @@ public class Main2Activity extends AppCompatActivity {
         text = findViewById(R.id.idtext);
         Size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
-        nextbutton2 = findViewById(R.id.idnext2);
+        nextbutton2 = findViewById(R.id.button);
         colorized = findViewById(R.id.idcolorize);
         colorized2 = findViewById(R.id.idcolorize2);
         conserve1 = findViewById(R.id.idCanned1);

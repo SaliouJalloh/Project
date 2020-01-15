@@ -25,13 +25,11 @@
             android:layout_height="31dp"
             android:text="@string/lbl_size"
             tools:text="SIZE :" />
-
         <Button
-            android:id="@+id/idnext3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_next_tp3" />
-
+            android:id="@+id/button"
+            android:text="@string/lbl_next_tp2"/>
         <Button
             android:id="@+id/idbutton5"
             android:layout_width="match_parent"

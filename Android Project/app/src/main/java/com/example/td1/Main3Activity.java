@@ -33,7 +33,7 @@ public class Main3Activity extends AppCompatActivity {
         text = findViewById(R.id.idtext);
         Size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
-        nextbutton3 = findViewById(R.id.idnext3);
+        nextbutton3 = findViewById(R.id.button);
         button5 = findViewById(R.id.idbutton5);
 
         // Convertion de l'image
