@@ -17,7 +17,7 @@
             android:layout_height="32dp"
             android:textColor="@color/colorPrimary"
             android:gravity="center"
-            android:text="@string/lbltext" />
+            android:text="@string/lbl_text" />
 
         <TextView
             android:id="@+id/idtaille2"
@@ -28,34 +28,16 @@
 
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/idnext2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/lbl_next_tp2" />
-
-        <Button
-            android:id="@+id/idcolorize"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_colorize" />
-
-        <Button
-            android:id="@+id/idcolorize2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_colorize_2" />
-
-        <Button
-            android:id="@+id/idCanned1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_canned_color_1" />
 
         <ImageView
             android:id="@+id/idimage"
             android:layout_width="match_parent"
             android:layout_height="472dp"
-            android:contentDescription="@string/lblimage"
+            android:contentDescription="@string/lbl_image"
             app:srcCompat="@drawable/fruit" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

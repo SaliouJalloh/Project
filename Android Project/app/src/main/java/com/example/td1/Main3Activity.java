@@ -19,10 +19,10 @@ import android.widget.Toast;
 public class Main3Activity extends AppCompatActivity {
 
     private TextView text;
-    private TextView Size;
+    private TextView size;
     private ImageView img;
     private Bitmap bitmap;
-    private Button nextbutton3, button5, button6, button7, button8, button9;
+    private Button nextbutton3;
 
     private int width;
     private int height;
@@ -35,10 +35,10 @@ public class Main3Activity extends AppCompatActivity {
 
         // Ajout des widgets
         text = findViewById(R.id.idtext);
-        Size = findViewById(R.id.idtaille2);
+        size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
-        nextbutton3 = findViewById(R.id.button);
-        button5 = findViewById(R.id.idbutton5);
+        nextbutton3 = findViewById(R.id.idnext3);
+
 
         // Convertion de l'image
 
@@ -47,7 +47,7 @@ public class Main3Activity extends AppCompatActivity {
 
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
-        Size.setText( "SIZE : " + bitmap.getWidth() + "*" + bitmap.getHeight());
+        size.setText( "SIZE : " + bitmap.getWidth() + "*" + bitmap.getHeight());
 
         nextbutton3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +56,7 @@ public class Main3Activity extends AppCompatActivity {
                 startActivity(ActivityIntent);
             }
         });
+        /*
         button5.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -76,7 +77,7 @@ public class Main3Activity extends AppCompatActivity {
                 decreasesContrastLUT(bitmap);
                 img.setImageBitmap(bitmap);
             }
-        });
+        });*/
 
 
     }

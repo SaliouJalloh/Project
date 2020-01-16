@@ -22,7 +22,7 @@ import static android.graphics.Color.RGBToHSV;
 public class Main2Activity extends AppCompatActivity {
 
     private TextView text;
-    private TextView Size;
+    private TextView size;
     private ImageView img;
     private Bitmap bitmap;
     private Button nextbutton2, colorized, colorized2,conserve1;
@@ -37,13 +37,13 @@ public class Main2Activity extends AppCompatActivity {
 
         // Ajout des widgets
         text = findViewById(R.id.idtext);
-        Size = findViewById(R.id.idtaille2);
+        size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
-        nextbutton2 = findViewById(R.id.button);
-        colorized = findViewById(R.id.idcolorize);
+        nextbutton2 = findViewById(R.id.idnext2);
+        /*colorized = findViewById(R.id.idcolorize);
         colorized2 = findViewById(R.id.idcolorize2);
         conserve1 = findViewById(R.id.idCanned1);
-
+        */
         // Convertion de l'image
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -51,7 +51,7 @@ public class Main2Activity extends AppCompatActivity {
 
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
-        Size.setText( "SIZE : " + bitmap.getWidth() + "*" + bitmap.getHeight());
+        size.setText( "SIZE : " + bitmap.getWidth() + "*" + bitmap.getHeight());
 
         //Branchement des bouttons
         nextbutton2.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +62,7 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
-        colorized.setOnClickListener(new View.OnClickListener(){
+        /*colorized.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 colorize(bitmap);
@@ -70,7 +70,7 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
-        colorized.setOnClickListener(new View.OnClickListener(){
+        colorized2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 colorized(bitmap);
@@ -84,7 +84,7 @@ public class Main2Activity extends AppCompatActivity {
                 conserveColor(bitmap);
                 img.setImageBitmap(bitmap);
             }
-        });
+        });*/
     }
 
     @Override

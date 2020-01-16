@@ -1,14 +1,13 @@
 <resources>
-    <string name="app_name">Projet_Android</string>
-    <string name="lblbutton">Button</string>
-    <string name="lblimage">lblimage</string>
-    <string name="lbltaille">Taille :</string>
-    <string name="lbltogray_1">TO_GRAY_1</string>
-    <string name="lbl_to_gray_2">TO_GRAY_2</string>
-    <string name="lbltext">Hello and welcome</string>
-    <string name="lbl_text_Hi">TextView</string>
-    <string name="lbl_size">TextView</string>
-    <string name="lbl_next_tp"><![CDATA[Next TP -->]]></string>
+    <string name="app_name">Project_Android</string>
+
+
+    <string name="lbl_image">image</string>
+
+    <string name="lbl_text">Hello and welcome</string>
+
+    <string name="lbl_size">Size</string>
+
     <string name="lbl_colorize">Colorize</string>
     <string name="lbl_canned_color_1">Canned_Color_1</string>
 
@@ -17,7 +16,7 @@
     <string name="lbl_decreases_contrast_lut">decreases contrast LUT</string>
     <string name="lbl_increases_contrast">increases contrast</string>
     <string name="lbl_increases_contrast_lut">increases contrast lut</string>
-    <string name="lbl_next_tp2"><![CDATA[Next TP -->]]></string>
+
 
     <string name="reset_item">Reset </string>
     <string name="next_item">Next </string>
@@ -33,6 +32,12 @@
     <string name="decreases_contrast_lut_item">Decreases Contrast (LUT)</string>
     <string name="up_contrast_lut_item">Up Contrast (LUT)</string>
     <string name="down_contrast_lut_item">Down Contrast (LUT)</string>
+
+
+    <string name="lbl_next_tp"><![CDATA[Next TP -->]]></string>
+    <string name="lbl_next_tp2"><![CDATA[NEXT TP -->]]></string>
+    <string name="lbl_next_tp3"><![CDATA[NEXT TP -->]]></string>
+    <string name="lbl_next_tp4"><![CDATA[NEXT TP -->]]></string>
 
 
 </resources>

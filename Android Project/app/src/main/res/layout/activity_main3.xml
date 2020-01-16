@@ -17,7 +17,7 @@
             android:layout_height="37dp"
             android:textColor="@color/colorPrimary"
             android:gravity="center"
-            android:text="@string/lbltext" />
+            android:text="@string/lbl_text" />
 
         <TextView
             android:id="@+id/idtaille2"
@@ -25,34 +25,19 @@
             android:layout_height="31dp"
             android:text="@string/lbl_size"
             tools:text="SIZE :" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button"
-            android:text="@string/lbl_next_tp2"/>
-        <Button
-            android:id="@+id/idbutton5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_increases_contrast" />
+
 
         <Button
-            android:id="@+id/idbutton6"
+            android:id="@+id/idnext3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_increases_contrast_lut" />
-
-        <Button
-            android:id="@+id/idbutton7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_decreases_contrast_lut" />
+            android:text="@string/lbl_next_tp3" />
 
         <ImageView
             android:id="@+id/idimage"
             android:layout_width="match_parent"
             android:layout_height="433dp"
-            android:contentDescription="@string/lblimage"
+            android:contentDescription="@string/lbl_image"
             app:srcCompat="@drawable/fruit" />
 
     </LinearLayout>

@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
             taille = findViewById(R.id.idtaille);
             img = findViewById(R.id.idimage);
             nextbutton1 = findViewById(R.id.idbutton);
-            to_gray1 = findViewById(R.id.idbuttonGray);
+            /*to_gray1 = findViewById(R.id.idbuttonGray);
             to_gray2 = findViewById(R.id.idbuttonGrays);
-
+            */
             // Convertion de l'image
 
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(ActivityIntent);
                 }
             });
-            to_gray1.setOnClickListener(new View.OnClickListener(){
+            /*to_gray1.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     toGray(bitmap);
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     toGray2(bitmap);
                     img.setImageBitmap(bitmap);
                 }
-            });
+            });*/
 
             width = bitmap.getWidth();
             height = bitmap.getHeight();

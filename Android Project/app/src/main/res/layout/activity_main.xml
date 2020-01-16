@@ -20,14 +20,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/lbltext"
+            android:text="@string/lbl_text"
             android:textColor="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/idtaille"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lbltaille"
+            android:text="@string/lbl_size"
             tools:text="SIZE :" />
 
         <Button
@@ -36,23 +36,12 @@
             android:layout_height="wrap_content"
             android:text="@string/lbl_next_tp" />
 
-        <Button
-            android:id="@+id/idbuttonGray"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbltogray_1" />
-
-        <Button
-            android:id="@+id/idbuttonGrays"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_to_gray_2" />
 
         <ImageView
             android:id="@+id/idimage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/lblimage"
+            android:contentDescription="@string/lbl_image"
             app:srcCompat="@drawable/fruit" />
 
     </LinearLayout>
