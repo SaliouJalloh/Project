@@ -7,10 +7,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.renderscript.RenderScript;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -79,6 +84,37 @@ public class MainActivity extends AppCompatActivity {
             }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_reset:
+                Toast.makeText(this,"reset menu selected",Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_next:
+                Toast.makeText(this,"next menu selected",Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_to_gray1:
+                Toast.makeText(this,"to gray selected",Toast.LENGTH_LONG).show();
+                Intent intentTogray = new Intent(this,MainActivity.class);
+                startActivity(intentTogray);
+                return true;
+            case R.id.menu_to_gray2:
+                Toast.makeText(this,"to grays selected",Toast.LENGTH_LONG).show();
+                Intent intentTograys = new Intent(this,MainActivity.class);
+                startActivity(intentTograys);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void toGray(Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
@@ -120,6 +156,5 @@ public class MainActivity extends AppCompatActivity {
         }
         bmp.setPixels(pixels,0,width,0,0,width,height);
     }
-
 
 }

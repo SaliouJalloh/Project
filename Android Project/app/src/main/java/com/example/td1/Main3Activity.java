@@ -7,10 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Main3Activity extends AppCompatActivity {
 
@@ -77,6 +81,51 @@ public class Main3Activity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main3_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_reset:
+                Toast.makeText(this,"reset menu selected",Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_next:
+                Toast.makeText(this,"next menu selected",Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_increasesContrast:
+                Toast.makeText(this,"increases selected",Toast.LENGTH_LONG).show();
+                Intent intentColorized = new Intent(this,Main3Activity.class);
+                startActivity(intentColorized);
+                return true;
+            case R.id.menu_increasesContrastLut:
+                Toast.makeText(this,"increases lut selected",Toast.LENGTH_LONG).show();
+                Intent intentColorize = new Intent(this,Main3Activity.class);
+                startActivity(intentColorize);
+                return true;
+            case R.id.menu_decreasesContrastLut:
+                Toast.makeText(this,"decreases selected",Toast.LENGTH_LONG).show();
+                Intent intentCannedColor = new Intent(this,Main3Activity.class);
+                startActivity(intentCannedColor);
+                return true;
+            case R.id.menu_upContrastLut:
+                Toast.makeText(this,"up contrast selected",Toast.LENGTH_LONG).show();
+                Intent intentup = new Intent(this,Main3Activity.class);
+                startActivity(intentup);
+                return true;
+            case R.id.menu_downContrastLut:
+                Toast.makeText(this,"down contrast selected",Toast.LENGTH_LONG).show();
+                Intent intentdown = new Intent(this,Main3Activity.class);
+                startActivity(intentdown);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     // Image en niveaux de gris augmentation/diminution du contraste par extension du dynamique.
 

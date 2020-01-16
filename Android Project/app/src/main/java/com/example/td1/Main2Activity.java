@@ -5,10 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -81,6 +85,42 @@ public class Main2Activity extends AppCompatActivity {
                 img.setImageBitmap(bitmap);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main2_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_reset:
+                Toast.makeText(this,"reset menu selected",Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_next:
+                Toast.makeText(this,"next menu selected",Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_colorized:
+                Toast.makeText(this,"colorized selected",Toast.LENGTH_LONG).show();
+                Intent intentColorized = new Intent(this,Main2Activity.class);
+                startActivity(intentColorized);
+                return true;
+            case R.id.menu_colorize:
+                Toast.makeText(this,"colorize selected",Toast.LENGTH_LONG).show();
+                Intent intentColorize = new Intent(this,Main2Activity.class);
+                startActivity(intentColorize);
+                return true;
+            case R.id.menu_canned_color:
+                Toast.makeText(this,"canned color selected",Toast.LENGTH_LONG).show();
+                Intent intentCannedColor = new Intent(this,Main2Activity.class);
+                startActivity(intentCannedColor);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /*****************************************************/
