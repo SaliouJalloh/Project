@@ -21,8 +21,7 @@ public class Main3Activity extends AppCompatActivity {
     private TextView text;
     private TextView size;
     private ImageView img;
-    private Bitmap bitmap;
-    private Button nextbutton3;
+    private Bitmap bitmap,bitmap1;
 
     private int width;
     private int height;
@@ -37,8 +36,6 @@ public class Main3Activity extends AppCompatActivity {
         text = findViewById(R.id.idtext);
         size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
-        nextbutton3 = findViewById(R.id.idnext3);
-
 
         // Convertion de l'image
 
@@ -46,39 +43,9 @@ public class Main3Activity extends AppCompatActivity {
         options.inMutable = true;
 
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
+        bitmap1 = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
         size.setText( "SIZE : " + bitmap.getWidth() + "*" + bitmap.getHeight());
-
-        nextbutton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ActivityIntent = new Intent(Main3Activity.this, Main4Activity.class);
-                startActivity(ActivityIntent);
-            }
-        });
-        /*
-        button5.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                increasesContrast(bitmap);
-                img.setImageBitmap(bitmap);
-            }
-        });
-        button6.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                increasesContrastLUT(bitmap);
-                img.setImageBitmap(bitmap);
-            }
-        });
-        button7.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                decreasesContrastLUT(bitmap);
-                img.setImageBitmap(bitmap);
-            }
-        });*/
-
 
     }
 
@@ -93,35 +60,38 @@ public class Main3Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_reset:
+                img.setImageBitmap(bitmap1);
                 Toast.makeText(this,"reset menu selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_next:
+                Intent ActivityIntent = new Intent(Main3Activity.this, Main4Activity.class);
+                startActivity(ActivityIntent);
                 Toast.makeText(this,"next menu selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_increasesContrast:
+                increasesContrast(bitmap);
+                img.setImageBitmap(bitmap);
                 Toast.makeText(this,"increases selected",Toast.LENGTH_LONG).show();
-                Intent intentColorized = new Intent(this,Main3Activity.class);
-                startActivity(intentColorized);
                 return true;
             case R.id.menu_increasesContrastLut:
                 Toast.makeText(this,"increases lut selected",Toast.LENGTH_LONG).show();
-                Intent intentColorize = new Intent(this,Main3Activity.class);
-                startActivity(intentColorize);
+                increasesContrastLUT(bitmap);
+                img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_decreasesContrastLut:
+                decreasesContrastLUT(bitmap);
+                img.setImageBitmap(bitmap);
                 Toast.makeText(this,"decreases selected",Toast.LENGTH_LONG).show();
-                Intent intentCannedColor = new Intent(this,Main3Activity.class);
-                startActivity(intentCannedColor);
                 return true;
             case R.id.menu_upContrastLut:
+                upContrasteColor(bitmap);
+                img.setImageBitmap(bitmap);
                 Toast.makeText(this,"up contrast selected",Toast.LENGTH_LONG).show();
-                Intent intentup = new Intent(this,Main3Activity.class);
-                startActivity(intentup);
                 return true;
             case R.id.menu_downContrastLut:
+                downContrasteColor(bitmap);
+                img.setImageBitmap(bitmap);
                 Toast.makeText(this,"down contrast selected",Toast.LENGTH_LONG).show();
-                Intent intentdown = new Intent(this,Main3Activity.class);
-                startActivity(intentdown);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -317,7 +287,7 @@ public class Main3Activity extends AppCompatActivity {
         bmp.setPixels(pixels, 0, width, 0, 0, width, height);
     }
 
-    public void lowContrasteColor(Bitmap bmp) {
+    public void downContrasteColor(Bitmap bmp) {
         width = bmp.getWidth();
         height = bmp.getHeight();
         int[] pixels = new int[width * height];

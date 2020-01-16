@@ -23,8 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView text;
     private TextView taille;
     private ImageView img;
-    private Bitmap bitmap;
-    private Button nextbutton1, to_gray1, to_gray2;
+    private Bitmap bitmap,bitmap1;
     private int width;
     private int height;
     private int tmp_color;
@@ -39,40 +38,16 @@ public class MainActivity extends AppCompatActivity {
             text = findViewById(R.id.idtext);
             taille = findViewById(R.id.idtaille);
             img = findViewById(R.id.idimage);
-            nextbutton1 = findViewById(R.id.idbutton);
-            /*to_gray1 = findViewById(R.id.idbuttonGray);
-            to_gray2 = findViewById(R.id.idbuttonGrays);
-            */
+
             // Convertion de l'image
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inMutable = true;
 
             bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
+            bitmap1 = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
             taille.setText( "SIZE : " + bitmap.getWidth() + "*" + bitmap.getHeight());
-
-            nextbutton1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent ActivityIntent = new Intent(MainActivity.this, Main2Activity.class);
-                    startActivity(ActivityIntent);
-                }
-            });
-            /*to_gray1.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    toGray(bitmap);
-                    img.setImageBitmap(bitmap);
-                }
-            });
-            to_gray2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toGray2(bitmap);
-                    img.setImageBitmap(bitmap);
-                }
-            });*/
 
             width = bitmap.getWidth();
             height = bitmap.getHeight();
@@ -95,20 +70,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_reset:
+                img.setImageBitmap(bitmap1);
                 Toast.makeText(this,"reset menu selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_next:
+                Intent ActivityIntent = new Intent(MainActivity.this, Main2Activity.class);
+                startActivity(ActivityIntent);
                 Toast.makeText(this,"next menu selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_to_gray1:
                 Toast.makeText(this,"to gray selected",Toast.LENGTH_LONG).show();
-                Intent intentTogray = new Intent(this,MainActivity.class);
-                startActivity(intentTogray);
+                toGray(bitmap);
+                img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_gray2:
                 Toast.makeText(this,"to grays selected",Toast.LENGTH_LONG).show();
-                Intent intentTograys = new Intent(this,MainActivity.class);
-                startActivity(intentTograys);
+                toGray2(bitmap);
+                img.setImageBitmap(bitmap);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

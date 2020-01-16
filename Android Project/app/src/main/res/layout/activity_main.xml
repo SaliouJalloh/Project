@@ -30,12 +30,6 @@
             android:text="@string/lbl_size"
             tools:text="SIZE :" />
 
-        <Button
-            android:id="@+id/idbutton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_next_tp" />
-
 
         <ImageView
             android:id="@+id/idimage"

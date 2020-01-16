@@ -24,8 +24,7 @@ public class Main2Activity extends AppCompatActivity {
     private TextView text;
     private TextView size;
     private ImageView img;
-    private Bitmap bitmap;
-    private Button nextbutton2, colorized, colorized2,conserve1;
+    private Bitmap bitmap,bitmap1;
     private int width;
     private int height;
     private int tmp_color;
@@ -39,52 +38,17 @@ public class Main2Activity extends AppCompatActivity {
         text = findViewById(R.id.idtext);
         size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
-        nextbutton2 = findViewById(R.id.idnext2);
-        /*colorized = findViewById(R.id.idcolorize);
-        colorized2 = findViewById(R.id.idcolorize2);
-        conserve1 = findViewById(R.id.idCanned1);
-        */
+
         // Convertion de l'image
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
 
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
+        bitmap1 = BitmapFactory.decodeResource(getResources(),R.drawable.fruit,options);
 
         size.setText( "SIZE : " + bitmap.getWidth() + "*" + bitmap.getHeight());
 
-        //Branchement des bouttons
-        nextbutton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ActivityIntent = new Intent(Main2Activity.this, Main3Activity.class);
-                startActivity(ActivityIntent);
-            }
-        });
-
-        /*colorized.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                colorize(bitmap);
-                img.setImageBitmap(bitmap);
-            }
-        });
-
-        colorized2.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                colorized(bitmap);
-                img.setImageBitmap(bitmap);
-            }
-        });
-
-        conserve1.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                conserveColor(bitmap);
-                img.setImageBitmap(bitmap);
-            }
-        });*/
     }
 
     @Override
@@ -98,25 +62,28 @@ public class Main2Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_reset:
+                img.setImageBitmap(bitmap1);
                 Toast.makeText(this,"reset menu selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_next:
+                Intent ActivityIntent = new Intent(Main2Activity.this, Main3Activity.class);
+                startActivity(ActivityIntent);
                 Toast.makeText(this,"next menu selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_colorized:
+                colorized(bitmap);
+                img.setImageBitmap(bitmap);
                 Toast.makeText(this,"colorized selected",Toast.LENGTH_LONG).show();
-                Intent intentColorized = new Intent(this,Main2Activity.class);
-                startActivity(intentColorized);
                 return true;
             case R.id.menu_colorize:
                 Toast.makeText(this,"colorize selected",Toast.LENGTH_LONG).show();
-                Intent intentColorize = new Intent(this,Main2Activity.class);
-                startActivity(intentColorize);
+                colorize(bitmap);
+                img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_canned_color:
+                conserveColor(bitmap);
+                img.setImageBitmap(bitmap);
                 Toast.makeText(this,"canned color selected",Toast.LENGTH_LONG).show();
-                Intent intentCannedColor = new Intent(this,Main2Activity.class);
-                startActivity(intentCannedColor);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

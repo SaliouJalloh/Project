@@ -26,13 +26,6 @@
             android:text="@string/lbl_size"
             tools:text="SIZE :" />
 
-
-        <Button
-            android:id="@+id/idnext3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_next_tp3" />
-
         <ImageView
             android:id="@+id/idimage"
             android:layout_width="match_parent"
