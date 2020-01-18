@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -347,5 +349,30 @@ public class Main3Activity extends AppCompatActivity {
         }
     }
 
+    /*# pragma version (1)
+    # pragma rs java_package_name (com.example.td1)
 
+    float brightnessScale = 0.5;
+
+    private void RS_KERNEL changeBrightness ( Bitmap bmp ) {
+        // 1) Creer un contexte RenderScript
+        RenderScript rs = RenderScript . create ( this ) ;
+        // 2) Creer des Allocations pour passer les donnees
+        Allocation input = Allocation . createFromBitmap ( rs , bmp ) ;
+        Allocation output = Allocation . createTyped ( rs , input.getType () ) ;
+        // 3) Creer le script
+        ScriptC_brightness bScript = new ScriptC_brightness (rs) ;
+        // 4) Copier les donnees dans les Allocations
+        // ...
+        // 5) Initialiser les variables globales potentielles
+        bScript.set_brightnessScale (0.8) ;
+        // 6) Lancer le noyau
+        bScript.forEach_changeBrightness ( input , output ) ;
+        // 7) Recuperer les donnees des Allocation (s)
+        output.copyTo ( bmp ) ;
+        // 8) Detruire le context , les Allocation (s) et le script
+        input.destroy () ; output.destroy () ;
+        bScript.destroy () ; rs.destroy () ;
+    }
+    */
 }

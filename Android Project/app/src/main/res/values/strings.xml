@@ -22,6 +22,7 @@
     <string name="next_item">Next </string>
     <string name="to_gray_item">To Gray</string>
     <string name="to_grays_item">To Grays</string>
+    <string name="to_grayRS_item">To GrayRS</string>
 
     <string name="colorized_item">Colorized</string>
     <string name="colorize_item">Colorize</string>

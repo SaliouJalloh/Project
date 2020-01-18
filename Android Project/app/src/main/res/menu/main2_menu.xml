@@ -15,7 +15,7 @@
     <item android:id="@+id/menu_colorized"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="@string/colorize_item" />
+        android:title="@string/colorized_item" />
 
     <item android:id="@+id/menu_colorize"
         android:orderInCategory="100"

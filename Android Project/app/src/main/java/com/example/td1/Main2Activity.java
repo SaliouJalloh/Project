@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +19,7 @@ import static android.graphics.Color.RGBToHSV;
 
 public class Main2Activity extends AppCompatActivity {
 
-    private TextView text;
-    private TextView size;
+    private TextView text,size;
     private ImageView img;
     private Bitmap bitmap,bitmap1;
     private int width;
@@ -81,7 +78,7 @@ public class Main2Activity extends AppCompatActivity {
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_canned_color:
-                conserveColor(bitmap);
+                cannedColor(bitmap);
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"canned color selected",Toast.LENGTH_LONG).show();
                 return true;
@@ -199,7 +196,7 @@ public class Main2Activity extends AppCompatActivity {
 
     /**********************************************************************/
 
-    public void conserveColor(Bitmap bmp) {
+    public void cannedColor(Bitmap bmp) {
         width = bitmap.getWidth();
         height = bitmap.getHeight();
 
