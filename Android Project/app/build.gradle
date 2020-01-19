@@ -5,11 +5,15 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.td1"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters('armeabi-v7a', 'x86', 'armeabi')
+        }
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
     }

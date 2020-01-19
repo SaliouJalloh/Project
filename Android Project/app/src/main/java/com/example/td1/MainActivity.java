@@ -5,8 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
+import androidx.renderscript.Allocation;
+import androidx.renderscript.RenderScript;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 Allocation input = Allocation.createFromBitmap ( rs , bmp ) ;
                 Allocation output = Allocation.createTyped ( rs , input.getType () ) ;
         // 3) Creer le script
-                ScriptC_gray grayScript = new ScriptC_gray(rs) ;
+                ScriptC_grays grayScript = new ScriptC_grays(rs) ;
         // 4) Copier les donnees dans les Allocations
         // ...
         // 5) Initialiser les variables globales potentielles
