@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_to_grayRS:
                 Toast.makeText(this,"to graysRS selected",Toast.LENGTH_LONG).show();
-                toGrayRS(bitmap);
+                //toGrayRS(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             default:
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         bmp.setPixels(pixels,0,width,0,0,width,height);
     }
 
-    private void toGrayRS ( Bitmap bmp ) {
+    /*private void toGrayRS ( Bitmap bmp ) {
         // 1) Creer un contexte RenderScript
                 RenderScript rs = RenderScript.create ( this ) ;
         // 2) Creer des Allocations pour passer les donnees
@@ -159,5 +159,14 @@ public class MainActivity extends AppCompatActivity {
                 input.destroy () ; output.destroy () ;
                 grayScript.destroy () ; rs.destroy () ;
     }
+    grays.rs file
+    #pragma version (1)
+    #pragma rs java_package_name (com.example.td1)
+
+    uchar4 RS_KERNEL toGray ( uchar4 in ) {
+        float4 pixelf = rsUnpackColor8888 ( in ) ;
+        float gray = (0.30* pixelf . r + 0.59* pixelf . g + 0.11* pixelf . b ) ;
+        return rsPackColorTo8888 ( gray , gray , gray , pixelf . a ) ;
+    }*/
 
 }

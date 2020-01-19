@@ -36,7 +36,7 @@ public class Main2Activity extends AppCompatActivity {
         size = findViewById(R.id.idtaille2);
         img = findViewById(R.id.idimage);
 
-        // Convertion de l'image
+        // Conversion de l'image
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
@@ -88,7 +88,7 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     /*****************************************************/
-    // methode colorize sans ré-ecrire RGBToHSV() .
+    // Méthode colorize sans re-ecrire RGBToHSV() .
 
     public void colorized (Bitmap bmp){
         width = bitmap.getWidth();
@@ -124,11 +124,12 @@ public class Main2Activity extends AppCompatActivity {
 
     //Ré-ecrire de le methode RGBToHSV
 
-    public void RGBToHSV_new(int red, int green, int blue, float[] h) {
-        float hh = 0;
+    public void new_RGBToHSV(int red, int green, int blue, float[] h) {
+        float moy = 0;
         float r = (float) red / 255;
         float g = (float) green / 255;
         float b = (float) blue / 255;
+
         float cmax = Math.max(Math.max(r, g), b);
         float cmin = Math.min(Math.min(r, g), b);
         float diff = cmax - cmin;
@@ -140,21 +141,21 @@ public class Main2Activity extends AppCompatActivity {
             h[2] = 0;
             return;
         } else if (cmax == r)
-            hh = (g - b) / diff;
+            moy = (g - b) / diff;
         else if (cmax == g)
-            hh = (r - g) / diff + 2;
+            moy = (r - g) / diff + 2;
         else if (cmax == b)
-            hh = 4 + (r - g) / diff;
+            moy = 4 + (r - g) / diff;
 
-        hh *= 60.0;
+        moy *= 60.0;
 
         //Calcule de S
-        if (hh < 0)
-            hh += 360;
+        if (moy < 0)
+            moy += 360;
 
         float s = diff / cmax;
 
-        h[0] = hh;
+        h[0] = moy;
         h[1] = s;
         h[2] = cmax;
 
@@ -162,7 +163,7 @@ public class Main2Activity extends AppCompatActivity {
 
     /*********************************************************************************/
 
-    //Ré-ecrire de le methode colorize avec la nouvelle methode RGBToHSV
+    //Ré-ecriture de la methode colorize avec la nouvelle methode RGBToHSV
 
     public void colorize (Bitmap bmp){
         width = bitmap.getWidth();
@@ -183,7 +184,7 @@ public class Main2Activity extends AppCompatActivity {
             G = Color.green(tmp_color);
             B = Color.blue(tmp_color);
 
-            RGBToHSV_new(R,G,B,hsv);
+            new_RGBToHSV(R,G,B,hsv);
 
             hsv[0] = rand;
 

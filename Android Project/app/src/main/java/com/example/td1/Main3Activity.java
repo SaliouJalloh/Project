@@ -110,7 +110,7 @@ public class Main3Activity extends AppCompatActivity {
         int[] pixels = new int[width * height];
         int histo[]  = new int[256];
 
-        int R ;
+        int cons;
 
         bmp.getPixels (pixels, 0, width, 0, 0, width, height);
 
@@ -119,18 +119,18 @@ public class Main3Activity extends AppCompatActivity {
             tmp_color = pixels[i];
 
             if ( c == Color.RED)
-                R = Color.red(tmp_color);
+                cons = Color.red(tmp_color);
 
             if ( c == Color.GREEN)
-                R = Color.green(tmp_color);
+               cons = Color.green(tmp_color);
 
             if ( c == Color.BLUE)
-                R = Color.blue(tmp_color);
+               cons = Color.blue(tmp_color);
 
             else
-                R = ( Color.red(tmp_color) + Color.green(tmp_color) + Color.blue(tmp_color) ) / 3;
+                cons = ( Color.red(tmp_color) + Color.green(tmp_color) + Color.blue(tmp_color) ) / 3;
 
-            histo[R] ++;
+            histo[cons] ++;
         }
         return histo;
     }
