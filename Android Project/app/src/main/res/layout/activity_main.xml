@@ -15,28 +15,119 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/idtext"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/lbl_text"
-            android:textColor="@color/colorPrimary" />
+            android:layout_height="638dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/idtaille"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/idtext"
+                        android:layout_width="match_parent"
+                        android:layout_height="61dp"
+                        android:gravity="center"
+                        android:text="@string/lbl_text"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="153dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:translationY="-90dp">
+
+                    <TextView
+                        android:id="@+id/idtaille"
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:text="@string/lbl_size"
+                        android:translationX="0dp"
+                        android:translationY="60dp"
+                        tools:text="SIZE :" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_size"
-            tools:text="SIZE :" />
+            android:layout_height="1021dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/idimage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/lbl_image"
-            app:srcCompat="@drawable/fruit" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="676dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/idimage"
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp"
+                        android:src="@drawable/leguime" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="428dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/ResetID"
+                            android:layout_width="169dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:minHeight="40dp"
+                            android:text="Reset"
+                            android:translationY="30dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/loadingID"
+                            android:layout_width="169dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="Loading"
+                            android:textColorHighlight="@color/colorPrimary"
+                            android:translationY="30dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
 
     </LinearLayout>
 
