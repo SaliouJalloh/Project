@@ -75,8 +75,8 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(this,"colorized selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_colorize:
-                Toast.makeText(this,"colorize selected",Toast.LENGTH_LONG).show();
                 colorize(bitmap);
+                Toast.makeText(this,"colorize selected",Toast.LENGTH_LONG).show();
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_canned_color:
