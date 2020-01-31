@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/menu_reset"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/reset_item" />
+
+    <item android:id="@+id/menu_next"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/next_item" />
+
+    <item android:id="@+id/menu_increasesContrast"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/increases_contrast_item" />
+
+    <item android:id="@+id/menu_increasesContrastLut"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/increases_contrast_lut_item" />
+
+    <item android:id="@+id/menu_decreasesContrastLut"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/decreases_contrast_lut_item" />
+
+    <item android:id="@+id/menu_upContrastLut"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/up_contrast_lut_item" />
+
+    <item android:id="@+id/menu_downContrastLut"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/down_contrast_lut_item" />
+</menu>
