@@ -4,9 +4,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import androidx.renderscript.Allocation;
 import androidx.renderscript.RenderScript;
+
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,11 +20,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.security.PublicKey;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
 
+    private static final int CAMERA_ACTIVITY_REQUEST_CODE = 0;
     private TextView text;
     private TextView taille;
     private ImageView img;
@@ -26,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private int width;
     private int height;
     private int tmp_color;
+    private ImageView takenPhoto;
+    private String photoFileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +68,43 @@ public class MainActivity extends AppCompatActivity {
                     bitmap.setPixel(x,y, Color.BLACK);
                 }
             }
+    }
+
+    public void launchCameraIntent(){
+        Intent intent = new Intent();
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
+        startActivityForResult(intent,CAMERA_ACTIVITY_REQUEST_CODE);
+    }
+
+    public Uri getPhotoFileUri(String fileName){
+        if(isExternalStorageAvailable()){
+            File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), Tag);
+            if(!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+                Log.d(TAG, "Failed to create directory");
+            }
+            return  Uri.fromFile(new File(mediaStorageDir.getPath() + File.separator + fileName));
+        }
+        return null;
+    }
+
+    private boolean isExternalStorageAvailable(){
+        String state = Environment.getExternalStorageState();
+        return state.equals(Environment.MEDIA_MOUNTED);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == CAMERA_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+            Uri takenPhotoUri = getPhotoFileUri(photoFileName);
+            Bitmap takenPhotoBitmap = rotateBitmap(takenPhotoUri.getPath());
+            takenPhoto.setImageBitmap(takenPhotoBitmap);
+        }else{
+            Toast.makeText(this, "Photo wasn't taken!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Bitmap rotateBitmap(String photoFilePath){
+        return null;
     }
 
     @Override
