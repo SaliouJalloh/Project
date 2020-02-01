@@ -2,29 +2,87 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_reset"
+    <item android:id="@+id/menu_gray"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="@string/reset_item" />
+        android:title="@string/gray_item" >
+        <menu>
+            <item android:id="@+id/menu_to_gray1"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_gray_item" />
 
-    <item android:id="@+id/menu_next"
-        android:orderInCategory="100"
-        app:showAsAction="never"
-        android:title="@string/next_item" />
+            <item android:id="@+id/menu_to_gray2"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_grays_item" />
 
-    <item android:id="@+id/menu_to_gray1"
-        android:orderInCategory="100"
-        app:showAsAction="never"
-        android:title="@string/to_gray_item" />
+            <item android:id="@+id/menu_to_grayRS"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_grayRS_item" />
+        </menu>
+    </item>
 
-    <item android:id="@+id/menu_to_gray2"
+    <item android:id="@+id/menu_colorize"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="@string/to_grays_item" />
+        android:title="@string/colorize_item" >
+        <menu>
+            <item android:id="@+id/menu_to_colorized"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_colorized_item" />
 
-    <item android:id="@+id/menu_to_grayRS"
+            <item android:id="@+id/menu_to_colorize"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_colorize_item" />
+
+            <item android:id="@+id/menu_canned_color"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/canned_color_item" />
+
+            <item android:id="@+id/menu_to_colorizeRS"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_colorizeRS_item" />
+        </menu>
+    </item>
+
+    <item android:id="@+id/menu_contrast"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="@string/to_grayRS_item" />
+        android:title="@string/contrast_item" >
+        <menu>
+            <item android:id="@+id/menu_increasesContrast"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/increases_contrast_item" />
+
+            <item android:id="@+id/menu_increasesContrastLut"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/increases_contrast_lut_item" />
+
+            <item android:id="@+id/menu_decreasesContrastLut"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/decreases_contrast_lut_item" />
+
+            <item android:id="@+id/menu_upContrastLut"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/up_contrast_lut_item" />
+
+            <item android:id="@+id/menu_downContrastLut"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/down_contrast_lut_item" />
+        </menu>
+    </item>
+
+
 
 </menu>
