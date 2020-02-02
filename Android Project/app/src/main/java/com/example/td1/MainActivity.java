@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
             green = Color.blue(tmp_color);
             blue = Color.blue(tmp_color);
 
-            RGBToHSV(red,green,blue,hsv);
+            Color.RGBToHSV(red,green,blue,hsv);
 
             if (hsv[0]>20 && hsv[0]<345){
                 gray = (int) ((0.3 * red) + (0.59 * green) + (0.11 * blue));
