@@ -83,6 +83,23 @@
         </menu>
     </item>
 
+    <item android:id="@+id/menu_convolution"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/convolution_item" >
+        <menu>
+            <item android:id="@+id/menu_to_convolution"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_convolution_item" />
+
+            <item android:id="@+id/menu_to_convolutionRS"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_convolutionRS_item" />
+        </menu>
+    </item>
+
 
 
 </menu>
