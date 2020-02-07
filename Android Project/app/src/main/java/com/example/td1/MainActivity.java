@@ -36,7 +36,6 @@ import static android.graphics.Color.rgb;
 public class MainActivity extends AppCompatActivity {
 
 
-    private static final int CAMERA_ACTIVITY_REQUEST_CODE = 0;
     private TextView text,size;
     private Button reset, loading;
     private ImageView img;
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private int width;
     private int height;
     private int tmp_color;
-    private ImageView takenPhoto;
+
     private String photoFileName;
     private ImageView imageView;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -119,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             }
             // Continuer uniquement si le fichier a été créé avec succès
             if(photoFile != null){
-                Uri photoURI = FileProvider.getUriForFile(this,"com.example.android.fileprovider",photoFile);
+                Uri photoURI = FileProvider.getUriForFile(this,"com.example.android.td1",photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
                 startActivityForResult(takePictureIntent,REQUEST_TAKE_PHOTO);
             }
@@ -139,20 +138,24 @@ public class MainActivity extends AppCompatActivity {
     String currentPhotoPath ;
     private File createImageFile() throws IOException {
         // Créer un nom de fichier image
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("filename").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_" ;
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName,/*prefix*/
                 ".jpg",/*suffix*/
                 storageDir/*directory*/);
         // Enregistrer un fichier: chemin à utiliser avec ACTION_VIEW intents
-        currentPhotoPath = "file" + image.getAbsolutePath();
+        currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
-
-
-
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
 
 
     @Override
@@ -233,45 +236,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-    /*public void launchCameraIntent(){
-        Intent intent = new Intent();
-        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
-        startActivityForResult(intent,CAMERA_ACTIVITY_REQUEST_CODE);
-    }
-
-    public Uri getPhotoFileUri(String fileName){
-        if(isExternalStorageAvailable()){
-            File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), Tag);
-            if(!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-                Log.d(TAG, "Failed to create directory");
-            }
-            return  Uri.fromFile(new File(mediaStorageDir.getPath() + File.separator + fileName));
-        }
-        return null;
-    }
-
-    private boolean isExternalStorageAvailable(){
-        String state = Environment.getExternalStorageState();
-        return state.equals(Environment.MEDIA_MOUNTED);
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == CAMERA_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
-            Uri takenPhotoUri = getPhotoFileUri(photoFileName);
-            Bitmap takenPhotoBitmap = rotateBitmap(takenPhotoUri.getPath());
-            takenPhoto.setImageBitmap(takenPhotoBitmap);
-        }else{
-            Toast.makeText(this, "Photo wasn't taken!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public Bitmap rotateBitmap(String photoFilePath){
-        return null;
-    }
-*/
 
     public void toGray(Bitmap bmp){
         width = bmp.getWidth();
@@ -621,100 +585,6 @@ public class MainActivity extends AppCompatActivity {
         return tab;
     }
 
-
-    //Utilisation d'une Look Up Table pour augmenter le contraste
-
-   /* public void increasesContrastLUT(Bitmap bmp){
-        width = bmp.getWidth();
-        height = bmp.getHeight();
-        int[] pixels = new int[width * height];
-        int[] histo = histogram(bmp, Color.RED);
-        int[] minMax = minMax(histo);
-        int color, R = 0;
-
-        bmp.getPixels (pixels, 0, width, 0, 0, width, height);
-
-        // Initialisation de la LUT
-        int[] LUT = new  int[256];
-
-        for(int ng = 0; ng < 256; ng++){
-            LUT[ng] = (255*(ng-minMax[0]))/(minMax[1]-minMax[0]);
-        }
-
-        // Calcul de la transformation
-        for (int i = 0 ; i < width*height ; i++){
-            tmp_color = pixels[i];
-            R = Color.red(tmp_color);
-            color = LUT[R];
-            pixels[i] = Color.rgb(color, color, color);
-        }
-        bmp.setPixels(pixels, 0, width, 0, 0, width, height);
-    }
-*/
-    //Utilisation d'une Look Up Table pour diminuer le contraste
-
-    /*public void decreasesContrastLUT(Bitmap bmp){
-        width = bmp.getWidth();
-        height = bmp.getHeight();
-        int[] pixels = new int[width * height];
-        int[] histo = histogram(bmp, Color.RED);
-        int[] minMax = minMax(histo);
-        int dist = minMax[1] - minMax[0];
-        int percent = (dist*10)/100;
-        minMax[0] = minMax[0] + percent;
-        minMax[1] = minMax[1] - percent;
-        int color, R;
-
-        bmp.getPixels (pixels, 0, width, 0, 0, width, height);
-
-        // Initialisation de la LUT
-        int[] LUT = new  int[256];
-
-        for(int ng = 0; ng < 256; ng++){
-            LUT[ng] = ((ng*(minMax[1]-minMax[0]))/255)+minMax[0];
-        }
-
-        // Calcul de la transformation
-        for (int i = 0 ; i < width*height ; i++){
-            tmp_color = pixels[i];
-            R = Color.red(tmp_color);
-            color = LUT[R];
-            pixels[i] = Color.rgb(color, color, color);
-        }
-        bmp.setPixels(pixels, 0, width, 0, 0, width, height);
-    }
-*/
-    /***************************************************************************************************/
-    // augmentation du contraste d'une image en couleur par extension du dynamique.
-
-
-
-    /*# pragma version (1)
-    # pragma rs java_package_name (com.example.td1)
-
-    float brightnessScale = 0.5;
-
-    private void RS_KERNEL changeBrightness ( Bitmap bmp ) {
-        // 1) Creer un contexte RenderScript
-        RenderScript rs = RenderScript . create ( this ) ;
-        // 2) Creer des Allocations pour passer les donnees
-        Allocation input = Allocation . createFromBitmap ( rs , bmp ) ;
-        Allocation output = Allocation . createTyped ( rs , input.getType () ) ;
-        // 3) Creer le script
-        ScriptC_brightness bScript = new ScriptC_brightness (rs) ;
-        // 4) Copier les donnees dans les Allocations
-        // ...
-        // 5) Initialiser les variables globales potentielles
-        bScript.set_brightnessScale (0.8) ;
-        // 6) Lancer le noyau
-        bScript.forEach_changeBrightness ( input , output ) ;
-        // 7) Recuperer les donnees des Allocation (s)
-        output.copyTo ( bmp ) ;
-        // 8) Detruire le context , les Allocation (s) et le script
-        input.destroy () ; output.destroy () ;
-        bScript.destroy () ; rs.destroy () ;
-    }
-    */
 
     protected void convolution(Bitmap bmp){
         int h = bmp.getHeight();
