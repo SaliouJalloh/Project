@@ -93,6 +93,11 @@
                 app:showAsAction="never"
                 android:title="@string/to_convolution_item" />
 
+            <item android:id="@+id/menu_to_convolutionGaus"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_convolutionGaus_item" />
+
             <item android:id="@+id/menu_to_convolutionRS"
                 android:orderInCategory="100"
                 app:showAsAction="never"

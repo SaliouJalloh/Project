@@ -27,7 +27,8 @@
     <string name="down_contrast_lut_item">Down Contrast (LUT)</string>
 
     <string name="convolution_item">Convolution</string>
-    <string name="to_convolution_item">Convolution</string>
+    <string name="to_convolution_item">Convolution Moyenneur</string>
+    <string name="to_convolutionGaus_item">ConvolutionGaus</string>
     <string name="to_convolutionRS_item">ConvolutionRS</string>
 
 </resources>
