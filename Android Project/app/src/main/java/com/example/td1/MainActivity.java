@@ -39,10 +39,10 @@ import static android.graphics.Color.rgb;
 public class MainActivity extends AppCompatActivity {
 
     private TextView text,size;
-    private Button reset, loading;
+    private Button reset, loading, save;
     private ImageView img;
     private Bitmap bitmap,bitmapr,bitmap2,bitmap2r;
-
+    private Bitmap image;
     private int width, height, tmp_color;
 
     private  String photoPath = null;
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         img = findViewById(R.id.idimage);
         reset = findViewById(R.id.ResetID);
         loading = findViewById(R.id.loadingID);
+        //save = findViewById(R.id.blabla);
         // Convertion de l'image
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -104,9 +105,15 @@ public class MainActivity extends AppCompatActivity {
         loading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // AccÃ¨s a la gallery photo
+                // Accès a la gallery photo
                 prendreUnePhoto();
 
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MediaStore.Images.Media.insertImage(getContentResolver(),image,"nom image","description");
             }
         });
     }
@@ -158,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             String imgPath = cursor.getString(columnIndex);
             cursor.close();
             //
-            Bitmap image = BitmapFactory.decodeFile(imgPath);
+            image = BitmapFactory.decodeFile(imgPath);
             // redimenssioner l'image
             image = changeSizeBitmap(image,0.8f);
             //affichage
