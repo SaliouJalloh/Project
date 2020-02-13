@@ -19,16 +19,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.renderscript.Allocation;
 import androidx.renderscript.RenderScript;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.graphics.Color.RGBToHSV;
 import static android.graphics.Color.blue;
@@ -44,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap bitmap,bitmapr,bitmap2,bitmap2r;
 
     private int width, height, tmp_color;
+
+    private  String photoPath = null;
+
+    // Constantes
+    private static final int REQUEST_TAKE_PHOTO = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -52,19 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         initActivity();
 
-        // Convertion de l'image
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inMutable = true;
-
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.imgris,options);
-        bitmapr = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-        bitmap2 = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-        bitmap2r = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-
         size.setText( "SIZE : " + bitmap2.getWidth() + "*" + bitmap2.getHeight());
-
-
     }
 
     private void initActivity() {
@@ -74,6 +67,16 @@ public class MainActivity extends AppCompatActivity {
         img = findViewById(R.id.idimage);
         reset = findViewById(R.id.ResetID);
         loading = findViewById(R.id.loadingID);
+        // Convertion de l'image
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true;
+
+        //initialisation des bitmap
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.imgris,options);
+        bitmapr = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
+        bitmap2 = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
+        bitmap2r = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
 
         createOnClickButton();
 
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        loading.setOnClickListener(new View.OnClickListener() {
+        /*loading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // AccÃ¨s a la gallery photo
@@ -97,7 +100,45 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(galleryIntent,1);
 
             }
+        });*/
+        loading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // AccÃ¨s a la gallery photo
+                prendreUnePhoto();
+
+            }
         });
+    }
+
+    /**
+     * Permet de prendre une photo
+     */
+
+    private void prendreUnePhoto() {
+        // creer un intent pour ouvrir une fenetre pour prendre une photo
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // test pour
+        if(intent.resolveActivity(getPackageManager()) != null){
+            // creer un new fichier
+            String time = new SimpleDateFormat("yyyyMMMdd_HHmmss").format(new Date());
+            File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            try {
+                File photoFile = File.createTempFile("photo"+time,".jpg",photoDir);
+                // Enregistrer le chemin complet
+                photoPath = photoFile.getAbsolutePath();
+                // creer l'Uri
+                Uri photoUri = FileProvider.getUriForFile(MainActivity.this,
+                        MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
+                //
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+                ///
+                startActivityForResult(intent,REQUEST_TAKE_PHOTO);
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -124,7 +165,12 @@ public class MainActivity extends AppCompatActivity {
             img.setImageBitmap(image);
         }
         else {
-            Toast.makeText(this,"Aucune image selectionÃ©e",Toast.LENGTH_SHORT).show();
+            if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
+                //recupere l'image
+                Bitmap image = BitmapFactory.decodeFile(photoPath);
+                //afficher l'image
+                img.setImageBitmap(image);
+            }
         }
 
     }
