@@ -1,6 +1,7 @@
 package com.example.td1;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.renderscript.Allocation;
@@ -35,130 +37,94 @@ import static android.graphics.Color.rgb;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private TextView text,size;
     private Button reset, loading;
     private ImageView img;
     private Bitmap bitmap,bitmapr,bitmap2,bitmap2r;
-    private int width;
-    private int height;
-    private int tmp_color;
 
-    private String photoFileName;
-    private ImageView imageView;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
-    private static final int SELECT_PICTURE = 1;
-
+    private int width, height, tmp_color;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            // Ajout des widgets
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-            text = findViewById(R.id.idtext);
-            size = findViewById(R.id.idtaille);
-            img = findViewById(R.id.idimage);
-            reset = findViewById(R.id.ResetID);
-            loading = findViewById(R.id.loadingID);
+        initActivity();
 
-            // Convertion de l'image
+        // Convertion de l'image
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inMutable = true;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true;
 
-            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.imgris,options);
-            bitmapr = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-            bitmap2 = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-            bitmap2r = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.imgris,options);
+        bitmapr = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
+        bitmap2 = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
+        bitmap2r = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
+
+        size.setText( "SIZE : " + bitmap2.getWidth() + "*" + bitmap2.getHeight());
 
 
-            size.setText( "SIZE : " + bitmap2.getWidth() + "*" + bitmap2.getHeight());
-
-            reset.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    img.setImageBitmap(bitmap2r);
-                }
-            });
-
-            loading.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // in onCreate or any event where your want the user to
-                    // select a file
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent,"Select Picture"), SELECT_PICTURE);
-                }
-            });
-
-            /*
-            width = bitmap2.getWidth();
-            height = bitmap2.getHeight();
-
-            for(int x = 0; x < width; ++x){
-                for (int y = height/2; y < height; y+=(height/2)){
-                    bitmap2.setPixel(x,y, Color.BLACK);
-                }
-            }
-            */
     }
 
-    private void dispatchTakePictureIntent(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE );
-        // Assurez-vous qu'il existe une activité de caméra pour gérer l'intention
-        if(takePictureIntent.resolveActivity(getPackageManager()) != null){
-            //Créez le fichier où la photo doit aller
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            }catch(IOException ex){
-                // Une erreur s'est produite lors de la création du fichier ...
-            }
-            // Continuer uniquement si le fichier a été créé avec succès
-            if(photoFile != null){
-                Uri photoURI = FileProvider.getUriForFile(this,"com.example.android.td1",photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
-                startActivityForResult(takePictureIntent,REQUEST_TAKE_PHOTO);
-            }
-        }
+    private void initActivity() {
+        // instanciation
+        text = findViewById(R.id.idtext);
+        size = findViewById(R.id.idtaille);
+        img = findViewById(R.id.idimage);
+        reset = findViewById(R.id.ResetID);
+        loading = findViewById(R.id.loadingID);
+
+        createOnClickButton();
+
     }
 
+    private void createOnClickButton(){
+
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img.setImageBitmap(bitmap2r);
+            }
+        });
+
+        loading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // AccÃ¨s a la gallery photo
+
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent,1);
+
+            }
+        });
+    }
 
     @Override
-    protected void onActivityResult( int requestCode , int resultCode , Intent data ) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK ) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap)extras.get("data");
-            imageView.setImageBitmap(imageBitmap);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // VÃ©rifie si une image est rÃ©cupÃ©rÃ©e
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            // AccÃ¨s Ã  l'image Ã  partir de data
+            Uri selectImage = data.getData();
+            String [] filePathColumn = {MediaStore.Images.Media.DATA};
+            ///
+            Cursor cursor = this.getContentResolver().query(selectImage,filePathColumn,null,null,null);
+            //
+            cursor.moveToFirst();
+            //
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String imgPath = cursor.getString(columnIndex);
+            cursor.close();
+            //
+            Bitmap image = BitmapFactory.decodeFile(imgPath);
+            //
+            img.setImageBitmap(image);
         }
-    }
+        else {
+            Toast.makeText(this,"Aucune image selectionÃ©e",Toast.LENGTH_SHORT).show();
+        }
 
-    String currentPhotoPath ;
-    private File createImageFile() throws IOException {
-        // Créer un nom de fichier image
-        String timeStamp = new SimpleDateFormat("filename").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_" ;
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName,/*prefix*/
-                ".jpg",/*suffix*/
-                storageDir/*directory*/);
-        // Enregistrer un fichier: chemin à utiliser avec ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
     }
-
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(currentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
