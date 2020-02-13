@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -117,13 +118,36 @@ public class MainActivity extends AppCompatActivity {
             cursor.close();
             //
             Bitmap image = BitmapFactory.decodeFile(imgPath);
-            //
+            // redimenssioner l'image
+            image = changeSizeBitmap(image,0.8f);
+            //affichage
             img.setImageBitmap(image);
         }
         else {
             Toast.makeText(this,"Aucune image selectionÃ©e",Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private Bitmap changeSizeBitmap(Bitmap bitmap, float proportion){
+        // metrique
+        DisplayMetrics metrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        //
+        float screenHeight = metrics.heightPixels*proportion;
+        float screenWidth = metrics.widthPixels*proportion;
+        //
+        float bitmapHeight = bitmap.getHeight();
+        float bitmapWidth = bitmap.getWidth();
+        //
+        float ratioHeight = screenHeight/bitmapHeight;
+        float ratioWidth = screenWidth/bitmapWidth;
+        //
+        float ratio = Math.min(ratioHeight,ratioWidth);
+        //
+        bitmap = Bitmap.createScaledBitmap(bitmap,(int) (bitmapWidth*ratio), (int) (bitmapHeight*ratio), true);
+        //
+        return bitmap;
     }
 
     @Override
