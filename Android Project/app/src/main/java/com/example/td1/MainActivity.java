@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private  String photoPath = null;
 
     // Constantes
-    private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_TAKE_PHOTO = 100;
+    private static final int REQUEST_IMAGE_LOAD = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -152,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // VÃ©rifie si une image est rÃ©cupÃ©rÃ©e
-        if(requestCode == 1 && resultCode == RESULT_OK){
+        // Verifie si une image est recuperée
+        if(requestCode == REQUEST_IMAGE_LOAD && resultCode == RESULT_OK ){
             // AccÃ¨s Ã  l'image Ã  partir de data
             Uri selectImage = data.getData();
             String [] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -173,11 +175,10 @@ public class MainActivity extends AppCompatActivity {
             img.setImageBitmap(image);
         }
         else {
-            if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
+            if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK ){
                 //recupere l'image
                 image = BitmapFactory.decodeFile(photoPath);
-                // redimenssioner l'image
-                image = changeSizeBitmap(image,0.5f);
+
                 //afficher l'image
                 img.setImageBitmap(image);
             }
