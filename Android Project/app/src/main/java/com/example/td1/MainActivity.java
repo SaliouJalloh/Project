@@ -19,16 +19,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-import androidx.renderscript.Allocation;
-import androidx.renderscript.RenderScript;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.renderscript.Allocation;
+import androidx.renderscript.RenderScript;
 
 import static android.graphics.Color.RGBToHSV;
 import static android.graphics.Color.blue;
@@ -67,17 +66,19 @@ public class MainActivity extends AppCompatActivity {
         img = findViewById(R.id.idimage);
         reset = findViewById(R.id.ResetID);
         loading = findViewById(R.id.loadingID);
+        //camera = findViewById(R.id.blabla);
         //save = findViewById(R.id.blabla);
+
         // Convertion de l'image
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
 
         //initialisation des bitmap
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.imgris,options);
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
         bitmapr = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-        bitmap2 = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-        bitmap2r = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
+        bitmap2 = BitmapFactory.decodeResource(getResources(),R.drawable.imgris,options);
+        bitmap2r = BitmapFactory.decodeResource(getResources(),R.drawable.imgris,options);
 
         createOnClickButton();
 
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                img.setImageBitmap(bitmap2r);
+                img.setImageBitmap(bitmapr);
             }
         });
 
@@ -110,12 +111,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        save.setOnClickListener(new View.OnClickListener() {
+        /*save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MediaStore.Images.Media.insertImage(getContentResolver(),image,"nom image","description");
             }
-        });
+        });*/
     }
 
     /**
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // VÃ©rifie si une image est rÃ©cupÃ©rÃ©e
         if(requestCode == 1 && resultCode == RESULT_OK){
@@ -174,7 +175,9 @@ public class MainActivity extends AppCompatActivity {
         else {
             if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
                 //recupere l'image
-                Bitmap image = BitmapFactory.decodeFile(photoPath);
+                image = BitmapFactory.decodeFile(photoPath);
+                // redimenssioner l'image
+                image = changeSizeBitmap(image,0.5f);
                 //afficher l'image
                 img.setImageBitmap(image);
             }
