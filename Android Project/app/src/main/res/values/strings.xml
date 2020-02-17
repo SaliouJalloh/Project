@@ -30,5 +30,16 @@
     <string name="to_convolution_item">Convolution Moyenneur</string>
     <string name="to_convolutionGaus_item">ConvolutionGaus</string>
     <string name="to_convolutionRS_item">ConvolutionRS</string>
+    <string-array name="SpinnerN">
+        <item>9</item>
+        <item>11</item>
+        <item>13</item>
+        <item>15</item>
+        <item>17</item>
+        <item>19</item>
+        <item>21</item>
+        <item>23</item>
+        <item>25</item>
+    </string-array>
 
 </resources>

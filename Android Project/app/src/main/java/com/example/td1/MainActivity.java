@@ -2,6 +2,7 @@ package com.example.td1;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,10 +15,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Spinner;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +41,7 @@ import static android.graphics.Color.green;
 import static android.graphics.Color.red;
 import static android.graphics.Color.rgb;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity /*implements AdapterView.OnItemSelectedListener*/ {
 
     private TextView text,size;
     private Button reset, loading, save;
@@ -84,6 +90,13 @@ public class MainActivity extends AppCompatActivity {
 
         createOnClickButton();
 
+        Spinner spinner = (Spinner) findViewById(R.id.spinnerN);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.SpinnerN, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
     }
 
     private void createOnClickButton(){
