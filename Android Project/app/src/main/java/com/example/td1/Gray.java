@@ -10,7 +10,7 @@ public class Gray {
 
     private int width, height, tmp_color;
 
-    public void toGray(Bitmap bmp){
+    public  void  toGray(Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
         int red, green, blue, gray;
@@ -52,9 +52,9 @@ public class Gray {
         bmp.setPixels(pixels,0,width,0,0,width,height);
     }
 
-    private void toGrayRS ( Bitmap bmp ) {
+   /* private void toGrayRS ( Bitmap bmp ) {
         // 1) Creer un contexte RenderScript
-        RenderScript rs = RenderScript.create (this) ;
+        RenderScript rs = RenderScript.create(this) ;
         // 2) Creer des Allocations pour passer les donnees
         Allocation input = Allocation.createFromBitmap (rs,bmp) ;
         Allocation output = Allocation.createTyped (rs,input.getType()) ;
@@ -74,5 +74,7 @@ public class Gray {
         grayScript.destroy();
         rs.destroy();
     }
+
+    */
 
 }

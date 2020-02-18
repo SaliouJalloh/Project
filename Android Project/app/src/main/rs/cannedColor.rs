@@ -2,19 +2,17 @@
 #pragma rs java_package_name (com.example.td1)
 #pragma rs_fp_relaxed
 
-/*
+
 uchar4 RS_KERNEL cannedColor (uchar4 in) {
     float4 pixelf = rsUnpackColor8888 ( in ) ;
     //RGBToHSV_new(red,green,blue,hsv);
 
 
     return in ;
-}*/
+}
 
-#pragma version(1)
-#pragma rs java_package_name(proj.techno.convolution)
 /*
-uchar4 RS_KERNEL onlyRed ( uchar4 in) {
+uchar4 RS_KERNEL cannedColor ( uchar4 in) {
     float4 pixelf = rsUnpackColor8888 (in);
     if (pixelf .r > 100 && pixelf .g < 100  && pixelf .b < 100) {
         return in;
@@ -23,7 +21,6 @@ uchar4 RS_KERNEL onlyRed ( uchar4 in) {
     return rsPackColorTo8888 (grey , grey , grey , pixelf .a);
 }
 
-*/
 
 
 
@@ -118,6 +115,7 @@ static float3 RGBToHSL(float4 rgb) {
 
     return hsl;
 }
+/*
 
 uchar4 RS_KERNEL onlyRed ( uchar4 in) {
     float4 out = rsUnpackColor8888(in);
@@ -128,4 +126,4 @@ uchar4 RS_KERNEL onlyRed ( uchar4 in) {
 
     float grey = (0.30* out.r + 0.59* out.g + 0.11* out.b);
     return rsPackColorTo8888 (grey , grey , grey , in.a);
-}
+}*/

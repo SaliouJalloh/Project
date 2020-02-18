@@ -235,34 +235,34 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
                 return true;
             case R.id.menu_to_gray1:
                 Toast.makeText(this,"to gray selected",Toast.LENGTH_LONG).show();
-                toGray(bitmap2);
+                toGray(bitmap);
                 img.setImageBitmap(bitmap2);
                 return true;
             case R.id.menu_to_gray2:
                 Toast.makeText(this,"to grays selected",Toast.LENGTH_LONG).show();
-                toGray2(bitmap2);
+                toGray2(bitmap);
                 img.setImageBitmap(bitmap2);
                 return true;
             case R.id.menu_to_grayRS:
                 Toast.makeText(this,"to graysRS selected",Toast.LENGTH_LONG).show();
-                toGrayRS(bitmap2);
+                toGrayRS(bitmap);
                 img.setImageBitmap(bitmap2);
                 return true;
             case R.id.menu_colorize:
                 Toast.makeText(this,"colorize menu selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_to_colorized:
-                colorized(bitmap2);
-                img.setImageBitmap(bitmap2);
+                colorized(bitmap);
+                img.setImageBitmap(bitmap);
                 Toast.makeText(this,"to colorized selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_to_colorize:
-                colorize(bitmap2);
+                colorize(bitmap);
                 Toast.makeText(this,"to colorize selected",Toast.LENGTH_LONG).show();
                 img.setImageBitmap(bitmap2);
                 return true;
             case R.id.menu_canned_color:
-                cannedColor(bitmap2);
+                cannedColor(bitmap);
                 img.setImageBitmap(bitmap2);
                 Toast.makeText(this,"canned color selected",Toast.LENGTH_LONG).show();
                 return true;

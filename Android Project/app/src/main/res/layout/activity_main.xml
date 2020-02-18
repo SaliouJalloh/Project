@@ -91,11 +91,13 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <com.zolad.zoominimageview.ZoomInImageView
-                        android:id="@+id/idimage"
-                        android:layout_width="match_parent"
-                        android:layout_height="350dp"
-                        android:src="@drawable/leguime" />
+                        <com.zolad.zoominimageview.ZoomInImageView
+
+                            android:id="@+id/idimage"
+                            android:layout_width="match_parent"
+                            android:layout_height="350dp"
+                            android:src="@drawable/leguime" />
+
                 </LinearLayout>
 
                 <LinearLayout

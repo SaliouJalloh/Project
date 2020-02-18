@@ -1,13 +1,15 @@
 #pragma version(1)
-#pragma rs java_package_name(proj.techno.convolution)
-/*
-uchar4 RS_KERNEL colorize ( uchar4 in) {
-    float4 out = rsUnpackColor8888(in);
+#pragma rs java_package_name(com.example.td1)
+
+uchar4 RS_KERNEL colorized ( uchar4 in) {
+    /*float4 out = rsUnpackColor8888(in);
     float3 outHsl = RGBToHSL (out);
     outHsl[0]=50;
-    return rsPackColorTo8888 (HSLTocolor(out));
+    return rsPackColorTo8888 (HSLTocolor(out));*/
+    return in;
 }
 
+/*
 
 float Hue_2_RGB(float v1, float v2, float vHue) {
     if (vHue < 0) {
