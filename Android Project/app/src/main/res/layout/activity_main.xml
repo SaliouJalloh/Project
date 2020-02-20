@@ -32,14 +32,25 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/idtext"
-                        android:layout_width="match_parent"
-                        android:layout_height="61dp"
-                        android:gravity="center"
-                        android:text="@string/lbl_text"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="24sp" />
+                    <ImageButton
+                        android:id="@+id/id_savae"
+                        android:layout_width="61dp"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF"
+                        android:tint="#026DF1"
+                        android:translationX="350dp"
+                        android:translationY="10dp"
+                        app:srcCompat="@drawable/save" />
+
+                    <ImageButton
+                        android:id="@+id/id_reset"
+                        android:layout_width="61dp"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF"
+                        android:tint="#0A5EF1"
+                        android:translationY="-20dp"
+                        app:srcCompat="@drawable/restore" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -47,17 +58,7 @@
                     android:layout_height="153dp"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:translationY="-90dp">
-
-                    <TextView
-                        android:id="@+id/idtaille"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:text="@string/lbl_size"
-                        android:translationX="0dp"
-                        android:translationY="60dp"
-                        tools:text="SIZE :" />
-                </LinearLayout>
+                    android:translationY="-90dp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -66,13 +67,7 @@
             android:layout_height="40dp"
             android:orientation="horizontal"
             android:translationX="300dp"
-            android:translationY="-70dp">
-
-            <Spinner
-                android:id="@+id/spinnerN"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
+            android:translationY="-70dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,18 +80,26 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <Button
+                    android:id="@+id/ResetID"
+                    android:layout_width="169dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:minHeight="40dp"
+                    android:text="Reset"
+                    android:translationY="30dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="676dp"
+                    android:layout_height="564dp"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                        <com.zolad.zoominimageview.ZoomInImageView
-
-                            android:id="@+id/idimage"
-                            android:layout_width="match_parent"
-                            android:layout_height="350dp"
-                            android:src="@drawable/leguime" />
+                    <com.zolad.zoominimageview.ZoomInImageView
+                        android:id="@+id/idimage"
+                        android:layout_width="match_parent"
+                        android:layout_height="392dp"
+                        android:src="@drawable/leguime" />
 
                 </LinearLayout>
 
@@ -112,14 +115,14 @@
                         android:layout_weight="1"
                         android:orientation="horizontal">
 
-                        <Button
-                            android:id="@+id/ResetID"
-                            android:layout_width="169dp"
-                            android:layout_height="40dp"
+                        <ImageButton
+                            android:id="@+id/id_photo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:minHeight="40dp"
-                            android:text="Reset"
-                            android:translationY="30dp" />
+                            android:background="#FFFFFF"
+                            android:tint="#1B0AF1"
+                            app:srcCompat="@drawable/foto" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -128,14 +131,16 @@
                         android:layout_weight="1"
                         android:orientation="horizontal">
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/loadingID"
-                            android:layout_width="169dp"
-                            android:layout_height="40dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Loading"
-                            android:textColorHighlight="@color/colorPrimary"
-                            android:translationY="30dp" />
+                            android:background="#FFFFFF"
+                            android:tint="#0A20E9"
+                            android:translationY="5dp"
+                            app:srcCompat="@drawable/library" />
+
                     </LinearLayout>
 
                 </LinearLayout>
