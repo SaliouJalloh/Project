@@ -33,7 +33,7 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/id_savae"
+                        android:id="@+id/id_saved"
                         android:layout_width="61dp"
                         android:layout_height="wrap_content"
                         android:background="#FFFFFF"
