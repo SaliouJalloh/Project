@@ -87,4 +87,63 @@ public class Convolution {
         }
         bmp.setPixels(pixel, 0, width, 0, 0, width, height);
     }
+
+    protected  static void teeeeest(Bitmap bmp,int n) {
+        int height = bmp.getHeight();
+        int width = bmp.getWidth();
+        int size = height * width;
+        int pixel[] = new int[size];
+        bmp.getPixels(pixel, 0, width, 0, 0, width, height);
+
+        int size2 = 2 * n + 1;
+        int squareSize = size2*size2;
+        int sum = 0;
+        int[] matrice = new int[squareSize];
+        int x=n-1, y=n-1;
+
+        /**********************     Fill the filter     ***************************************/
+        for (int i = 0; i <= size2 / 2; i++) {
+            for (int j = 0; j <= size2 / 2; j++) {
+                int tmp = squareSize/(size2-(i+j));
+                sum += tmp;
+                matrice[i + j * size2] = tmp;
+            }
+        }
+        for(int i = 1+size2/2; i<size2; i++){
+            for(int j = 0; j<=size2/2; j++){
+                int tmp = matrice[x+j*size2];
+                sum += tmp;
+                matrice[i+j*size2] = tmp;
+            }
+            x-=1;
+        }
+        for(int i = 0; i<size2; i++){
+            y=n-1;
+            for(int j=1+size2/2; j<size2; j++){
+                int tmp = matrice[i+y*size2];
+                sum += tmp;
+                matrice[i+j*size2] = tmp;
+                y-=1;
+            }
+        }
+        /**************************************************************************************/
+
+        /**********************     Apply filter     *******************************************/
+        for (int i = n; i < width - n; i++) {
+            for (int j = n; j < height - n; j++) {
+                int tmp = 0;
+                int red = 0, green = 0, blue = 0;
+                for (int k = i - n; k < i + n; k++) {
+                    for (int l = j - n; l < j + n; l++) {
+                        red += Color.red(pixel[k + l * width]) * matrice[tmp];
+                        green += Color.green(pixel[k + l * width]) * matrice[tmp];
+                        blue += Color.blue(pixel[k + l * width]) * matrice[tmp];
+                        tmp++;
+                    }
+                }
+                pixel[i + j * width] = Color.rgb(red / sum, green / sum, blue / sum);
+            }
+        }
+        bmp.setPixels(pixel, 0, width, 0, 0, width, height);
+    }
 }

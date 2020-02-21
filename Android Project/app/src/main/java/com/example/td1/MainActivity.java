@@ -289,16 +289,12 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
                 return true;
             case R.id.menu_to_convolution:
                 Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
-                /*
-                 * TODO:
-                 *  - let the user choose the size of the filter in a list of predefined sizes (n%2 != 0)
-                 */
-                Convolution.convolutionMoy(bitmap,8);
+                Convolution.convolutionMoy(bitmap,9);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_convolutionGaus:
                 Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
-                Convolution.convolutionGaussN(bitmap,2);
+                Convolution.teeeeest(bitmap,9);
                 img.setImageBitmap(bitmap);
             default:
                 return super.onOptionsItemSelected(item);
