@@ -68,15 +68,16 @@ public class MainActivity extends AppCompatActivity{
         loading = findViewById(R.id.loadingID);
         save = findViewById(R.id.id_saved);
 
-
         // Convertion de l'image
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
 
         //initialisation des bitmap
-        bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
-        originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
+        originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
+        //bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
+        //originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
 
         createOnClickButton();
 
@@ -91,29 +92,29 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-       loading.setOnClickListener(new View.OnClickListener() {
+        loading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Accès a la gallery photo
+                // Accès à la gallery photo
 
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent,REQUEST_IMAGE_LOAD);
-            }
-       });
-       photo.setOnClickListener(new View.OnClickListener() {
+             }
+        });
+        photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Accès a la gallery photo
+                // Accès à la gallery photo
                 prendreUnePhoto();
                 galleryAddPic ();
-            }
-       });
-       save.setOnClickListener(new View.OnClickListener() {
+             }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"image saved","description");
-            }
-       });
+             }
+        });
     }
 
     /**
