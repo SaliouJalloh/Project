@@ -10,14 +10,14 @@ import static android.graphics.Color.RGBToHSV;
 
 public class Colorize extends MainActivity{
 
-    private int width;
-    private int height;
-    private int tmp_color;
+    private static int width;
+    private static int height;
+    private static int tmp_color;
 
     /**********************************************************************************************/
     // methode colorize sans re-écrire RGBToHSV()/HSVToRGB() .
 
-    public void colorized (Bitmap bmp){
+    public static void colorized (Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
 
@@ -51,7 +51,7 @@ public class Colorize extends MainActivity{
 
     //Ré-ecrire de le methode RGBToHSV
 
-    public void RGBToHSV_new(int red, int green, int blue, float[] h) {
+    public static void RGBToHSV_new(int red, int green, int blue, float[] h) {
         float hh = 0;
         float r = (float) red / 255;
         float g = (float) green / 255;
@@ -92,7 +92,7 @@ public class Colorize extends MainActivity{
 
     //Ré-ecrire de le methode colorize avec la nouvelle methode RGBToHSV
 
-    public void colorize (Bitmap bmp){
+    public static void colorize (Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
 
@@ -124,7 +124,7 @@ public class Colorize extends MainActivity{
 
     /******************************************************Garder une color ******BUtton -> Cannod Color**********/
 
-    public void cannedColor(Bitmap img) {
+    public static void cannedColor(Bitmap img) {
         int width = img.getWidth();
         int height = img.getHeight();
         float[] hsv = new float[3];
