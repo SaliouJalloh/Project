@@ -74,10 +74,10 @@ public class MainActivity extends AppCompatActivity{
         options.inMutable = true;
 
         //initialisation des bitmap
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
-        originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
-        //bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
-        //originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
+        //bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
+        //originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
+        bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
+        originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
 
         createOnClickButton();
 
