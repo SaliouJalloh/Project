@@ -27,7 +27,9 @@ import android.widget.Toast;
 import android.widget.Spinner;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -51,11 +53,10 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
     private int width, height, tmp_color;
     private ImageButton photo, loading,save,reset;
     private  String photoPath = null;
-
     // Constantes
     private static final int REQUEST_TAKE_PHOTO = 100;
     private static final int REQUEST_IMAGE_LOAD = 1;
-
+    Uri selectImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -98,12 +99,6 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
 
     private void createOnClickButton(){
 
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                img.setImageBitmap(originalImage);
-            }
-        });
 
        loading.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +114,7 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
             @Override
             public void onClick(View v) {
                 // Accès a la gallery photo
+                
                 prendreUnePhoto();
 
             }
@@ -126,11 +122,21 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"nom image","description");
+               MediaStore.Images.Media.insertImage(getContentResolver(),originalImage,"nom_image","description");
+               // originalImage= BitmapFactory.decodeResource(getResources(),R.drawable."nom image,options);
+
+
             }
         });
-    }
 
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img.setImageBitmap(originalImage);
+            }
+        });
+
+    }
     /**
      * Permet de prendre une photo
      */
@@ -167,7 +173,7 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
         // Verifie si une image est recuperée
         if(requestCode == REQUEST_IMAGE_LOAD && resultCode == RESULT_OK ){
             // AccÃ¨s Ã  l'image Ã  partir de data
-            Uri selectImage = data.getData();
+            selectImage = data.getData();
             String [] filePathColumn = {MediaStore.Images.Media.DATA};
             ///
             Cursor cursor = this.getContentResolver().query(selectImage,filePathColumn,null,null,null);
@@ -178,16 +184,21 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
             String imgPath = cursor.getString(columnIndex);
             cursor.close();
             //
+
             bitmap = BitmapFactory.decodeFile(imgPath);
+            originalImage = BitmapFactory.decodeFile(imgPath);
             // redimenssioner l'image
             bitmap = changeSizeBitmap(bitmap,0.8f);
+            originalImage = changeSizeBitmap(originalImage,0.8f);
             //affichage
             img.setImageBitmap(bitmap);
+
         }
         else {
             if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK ){
                 //recupere l'image
                 bitmap = BitmapFactory.decodeFile(photoPath);
+                originalImage = BitmapFactory.decodeFile(photoPath);
 
                 //afficher l'image
                 img.setImageBitmap(bitmap);
@@ -237,8 +248,8 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
                 return true;
             case R.id.menu_to_gray2:
                 Toast.makeText(this,"to grays selected",Toast.LENGTH_LONG).show();
-                toGray2(bitmap);
-                img.setImageBitmap(bitmap);
+                //bitmap=;
+                img.setImageBitmap(toGray2(bitmap));
                 return true;
             case R.id.menu_to_grayRS:
                 Toast.makeText(this,"to graysRS selected",Toast.LENGTH_LONG).show();
@@ -332,7 +343,7 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
         }
     }
 
-    public void toGray2(Bitmap bmp){
+    public Bitmap toGray2(Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
         int red, green, blue, gray;
@@ -352,6 +363,7 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
 
         }
         bmp.setPixels(pixels,0,width,0,0,width,height);
+        return  bmp;
     }
 
     private void toGrayRS ( Bitmap bmp ) {
