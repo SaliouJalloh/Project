@@ -33,7 +33,7 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/id_savae"
+                        android:id="@+id/id_saved"
                         android:layout_width="61dp"
                         android:layout_height="wrap_content"
                         android:background="#FFFFFF"
@@ -95,11 +95,17 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <com.zolad.zoominimageview.ZoomInImageView
-                        android:id="@+id/idimage"
-                        android:layout_width="match_parent"
-                        android:layout_height="392dp"
-                        android:src="@drawable/leguime" />
+                    <ScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <com.zolad.zoominimageview.ZoomInImageView
+                            android:id="@+id/idimage"
+                            android:layout_width="match_parent"
+                            android:layout_height="400dp"
+                            android:src="@drawable/leguime" />
+                    </ScrollView>
+
 
                 </LinearLayout>
 

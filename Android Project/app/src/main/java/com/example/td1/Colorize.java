@@ -10,9 +10,9 @@ import static android.graphics.Color.RGBToHSV;
 
 public class Colorize extends MainActivity{
 
-    private int width;
-    private int height;
-    private int tmp_color;
+    private static int width;
+    private static int height;
+    private static int tmp_color;
 
     /**********************************************************************************************/
     // methode colorize sans re-écrire RGBToHSV()/HSVToRGB() .
@@ -51,7 +51,7 @@ public class Colorize extends MainActivity{
 
     //Ré-ecrire de le methode RGBToHSV
 
-    public void RGBToHSV_new(int red, int green, int blue, float[] h) {
+    public  void RGBToHSV_new(int red, int green, int blue, float[] h) {
         float hh = 0;
         float r = (float) red / 255;
         float g = (float) green / 255;

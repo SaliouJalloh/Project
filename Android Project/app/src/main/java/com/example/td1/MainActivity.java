@@ -2,7 +2,6 @@ package com.example.td1;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,16 +14,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Spinner;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,19 +37,22 @@ import static android.graphics.Color.green;
 import static android.graphics.Color.red;
 import static android.graphics.Color.rgb;
 
-public class MainActivity extends AppCompatActivity /*implements AdapterView.OnItemSelectedListener*/ {
+
+public class MainActivity extends AppCompatActivity{
 
     private TextView text,size;
     private ImageView img;
-    private Bitmap bitmap,originalImage,bitmapr,bitmap2,bitmap2r;
+    private Bitmap bitmap,originbitmap;
     //private Bitmap image;
     private int width, height, tmp_color;
-    private ImageButton photo, loading,save,reset;
+    private ImageButton photo, loading, save, reset;
     private  String photoPath = null;
     // Constantes
     private static final int REQUEST_TAKE_PHOTO = 100;
     private static final int REQUEST_IMAGE_LOAD = 1;
     Uri selectImage;
+    private String currentPhotoPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -73,8 +69,7 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
         reset = findViewById(R.id.id_reset);
         photo = findViewById(R.id.id_photo);
         loading = findViewById(R.id.loadingID);
-         save = findViewById(R.id.id_savae);
-
+        save = findViewById(R.id.id_saved);
 
         // Convertion de l'image
 
@@ -82,57 +77,58 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
         options.inMutable = true;
 
         //initialisation des bitmap
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-        originalImage= BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-        // bitmapr = BitmapFactory.decodeResource(getResources(),R.drawable.leguime,options);
-        //bitmap2 = BitmapFactory.decodeResource(getResources(),R.drawable.imgris,options);
-        //bitmap2r = BitmapFactory.decodeResource(getResources(),R.drawable.imgris,options);
+        //bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
+        //originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
+        bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
+        originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
 
         createOnClickButton();
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.SpinnerN, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
     }
 
     private void createOnClickButton(){
 
-
-       loading.setOnClickListener(new View.OnClickListener() {
+        reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // AccÃ¨s a la gallery photo
+                img.setImageBitmap(originbitmap);
+            }
+        });
+
+        loading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Accès à la gallery photo
 
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent,1);
-
-            }
+                startActivityForResult(galleryIntent,REQUEST_IMAGE_LOAD);
+             }
         });
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Accès a la gallery photo
                 
+                // Accès à la gallery photo
                 prendreUnePhoto();
-
-            }
+                galleryAddPic ();
+             }
         });
-       save.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               MediaStore.Images.Media.insertImage(getContentResolver(),originalImage,"nom_image","description");
-               // originalImage= BitmapFactory.decodeResource(getResources(),R.drawable."nom image,options);
+                MediaStore.Images.Media.insertImage(getContentResolver(),originbitmap,"nom_image","description");
+                MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"image saved","description");
 
 
             }
         });
+
 
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                img.setImageBitmap(originalImage);
+                img.setImageBitmap(originbitmap);
             }
         });
 
@@ -167,6 +163,14 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
         }
     }
 
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -186,10 +190,16 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
             //
 
             bitmap = BitmapFactory.decodeFile(imgPath);
-            originalImage = BitmapFactory.decodeFile(imgPath);
+            originbitmap = BitmapFactory.decodeFile(imgPath);
             // redimenssioner l'image
             bitmap = changeSizeBitmap(bitmap,0.8f);
-            originalImage = changeSizeBitmap(originalImage,0.8f);
+            originbitmap = changeSizeBitmap(originbitmap,0.8f);
+            originbitmap = BitmapFactory.decodeFile(imgPath);
+
+            // redimenssioner l'image
+            bitmap = changeSizeBitmap(bitmap,0.8f);
+            originbitmap = changeSizeBitmap(originbitmap,0.8f);
+
             //affichage
             img.setImageBitmap(bitmap);
 
@@ -198,7 +208,9 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
             if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK ){
                 //recupere l'image
                 bitmap = BitmapFactory.decodeFile(photoPath);
-                originalImage = BitmapFactory.decodeFile(photoPath);
+                originbitmap = BitmapFactory.decodeFile(photoPath);
+                originbitmap = BitmapFactory.decodeFile(photoPath);
+
 
                 //afficher l'image
                 img.setImageBitmap(bitmap);
@@ -243,17 +255,19 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
                 return true;
             case R.id.menu_to_gray1:
                 Toast.makeText(this,"to gray selected",Toast.LENGTH_LONG).show();
-                toGray(bitmap);
+                Gray.toGray(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_gray2:
                 Toast.makeText(this,"to grays selected",Toast.LENGTH_LONG).show();
                 //bitmap=;
                 img.setImageBitmap(toGray2(bitmap));
+                Gray.toGray2(bitmap);
+                img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_grayRS:
                 Toast.makeText(this,"to graysRS selected",Toast.LENGTH_LONG).show();
-                toGrayRS(bitmap);
+                //Gray.toGrayRS(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_colorize:
@@ -304,20 +318,13 @@ public class MainActivity extends AppCompatActivity /*implements AdapterView.OnI
                 return true;
             case R.id.menu_to_convolution:
                 Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
-                /*
-                 * TODO:
-                 *  - let the user choose the size of the filter in a list of predefined sizes (n%2 != 0)
-                 */
-                Convolution.convolutionMoy(bitmap,19);
+                Convolution.convolutionMoy(bitmap,9);
                 img.setImageBitmap(bitmap);
                 return true;
-                ///*
             case R.id.menu_to_convolutionGaus:
                 Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
-                Convolution.convolutionGaus(bitmap);
+                Convolution.teeeeest(bitmap,9);
                 img.setImageBitmap(bitmap);
-
-                 //*/
             default:
                 return super.onOptionsItemSelected(item);
         }
