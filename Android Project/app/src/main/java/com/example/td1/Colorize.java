@@ -17,7 +17,7 @@ public class Colorize extends MainActivity{
     /**********************************************************************************************/
     // methode colorize sans re-écrire RGBToHSV()/HSVToRGB() .
 
-    public static void colorized (Bitmap bmp){
+    public void colorized (Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
 
@@ -51,7 +51,7 @@ public class Colorize extends MainActivity{
 
     //Ré-ecrire de le methode RGBToHSV
 
-    public static void RGBToHSV_new(int red, int green, int blue, float[] h) {
+    public  void RGBToHSV_new(int red, int green, int blue, float[] h) {
         float hh = 0;
         float r = (float) red / 255;
         float g = (float) green / 255;
@@ -92,7 +92,7 @@ public class Colorize extends MainActivity{
 
     //Ré-ecrire de le methode colorize avec la nouvelle methode RGBToHSV
 
-    public static void colorize (Bitmap bmp){
+    public void colorize (Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
 
@@ -124,7 +124,7 @@ public class Colorize extends MainActivity{
 
     /*************************************************************************************/
 
-    public static void cannedColor(Bitmap img) {
+    public void cannedColor(Bitmap img) {
         int width = img.getWidth();
         int height = img.getHeight();
         float[] hsv = new float[3];
