@@ -122,7 +122,7 @@ public class Colorize extends MainActivity{
 
     }
 
-    /******************************************************Garder une color ******BUtton -> Cannod Color**********/
+    /*************************************************************************************/
 
     public static void cannedColor(Bitmap img) {
         int width = img.getWidth();
@@ -130,17 +130,22 @@ public class Colorize extends MainActivity{
         float[] hsv = new float[3];
         int[] pixels = new int[width * height];
 
+        int red, green, blue, gray, color;
+
         img.getPixels(pixels, 0, width, 0, 0, width, height);
 
-        for(int i=0;i<width*height;i++){
-            int color=pixels[i];
-            int r = Color.red(color);
-            int g = Color.green(color);
-            int b = Color.blue(color);
-            Color.RGBToHSV(r, g, b, hsv);
+        for(int i = 0; i< width*height; i++){
+            color = pixels[i];
+
+            red = Color.red(color);
+            green = Color.green(color);
+            blue = Color.blue(color);
+
+            RGBToHSV_new(red, green, blue, hsv);
+
             if((hsv[0] > 20) && (hsv[0] < 340)){
-                int grv=(int) (r * 0.3 + g * 0.59 +  b * 0.11);
-                pixels[i] = Color.rgb(grv,grv,grv);
+                gray = (int) (red * 0.3 + green * 0.59 +  blue * 0.11);
+                pixels[i] = Color.rgb(gray,gray,gray);
             }
         }
         img.setPixels(pixels, 0, width, 0, 0, width, height);
@@ -148,7 +153,7 @@ public class Colorize extends MainActivity{
 
     }
 
-    public static int HSBtoRGB(float hue, float saturation, float brightness) {
+    public static int HSVtoRGB(float hue, float saturation, float brightness) {
         int r = 0, g = 0, b = 0;
         if (saturation == 0) {
             r = g = b = (int) (brightness * 255.0f + 0.5f);
