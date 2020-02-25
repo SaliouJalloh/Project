@@ -108,10 +108,9 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // Accès a la gallery photo
-                
-                // Accès à la gallery photo
+
                 prendreUnePhoto();
-                galleryAddPic ();
+                //galleryAddPic ();
              }
         });
         save.setOnClickListener(new View.OnClickListener() {
@@ -163,14 +162,14 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void galleryAddPic() {
+    /*private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
-
+*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
