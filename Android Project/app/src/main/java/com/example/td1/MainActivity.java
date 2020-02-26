@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity{
     // Constantes
     private static final int REQUEST_TAKE_PHOTO = 100;
     private static final int REQUEST_IMAGE_LOAD = 1;
+
     private String currentPhotoPath;
 
     @Override
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 // Accès à la gallery photo
                 prendreUnePhoto();
-                galleryAddPic ();
+
              }
         });
         save.setOnClickListener(new View.OnClickListener() {
@@ -147,13 +148,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(currentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -304,7 +298,6 @@ public class MainActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     // Image en niveaux de gris augmentation/diminution du contraste par extension du dynamique.
 
