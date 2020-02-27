@@ -10,15 +10,15 @@ import static android.graphics.Color.rgb;
 
 public class Contrast {
 
-    private int width;
-    private int height;
-    private int tmp_color;
+    private static int width;
+    private static int height;
+    private static int tmp_color;
 
     // Image en niveaux de gris augmentation/diminution du contraste par extension du dynamique.
 
     //Fonctions auxiliaires
 
-    public int[] histogram(Bitmap bmp, int c) {
+    public static  int[] histogram(Bitmap bmp, int c) {
         width = bmp.getWidth();
         height = bmp.getHeight();
         int[] pixels = new int[width * height];
@@ -48,8 +48,24 @@ public class Contrast {
         }
         return histo;
     }
+/*********************************--------TESTER SI L'IMAGE EST DE NIVEAU GRIS---***************************/
 
-    public int[] minMax(int[] histotab) {
+public static boolean isGris(Bitmap img){
+    int width=img.getWidth();
+     int height=img.getHeight();
+    int[] pixels = new int[width*height];
+    img.getPixels (pixels, 0, width, 0, 0, width, height);
+    for(int j=0;j<width*height;j++){
+        double newRed = red(pixels[j]);
+        double newGreen = green(pixels[j]);
+        double newBlue = blue(pixels[j]);
+       if(newBlue!=newGreen || newBlue!=newRed || newGreen!=newRed)
+           return false;
+    }
+    return true;
+}
+
+    public static int[] minMax(int[] histotab) {
         int tab[]  = new int[2];
 
         int min = 0, max = 0;
@@ -74,7 +90,7 @@ public class Contrast {
     /**************************************************************************************************************************************/
 
     /***TRANSFORMATIONS D'HISTORGRAMME POUR REGLER LE CONTRASTE****/
-    public int[] redScale(Bitmap im) {
+    public static int[] redScale(Bitmap im) {
         int[] hist = new int[256];
 
         for (int i = 0; i < im.getWidth() ; i++) {
@@ -87,7 +103,7 @@ public class Contrast {
     }
 
     //calcule l'histoggrame du niveau de bleu d'une image
-    public int[] blueScale(Bitmap im) {
+    public static int[] blueScale(Bitmap im) {
         int[] hist = new int[256];
         for (int i = 0; i < im.getWidth() ; i++) {
             for (int j = 0; j < im.getHeight() ; j++) {
@@ -99,7 +115,7 @@ public class Contrast {
     }
 
     //calcule l'histogramme du niveau de vert d'une image
-    public int[] greenScale(Bitmap im) {
+    public static int[] greenScale(Bitmap im) {
         int[] hist = new int[256];
         for (int i = 0; i < im.getWidth() ; i++) {
             for (int j = 0; j < im.getHeight(); j++) {
@@ -111,40 +127,44 @@ public class Contrast {
     }
     /*************************diminution du contraste d'une image couleur par égalisation d'histogramme*****Button -> Down Contrast**************/
 
-    public void downContrasteColor(Bitmap im) {
-        int[] histR = redScale(im);
-        int[] histG = greenScale(im);
-        int[] histB = blueScale(im);
-        int width = im.getWidth();
-        int height = im.getHeight();
-        int i;
-        int[] histCR = new int[256];
-        int[] histCG = new int[256];
-        int[] histCB = new int[256];
-        int cmptR = 0;
-        int cmptG = 0;
-        int cmptB = 0;
-        for (i = 0; i < 256; i++) {
-            cmptR = cmptR + histR[i];
-            histCR[i] = cmptR;
-            cmptG = cmptG + histG[i];
-            histCG[i] = cmptG;
-            cmptB = cmptB + histB[i];
-            histCB[i] = cmptB;
-        }
-        int j;
-        for (j = 0; j <width; j++) {
-            for(int x=0;x<height;x++) {
-                double newRed = ((histCR[red(im.getPixel(j,x))]));
-                double newGreen = ((histCG[green(im.getPixel(j,x))]));
-                double newBlue = ((histCB[blue(im.getPixel(j,x))])) ;
-                im.setPixel(j,x,rgb((int)((newRed*255) /cmptR),(int)((newGreen*255) / cmptG),(int)((newBlue*255))/ cmptB));
-            }
-        }
-    }
+    public static void downContrasteColor(Bitmap im) {
 
+            int[] histR = redScale(im);
+            int[] histG = greenScale(im);
+            int[] histB = blueScale(im);
+            int width = im.getWidth();
+            int height = im.getHeight();
+            int i;
+            int[] histCR = new int[256];
+            int[] histCG = new int[256];
+            int[] histCB = new int[256];
+            int cmptR = 0;
+            int cmptG = 0;
+            int cmptB = 0;
+            for (i = 0; i < 256; i++) {
+                cmptR = cmptR + histR[i];
+                histCR[i] = cmptR;
+                cmptG = cmptG + histG[i];
+                histCG[i] = cmptG;
+                cmptB = cmptB + histB[i];
+                histCB[i] = cmptB;
+            }
+            int j;
+            int[] pixels = new int[width * height];
+            im.getPixels(pixels, 0, width, 0, 0, width, height);
+            if(cmptB!=0&&cmptG!=0&&cmptR!=0)
+            for (j = 0; j < width * height; j++) {
+                double newRed = ((histCR[red(pixels[j])]));
+                double newGreen = ((histCG[green(pixels[j])]));
+                double newBlue = ((histCB[blue(pixels[j])]));
+                // im.setPixel(j,x,rgb((int)((newRed*255) /cmptR),(int)((newGreen*255) / cmptG),(int)((newBlue*255))/ cmptB));
+                pixels[j] = rgb((int) ((newRed * 255) / cmptR), (int) ((newGreen * 255) / cmptG), (int) ((newBlue * 255)) / cmptB);
+            }
+            im.setPixels(pixels, 0, width, 0, 0, width, height);
+
+    }
     //calcule l'histogramme du niveau de gris d'une image
-    public int[] greyScale(Bitmap im) {
+    public static int[] greyScale(Bitmap im) {
         int[] hist = new int[256];
         for (int i = 0; i < im.getWidth() - 1; i++) {
             for (int j = 0; j < im.getHeight() - 1; j++) {
@@ -156,7 +176,7 @@ public class Contrast {
     }
     /*******************************augmentation du contraste d'une image grise par égalité d'histogramme*******Button -> Increases Contrast***********/
 
-    public int minArray(int[] array) {
+    public static int minArray(int[] array) {
         int i = 0;
         while (array[i] == 0) {
             i++;
@@ -164,7 +184,7 @@ public class Contrast {
         return i;
     }
 
-    public int maxArray(int[] array) {
+    public static int maxArray(int[] array) {
         int i = (array.length) - 1;
         while (array[i] == 0) {
             i--;
@@ -172,7 +192,7 @@ public class Contrast {
         return i;
     }
 
-    public void  increasesContrast(Bitmap im) {
+    public static void  increasesContrast(Bitmap im) {
 
         int[] hist = greyScale(im);
         int width = im.getWidth();
@@ -196,38 +216,45 @@ public class Contrast {
     }
 
     /**********augmentation du contraste d'une image couleur par extension dynamique********** Button ->Increases Contrast(LUT)**********/
-    public void increasesContrastLUT(Bitmap im) {
-        int[] hist1 = redScale(im);
-        int[] hist2 = blueScale(im);
-        int[] hist3 = greenScale(im);
-        int width = im.getWidth();
-        int height = im.getHeight();
-        int maxr = maxArray(hist1);
-        int minr = minArray(hist1);
-        int maxg = maxArray(hist2);
-        int ming = minArray(hist2);
-        int maxb = maxArray(hist3);
-        int minb = minArray(hist3);
-        int[] LUTr = new int[256];
-        int[] LUTg = new int[256];
-        int[] LUTb = new int[256];
-        for (int n = 0; n < 256; n++) {
-            LUTr[n] = (255 * (n - minr)) / (maxr - minr);
-            LUTg[n] = (255 * (n - ming)) / (maxg - ming);
-            LUTb[n] = (255 * (n - minb)) / (maxb - minb);
+    /**
+     *
+     * @param im
+     * si l'image de depart est gris max-min=0 .!isGris(im) pour eviter une division de zero
+     */
+    public static void increasesContrastLUT(Bitmap im) {
+        if(!isGris(im)) {
+            int[] hist1 = redScale(im);
+            int[] hist2 = blueScale(im);
+            int[] hist3 = greenScale(im);
+            int width = im.getWidth();
+            int height = im.getHeight();
+            int maxr = maxArray(hist1);
+            int minr = minArray(hist1);
+            int maxg = maxArray(hist2);
+            int ming = minArray(hist2);
+            int maxb = maxArray(hist3);
+            int minb = minArray(hist3);
+            int[] LUTr = new int[256];
+            int[] LUTg = new int[256];
+            int[] LUTb = new int[256];
+            for (int n = 0; n < 256; n++) {
+                LUTr[n] = (255 * (n - minr)) / (maxr - minr);
+                LUTg[n] = (255 * (n - ming)) / (maxg - ming);
+                LUTb[n] = (255 * (n - minb)) / (maxb - minb);
+            }
+            int[] pixels = new int[width * height];
+            im.getPixels(pixels, 0, width, 0, 0, width, height);
+            int i;
+            for (i = 0; i < pixels.length; i++) {
+                pixels[i] = rgb(LUTr[red(pixels[i])], LUTg[green(pixels[i])], LUTb[blue(pixels[i])]);
+            }
+            im.setPixels(pixels, 0, width, 0, 0, width, height);
         }
-        int[] pixels = new int[width * height];
-        im.getPixels(pixels, 0, width, 0, 0, width, height);
-        int i;
-        for (i = 0; i < pixels.length; i++) {
-            pixels[i] = rgb(LUTr[red(pixels[i])], LUTg[green(pixels[i])], LUTb[blue(pixels[i])]);
-        }
-        im.setPixels(pixels, 0, width, 0, 0, width, height);
     }
 
 
     /********************diminution du contraste d'une image grise*************Button  -> Decreases Contrast(LUT)************/
-    public void decreasesContrastLUT(Bitmap im) {
+    public static  void decreasesContrastLUT(Bitmap im) {
         int[] hist = greyScale(im);
         int width = im.getWidth();
         int height = im.getHeight();
