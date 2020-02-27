@@ -6,7 +6,7 @@ import android.graphics.Color;
 import androidx.renderscript.Allocation;
 import androidx.renderscript.RenderScript;
 
-public class Gray {
+public class Gray extends MainActivity{
 
     public static int width, height, tmp_color;
 
@@ -52,7 +52,7 @@ public class Gray {
         bmp.setPixels(pixels,0,width,0,0,width,height);
     }
 
-   /*public static void toGrayRS(Bitmap bmp) {
+   public void toGrayRS(Bitmap bmp) {
        // 1) Creer un contexte RenderScript
        RenderScript rs = RenderScript.create(this);
        // 2) Creer des Allocations pour passer les donnees
@@ -74,6 +74,6 @@ public class Gray {
        grayScript.destroy();
        rs.destroy();
    }
-*/
+
 
 }
