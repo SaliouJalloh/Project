@@ -2,6 +2,7 @@ package com.example.td1;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import static com.example.td1.Gray.toGray2;
 
 public class Convolution {
 
@@ -29,6 +30,7 @@ public class Convolution {
         }
         bmp.setPixels(pixels, 0, w, 0, 0, w, h);    //Set the pixels in the bmp
     }
+
 
     //n the half size of the filter
     protected  static void convolutionGaussN(Bitmap bmp,int n) {
@@ -88,6 +90,8 @@ public class Convolution {
         bmp.setPixels(pixel, 0, width, 0, 0, width, height);
     }
 
+
+
     protected  static void teeeeest(Bitmap bmp,int n) {
         int height = bmp.getHeight();
         int width = bmp.getWidth();
@@ -145,5 +149,36 @@ public class Convolution {
             }
         }
         bmp.setPixels(pixel, 0, width, 0, 0, width, height);
+    }
+
+    protected static void convolutionSobel(Bitmap bmp){
+        toGray2(bmp);
+        int height = bmp.getHeight();
+        int width = bmp.getWidth();
+        int size =height*width;
+        int pixel[] = new int[size];
+        int pixel2[] = new  int[size];
+        bmp.getPixels(pixel,0,width,0,0,width,height);
+        int[] matriceV = {-1,0,1,-2,0,2,-1,0,1};
+        int[] matriceH = {-1,-2,-1,0,0,0,1,2,1};
+        for (int i=1;i<width-1;i++){
+            for (int j=1;j<height-1;j++){
+                int tmp=0;
+                int grayV = 0, grayH = 0;
+                for (int k=i-1;k<=i+1;k++){
+                    for (int l=j-1;l<=j+1;l++){
+                        grayV+=Color.blue(pixel[k+l*width])*matriceV[tmp];
+                        grayH+=Color.blue(pixel[k+l*width])*matriceH[tmp];
+                        tmp++;
+                    }
+                }
+                grayV = (int) Math.sqrt( (grayV*grayV)+ (grayH*grayH));
+                if(grayV>255){
+                    grayV=255;
+                }
+                pixel2[i+j*width] = Color.rgb(grayV,grayV,grayV);
+            }
+        }
+        bmp.setPixels(pixel2,0,width,0,0,width,height);
     }
 }

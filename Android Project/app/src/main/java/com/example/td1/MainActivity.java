@@ -89,7 +89,10 @@ public class MainActivity extends AppCompatActivity{
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                img.setImageBitmap(originbitmap);
+                int pix[] = new int [originbitmap.getHeight()*originbitmap.getWidth()];
+                originbitmap.getPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
+                bitmap.setPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
+                img.setImageBitmap(bitmap);
             }
         });
 
@@ -286,13 +289,19 @@ public class MainActivity extends AppCompatActivity{
                 return true;
             case R.id.menu_to_convolution:
                 Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
-                Convolution.convolutionMoy(bitmap,9);
+                Convolution.convolutionMoy(bitmap,13);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_convolutionGaus:
-                Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
-                Convolution.teeeeest(bitmap,9);
+                Toast.makeText(this,"Convolution Gauss selected",Toast.LENGTH_LONG).show();
+                Convolution.convolutionGaussN(bitmap,9);
                 img.setImageBitmap(bitmap);
+                return true;
+            case R.id.menu_to_convolutionSobel:
+                Toast.makeText(this,"Contour selected",Toast.LENGTH_LONG).show();
+                Convolution.convolutionSobel(bitmap);
+                img.setImageBitmap(bitmap);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

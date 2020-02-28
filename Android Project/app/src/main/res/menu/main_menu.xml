@@ -98,10 +98,11 @@
                 app:showAsAction="never"
                 android:title="@string/to_convolutionGaus_item" />
 
-            <item android:id="@+id/menu_to_convolutionRS"
+            <item android:id="@+id/menu_to_convolutionSobel"
                 android:orderInCategory="100"
                 app:showAsAction="never"
-                android:title="@string/to_convolutionRS_item" />
+                android:title="@string/to_convolutionSobel_item" />
+
         </menu>
     </item>
 
