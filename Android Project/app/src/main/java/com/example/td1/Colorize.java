@@ -14,8 +14,10 @@ public class Colorize extends MainActivity{
     private static int height;
     private static int tmp_color;
 
-    /**********************************************************************************************/
-    // methode colorize sans re-écrire RGBToHSV()/HSVToRGB() .
+    /**
+     * Methode applique une teinte choisie aleatoirement au Bitmap
+     * methode colorize sans re-écrire RGBToHSV()/HSVToRGB()
+     */
 
     public static void colorized (Bitmap bmp){
         width = bmp.getWidth();
@@ -47,9 +49,13 @@ public class Colorize extends MainActivity{
 
     }
 
-    /**********************************************************************************************/
-
-    //Ré-ecrire de le methode RGBToHSV
+    /**
+     * Ré-ecrire de le methode RGBToHSV
+     * @param red
+     * @param green
+     * @param blue
+     * @param h
+     */
 
     public  static void RGBToHSV_new(int red, int green, int blue, float[] h) {
         float hh = 0;
@@ -88,9 +94,11 @@ public class Colorize extends MainActivity{
 
     }
 
-    /*********************************************************************************/
-
-    //Ré-ecrire de le methode colorize avec la nouvelle methode RGBToHSV
+    /**
+     * Methode applique une teinte choisie aleatoirement au Bitmap
+     * methode colorize avec la nouvelle methode RGBToHSV
+     * @param bmp
+     */
 
     public static void colorize (Bitmap bmp){
         width = bmp.getWidth();
@@ -122,7 +130,10 @@ public class Colorize extends MainActivity{
 
     }
 
-    /*************************************************************************************/
+    /**
+     * Methode qui Conserver la couleur rouge
+     * @param img
+     */
 
     public static void cannedColor(Bitmap img) {
         int width = img.getWidth();
@@ -153,6 +164,13 @@ public class Colorize extends MainActivity{
 
     }
 
+    /**
+     * Ré-ecrire de le methode HSVtoRGB
+     * @param hue
+     * @param saturation
+     * @param brightness
+     * @return
+     */
     public static int HSVtoRGB(float hue, float saturation, float brightness) {
         int r = 0, g = 0, b = 0;
         if (saturation == 0) {
@@ -199,6 +217,11 @@ public class Colorize extends MainActivity{
         return 0xff000000 | (r << 16) | (g << 8) | (b << 0);
     }
 
+    /**
+     * Methode applique une teinte choisie aleatoirement au Bitmap
+     * en utilisant le RenderScript.
+     * @param bmp
+     */
     private void colorizeRS ( Bitmap bmp ) {
         // 1) Creer un contexte RenderScript
         RenderScript rs = RenderScript.create (this) ;
@@ -221,6 +244,12 @@ public class Colorize extends MainActivity{
         colorizeScript.destroy();
         rs.destroy();
     }
+
+    /**
+     * Methode qui Conserver la couleur rouge
+     * en utilisant le RenderScript.
+     * @param bmp
+     */
 
     private void cannedColorRS ( Bitmap bmp ) {
         // 1) Creer un contexte RenderScript

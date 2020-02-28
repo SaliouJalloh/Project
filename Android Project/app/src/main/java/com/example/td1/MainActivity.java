@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity{
         //initialisation des bitmap
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
         originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
-       //bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
+        //bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
         //originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
 
         createOnClickButton();
@@ -100,11 +100,11 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // Accès à la gallery photo
-
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent,REQUEST_IMAGE_LOAD);
              }
         });
+
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity{
 
              }
         });
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity{
                         MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
                 //
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-                ///
+                //
                 startActivityForResult(intent,REQUEST_TAKE_PHOTO);
 
             }catch (IOException e){
@@ -269,7 +270,7 @@ public class MainActivity extends AppCompatActivity{
                 return true;
             case R.id.menu_increasesContrastLut:
                 Toast.makeText(this,"increases lut selected",Toast.LENGTH_LONG).show();
-               Contrast.increasesContrastLUT(bitmap);
+                Contrast.increasesContrastLUT(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_decreasesContrastLut:
@@ -278,7 +279,7 @@ public class MainActivity extends AppCompatActivity{
                 Toast.makeText(this,"decreases selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_upContrastLut:
-                //upContrasteColor(bitmap);
+                //Contrast.UpContrasteColor(bitmap);
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"up contrast selected",Toast.LENGTH_LONG).show();
                 return true;

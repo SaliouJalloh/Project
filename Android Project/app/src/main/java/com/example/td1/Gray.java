@@ -10,6 +10,11 @@ public class Gray extends MainActivity{
 
     public static int width, height, tmp_color;
 
+    /**
+     * Methode qui grise tous les pixels du Bitmap en
+     * utilisant les m´ethodes getPixel et setPixel de la classe Bitmap.
+     * @param bmp
+     */
     public static void toGray(Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
@@ -30,6 +35,11 @@ public class Gray extends MainActivity{
         }
     }
 
+    /**
+     *Methode qui grise tous les pixels du Bitmap en
+     * utilisant les methodes getPixels et setPixels de la classe Bitmap.
+     * @param bmp
+     */
     public static void toGray2(Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
@@ -52,6 +62,11 @@ public class Gray extends MainActivity{
         bmp.setPixels(pixels,0,width,0,0,width,height);
     }
 
+    /**
+     * Methode qui grise tous les pixels du Bitmap en
+     * utilisant le RenderScript.
+     * @param bmp
+     */
    public void toGrayRS(Bitmap bmp) {
        // 1) Creer un contexte RenderScript
        RenderScript rs = RenderScript.create(this);
