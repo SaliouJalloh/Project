@@ -135,7 +135,7 @@ public class Contrast {
      *
      * @param im
      */
-    public  static void upContrasteColor(Bitmap im){
+    public  static void UpContrasteColor(Bitmap im){
         int[] hist1 = redScale(im);
         int[] hist2 = blueScale(im);
         int[] hist3 = greenScale(im);

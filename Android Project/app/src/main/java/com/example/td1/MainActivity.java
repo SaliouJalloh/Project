@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity{
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // test pour
         if(intent.resolveActivity(getPackageManager()) != null){
-            // creer un new fichier
+            // creer un noveau fichier
             String time = new SimpleDateFormat("yyyyMMMdd_HHmmss").format(new Date());
             File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             try {
@@ -150,9 +150,9 @@ public class MainActivity extends AppCompatActivity{
 
                 //Pour convertir l'Uri en Bitmap
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-                //
+
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,bitmap);
-                //
+
                 startActivityForResult(intent,REQUEST_TAKE_PHOTO);
 
             }catch (IOException e){
@@ -181,18 +181,14 @@ public class MainActivity extends AppCompatActivity{
             Uri selectImage = data.getData();
             String [] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            //
             Cursor cursor = this.getContentResolver().query(selectImage,filePathColumn,null,null,null);
 
-            //
             cursor.moveToFirst();
 
-            //
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String imgPath = cursor.getString(columnIndex);
             cursor.close();
 
-            //
             bitmap = BitmapFactory.decodeFile(imgPath);
             originbitmap = BitmapFactory.decodeFile(imgPath);
 
@@ -203,7 +199,7 @@ public class MainActivity extends AppCompatActivity{
             //affichage
             img.setImageBitmap(bitmap);
         }
-        else {
+        else { //Camera
             if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK ){
 
                 //recupere l'image
@@ -235,20 +231,20 @@ public class MainActivity extends AppCompatActivity{
         // metrique
         DisplayMetrics metrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        //
+
         float screenHeight = metrics.heightPixels*proportion;
         float screenWidth = metrics.widthPixels*proportion;
-        //
+
         float bitmapHeight = bitmap.getHeight();
         float bitmapWidth = bitmap.getWidth();
-        //
+
         float ratioHeight = screenHeight/bitmapHeight;
         float ratioWidth = screenWidth/bitmapWidth;
-        //
+
         float ratio = Math.min(ratioHeight,ratioWidth);
-        //
+
         bitmap = Bitmap.createScaledBitmap(bitmap,(int) (bitmapWidth*ratio), (int) (bitmapHeight*ratio), true);
-        //
+
         return bitmap;
     }
 
@@ -292,6 +288,34 @@ public class MainActivity extends AppCompatActivity{
     }
 
     /**
+     * Methode qui grise tous les pixels du Bitmap en
+     * utilisant le RenderScript.
+     * @param bmp
+     */
+    public void toGrayRS(Bitmap bmp) {
+        // 1) Creer un contexte RenderScript
+        RenderScript rs = RenderScript.create(this);
+        // 2) Creer des Allocations pour passer les donnees
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        // 3) Creer le script
+        ScriptC_grays grayScript = new ScriptC_grays(rs);
+        // 4) Copier les donnees dans les Allocations
+        // ...
+        // 5) Initialiser les variables globales potentielles
+        // ...
+        // 6) Lancer le noyau
+        grayScript.forEach_toGray(input, output);
+        // 7) Recuperer les donnees des Allocation (s)
+        output.copyTo(bmp);
+        // 8) Detruire le context , les Allocation (s) et le script
+        input.destroy();
+        output.destroy();
+        grayScript.destroy();
+        rs.destroy();
+    }
+
+    /**
      * pour la creation du menu
      * @param menu
      * @return
@@ -327,7 +351,7 @@ public class MainActivity extends AppCompatActivity{
                 return true;
             case R.id.menu_to_grayRS:
                 Toast.makeText(this,"to graysRS selected",Toast.LENGTH_LONG).show();
-                //Gray.toGrayRS(bitmap);
+                toGrayRS(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_colorize:
@@ -367,7 +391,7 @@ public class MainActivity extends AppCompatActivity{
                 Toast.makeText(this,"decreases selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_upContrastLut:
-                //Contrast.UpContrasteColor(bitmap);
+                Contrast.UpContrasteColor(bitmap);
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"up contrast selected",Toast.LENGTH_LONG).show();
                 return true;
