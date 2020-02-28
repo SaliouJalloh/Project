@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -37,19 +39,16 @@ import static android.graphics.Color.rgb;
 
 public class MainActivity extends AppCompatActivity{
 
-    private TextView text,size;
     private ImageView img;
-    private Bitmap bitmap,originbitmap;
-    //private Bitmap image;
-    private int width, height, tmp_color;
+    private Bitmap bitmap, originbitmap;
     private ImageButton photo, loading, save, reset;
     private  String photoPath = null;
 
     // Constantes
-    private static final int REQUEST_TAKE_PHOTO = 100;
+    private static final int REQUEST_TAKE_PHOTO = 10;
     private static final int REQUEST_IMAGE_LOAD = 1;
 
-    private String currentPhotoPath;
+    Uri photoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +69,6 @@ public class MainActivity extends AppCompatActivity{
         save = findViewById(R.id.id_saved);
 
         // Convertion de l'image
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
 
@@ -80,10 +78,14 @@ public class MainActivity extends AppCompatActivity{
         //bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
         //originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
 
+        //Ouverture des boutons
         createOnClickButton();
 
     }
 
+    /**
+     * Methode pour la gestion des cliques bouton
+     */
     private void createOnClickButton(){
 
         reset.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // Accès à la gallery photo
-                prendreUnePhoto();
+                takePicture();
 
              }
         });
@@ -123,10 +125,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
     /**
-     * Permet de prendre une photo
+     * Methode qui permet de prendre une photo
+     * depuis la ou les camera(s) du telephone
      */
 
-    private void prendreUnePhoto(){
+    private void takePicture(){
         // creer un intent pour ouvrir une fenetre pour prendre une photo
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // test pour
@@ -139,10 +142,16 @@ public class MainActivity extends AppCompatActivity{
                 // Enregistrer le chemin complet
                 photoPath = photoFile.getAbsolutePath();
                 // creer l'Uri
-                Uri photoUri = FileProvider.getUriForFile(MainActivity.this,
-                        MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
+                photoUri = FileProvider.getUriForFile(MainActivity.this, MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
+
+                //rotation de l'image
+                //bitmap = rotateBitmap(photoUri.getPath());
+                //img.setImageBitmap(bitmap);
+
+                //Pour convertir l'Uri en Bitmap
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
                 //
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,bitmap);
                 //
                 startActivityForResult(intent,REQUEST_TAKE_PHOTO);
 
@@ -152,23 +161,37 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     * It redirects to another activity like opens camera, gallery, etc.
+     * After taking image from gallery or camera then come back to current activity first method that calls is
+     * onActivityResult(int requestCode, int resultCode, Intent data) . We get the result in this method like taken image from camera or gallery.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         // Verifie si une image est recuperée
         if(requestCode == REQUEST_IMAGE_LOAD && resultCode == RESULT_OK ){
-            // AccÃ¨s Ã  l'image Ã  partir de data
+
+            // Accès à  l'image à  partir de data
             Uri selectImage = data.getData();
             String [] filePathColumn = {MediaStore.Images.Media.DATA};
-            ///
+
+            //
             Cursor cursor = this.getContentResolver().query(selectImage,filePathColumn,null,null,null);
+
             //
             cursor.moveToFirst();
+
             //
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String imgPath = cursor.getString(columnIndex);
             cursor.close();
+
             //
             bitmap = BitmapFactory.decodeFile(imgPath);
             originbitmap = BitmapFactory.decodeFile(imgPath);
@@ -182,9 +205,17 @@ public class MainActivity extends AppCompatActivity{
         }
         else {
             if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK ){
+
                 //recupere l'image
                 bitmap = BitmapFactory.decodeFile(photoPath);
                 originbitmap = BitmapFactory.decodeFile(photoPath);
+
+                // redimenssioner l'image
+                //bitmap = changeSizeBitmap(bitmap,0.8f);
+                //originbitmap = changeSizeBitmap(originbitmap,0.8f);
+
+                //rotation de l'image
+                //bitmap = rotateBitmap(photoUri.getPath());
 
                 //afficher l'image
                 img.setImageBitmap(bitmap);
@@ -192,6 +223,13 @@ public class MainActivity extends AppCompatActivity{
         }
 
     }
+
+    /**
+     * Methode permettant de ré-dimensionner une image selon une certaine proportion.
+     * @param bitmap
+     * @param proportion
+     * @return
+     */
 
     private Bitmap changeSizeBitmap(Bitmap bitmap, float proportion){
         // metrique
@@ -214,6 +252,51 @@ public class MainActivity extends AppCompatActivity{
         return bitmap;
     }
 
+    /**
+     * Methode qui retourne la photo prise depuis la camera dans le bon sens
+     * car la photo prise aura subit une rotation
+     * @param photoFilePath
+     * @return
+     */
+
+    public Bitmap rotateBitmap(String photoFilePath){
+
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoFilePath,bounds);
+
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        Bitmap bm = BitmapFactory.decodeFile(photoFilePath,opts);
+
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(photoFilePath);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL);
+        Matrix matrix = new Matrix();
+        switch (orientation){
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.postRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.postRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.postRotate(270);
+        }
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);
+        return rotatedBitmap;
+    }
+
+    /**
+     * pour la creation du menu
+     * @param menu
+     * @return
+     */
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -221,6 +304,11 @@ public class MainActivity extends AppCompatActivity{
         return true;
     }
 
+    /**
+     * pour la creation du menu et l'appel des differentes methodes implementées
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -307,7 +395,5 @@ public class MainActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 
 }

@@ -95,10 +95,9 @@
                         <com.zolad.zoominimageview.ZoomInImageView
                             android:id="@+id/idimage"
                             android:layout_width="match_parent"
-                            android:layout_height="400dp"
+                            android:layout_height="match_parent"
                             android:src="@drawable/leguime" />
                     </ScrollView>
-
 
                 </LinearLayout>
 
