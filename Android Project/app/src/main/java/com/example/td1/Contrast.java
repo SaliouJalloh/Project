@@ -1,8 +1,6 @@
 package com.example.td1;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
-
 import static android.graphics.Color.blue;
 import static android.graphics.Color.green;
 import static android.graphics.Color.red;
@@ -10,44 +8,12 @@ import static android.graphics.Color.rgb;
 
 public class Contrast {
 
-    private static int width;
-    private static int height;
-    private static int tmp_color;
 
     // Image en niveaux de gris augmentation/diminution du contraste par extension du dynamique.
 
     //Fonctions auxiliaires
 
-    public static  int[] histogram(Bitmap bmp, int c) {
-        width = bmp.getWidth();
-        height = bmp.getHeight();
-        int[] pixels = new int[width * height];
-        int histo[]  = new int[256];
 
-        int R ;
-
-        bmp.getPixels (pixels, 0, width, 0, 0, width, height);
-
-        for (int i = 0 ; i < width*height ; i++){
-
-            tmp_color = pixels[i];
-
-            if ( c == Color.RED)
-                R = Color.red(tmp_color);
-
-            if ( c == Color.GREEN)
-                R = Color.green(tmp_color);
-
-            if ( c == Color.BLUE)
-                R = Color.blue(tmp_color);
-
-            else
-                R = ( Color.red(tmp_color) + Color.green(tmp_color) + Color.blue(tmp_color) ) / 3;
-
-            histo[R] ++;
-        }
-        return histo;
-    }
 /*********************************--------TESTER SI L'IMAGE EST DE NIVEAU GRIS---***************************/
 
 public static boolean isGris(Bitmap img){
@@ -65,27 +31,7 @@ public static boolean isGris(Bitmap img){
     return true;
 }
 
-    public static int[] minMax(int[] histotab) {
-        int tab[]  = new int[2];
 
-        int min = 0, max = 0;
-
-        for (int i = 0 ; i < 256 ; i++){
-            if (histotab[i] != 0){
-                min = histotab[i];
-                break;
-            }
-        }
-        for (int i = 255 ; i >=0 ; i--){
-            if (histotab[i] != 0){
-                max = histotab[i];
-                break;
-            }
-        }
-        tab[0] = min;
-        tab[1] = max;
-        return tab;
-    }
 
     /**************************************************************************************************************************************/
 
@@ -174,7 +120,13 @@ public static boolean isGris(Bitmap img){
         }
         return hist;
     }
-    /*******************************augmentation du contraste d'une image grise par égalité d'histogramme*******Button -> Increases Contrast***********/
+
+    /**
+     * ****augmentation du contraste d'une image grise par égalité d'histogramme*******Button -> Increases Contrast****
+     * @param array
+     * @return
+     */
+
 
     public static int minArray(int[] array) {
         int i = 0;
@@ -254,6 +206,10 @@ public static boolean isGris(Bitmap img){
 
 
     /********************diminution du contraste d'une image grise*************Button  -> Decreases Contrast(LUT)************/
+    /**
+     * Cette fonction permet de diminuer la contraste d'une image grise
+     * @param im
+     */
     public static  void decreasesContrastLUT(Bitmap im) {
         int[] hist = greyScale(im);
         int width = im.getWidth();

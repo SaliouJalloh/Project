@@ -182,7 +182,6 @@ public class MainActivity extends AppCompatActivity{
                 bitmap = BitmapFactory.decodeFile(photoPath);
                 originbitmap = BitmapFactory.decodeFile(photoPath);
 
-
                 //afficher l'image
                 img.setImageBitmap(bitmap);
             }
