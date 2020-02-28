@@ -63,13 +63,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:translationX="300dp"
-            android:translationY="-70dp"/>
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1021dp"
             android:layout_weight="1"
