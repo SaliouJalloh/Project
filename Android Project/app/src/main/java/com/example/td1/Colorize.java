@@ -10,14 +10,14 @@ import static android.graphics.Color.RGBToHSV;
 
 public class Colorize extends MainActivity{
 
-    private int width;
-    private int height;
-    private int tmp_color;
+    private static int width;
+    private static int height;
+    private static int tmp_color;
 
     /**********************************************************************************************/
     // methode colorize sans re-écrire RGBToHSV()/HSVToRGB() .
 
-    public void colorized (Bitmap bmp){
+    public static void colorized (Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
 
@@ -51,7 +51,7 @@ public class Colorize extends MainActivity{
 
     //Ré-ecrire de le methode RGBToHSV
 
-    public void RGBToHSV_new(int red, int green, int blue, float[] h) {
+    public  static void RGBToHSV_new(int red, int green, int blue, float[] h) {
         float hh = 0;
         float r = (float) red / 255;
         float g = (float) green / 255;
@@ -92,7 +92,7 @@ public class Colorize extends MainActivity{
 
     //Ré-ecrire de le methode colorize avec la nouvelle methode RGBToHSV
 
-    public void colorize (Bitmap bmp){
+    public static void colorize (Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
 
@@ -122,25 +122,30 @@ public class Colorize extends MainActivity{
 
     }
 
-    /******************************************************Garder une color ******BUtton -> Cannod Color**********/
+    /*************************************************************************************/
 
-    public void cannedColor(Bitmap img) {
+    public static void cannedColor(Bitmap img) {
         int width = img.getWidth();
         int height = img.getHeight();
         float[] hsv = new float[3];
         int[] pixels = new int[width * height];
 
+        int red, green, blue, gray, color;
+
         img.getPixels(pixels, 0, width, 0, 0, width, height);
 
-        for(int i=0;i<width*height;i++){
-            int color=pixels[i];
-            int r = Color.red(color);
-            int g = Color.green(color);
-            int b = Color.blue(color);
-            Color.RGBToHSV(r, g, b, hsv);
+        for(int i = 0; i< width*height; i++){
+            color = pixels[i];
+
+            red = Color.red(color);
+            green = Color.green(color);
+            blue = Color.blue(color);
+
+            RGBToHSV_new(red, green, blue, hsv);
+
             if((hsv[0] > 20) && (hsv[0] < 340)){
-                int grv=(int) (r * 0.3 + g * 0.59 +  b * 0.11);
-                pixels[i] = Color.rgb(grv,grv,grv);
+                gray = (int) (red * 0.3 + green * 0.59 +  blue * 0.11);
+                pixels[i] = Color.rgb(gray,gray,gray);
             }
         }
         img.setPixels(pixels, 0, width, 0, 0, width, height);
@@ -148,7 +153,7 @@ public class Colorize extends MainActivity{
 
     }
 
-    public static int HSBtoRGB(float hue, float saturation, float brightness) {
+    public static int HSVtoRGB(float hue, float saturation, float brightness) {
         int r = 0, g = 0, b = 0;
         if (saturation == 0) {
             r = g = b = (int) (brightness * 255.0f + 0.5f);
