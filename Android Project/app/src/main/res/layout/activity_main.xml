@@ -7,8 +7,9 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="413dp"
-        android:layout_height="731dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,41 +18,37 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="638dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="clip_vertical|center_horizontal|center_vertical"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/id_saved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="clip_horizontal|clip_vertical|center_vertical|fill_vertical"
+                    android:background="#FFFFFF"
+                    android:tint="#026DF1"
+                    android:translationX="380dp"
+                    android:translationY="10dp"
+                    app:srcCompat="@drawable/save" />
 
-                    <ImageButton
-                        android:id="@+id/id_saved"
-                        android:layout_width="61dp"
-                        android:layout_height="wrap_content"
-                        android:background="#FFFFFF"
-                        android:tint="#026DF1"
-                        android:translationX="350dp"
-                        android:translationY="10dp"
-                        app:srcCompat="@drawable/save" />
-
-                    <ImageButton
-                        android:id="@+id/id_reset"
-                        android:layout_width="61dp"
-                        android:layout_height="wrap_content"
-                        android:background="#FFFFFF"
-                        android:tint="#0A5EF1"
-                        android:translationY="-20dp"
-                        app:srcCompat="@drawable/restore" />
-
-                </LinearLayout>
+                <ImageButton
+                    android:id="@+id/id_reset"
+                    android:layout_width="61dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="clip_horizontal|center_horizontal|fill_horizontal|center_vertical"
+                    android:background="#FFFFFF"
+                    android:tint="#0A5EF1"
+                    android:translationY="-20dp"
+                    app:srcCompat="@drawable/restore" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,39 +61,36 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1021dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="clip_vertical|center_horizontal|center_vertical"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="clip_vertical|fill_horizontal|center_vertical"
                 android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/ResetID"
-                    android:layout_width="169dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:minHeight="40dp"
-                    android:text="Reset"
-                    android:translationY="30dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="564dp"
+                    android:layout_height="748dp"
                     android:layout_weight="1"
+                    android:gravity="clip_horizontal|center_horizontal|center_vertical"
                     android:orientation="horizontal">
 
                     <ScrollView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
-                        
+
                         <com.zolad.zoominimageview.ZoomInImageView
                             android:id="@+id/idimage"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_gravity="center|center_horizontal|center_vertical|fill_vertical"
+                            android:foregroundGravity="center_vertical|center_horizontal"
                             android:src="@drawable/leguime" />
+
                     </ScrollView>
 
                 </LinearLayout>
@@ -105,23 +99,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="clip_vertical|center_horizontal|fill_horizontal|center_vertical|fill_vertical"
                     android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="428dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <ImageButton
-                            android:id="@+id/id_photo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#FFFFFF"
-                            android:tint="#1B0AF1"
-                            app:srcCompat="@drawable/foto" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -130,15 +109,28 @@
                         android:orientation="horizontal">
 
                         <ImageButton
+                            android:id="@+id/id_photo"
+                            android:layout_width="66dp"
+                            android:layout_height="37dp"
+                            android:layout_gravity="clip_horizontal|clip_vertical|fill_horizontal"
+                            android:layout_weight="1"
+                            android:background="#00F8F8F8"
+                            android:foregroundGravity="center_vertical|center|clip_vertical|center_horizontal"
+                            android:tint="#1B0AF1"
+                            android:translationY="20dp"
+                            app:srcCompat="@drawable/foto" />
+
+                        <ImageButton
                             android:id="@+id/loadingID"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="38dp"
+                            android:layout_gravity="clip_horizontal|clip_vertical|fill_horizontal"
                             android:layout_weight="1"
-                            android:background="#FFFFFF"
+                            android:background="#00FFFFFF"
+                            android:foregroundGravity="fill_horizontal|center_vertical|fill_vertical|clip_vertical|center_horizontal"
                             android:tint="#0A20E9"
-                            android:translationY="5dp"
+                            android:translationY="20dp"
                             app:srcCompat="@drawable/library" />
-
                     </LinearLayout>
 
                 </LinearLayout>

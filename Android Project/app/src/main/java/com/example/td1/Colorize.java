@@ -8,7 +8,7 @@ import androidx.renderscript.RenderScript;
 
 import static android.graphics.Color.RGBToHSV;
 
-public class Colorize extends MainActivity{
+public class Colorize {
 
     private static int width;
     private static int height;
@@ -222,6 +222,7 @@ public class Colorize extends MainActivity{
      * en utilisant le RenderScript.
      * @param bmp
      */
+    /*
     private void colorizeRS ( Bitmap bmp ) {
         // 1) Creer un contexte RenderScript
         RenderScript rs = RenderScript.create (this) ;
@@ -250,7 +251,7 @@ public class Colorize extends MainActivity{
      * en utilisant le RenderScript.
      * @param bmp
      */
-
+/*
     private void cannedColorRS ( Bitmap bmp ) {
         // 1) Creer un contexte RenderScript
         RenderScript rs = RenderScript.create (this) ;
@@ -273,5 +274,5 @@ public class Colorize extends MainActivity{
         cannedColorScript.destroy();
         rs.destroy();
     }
-
+*/
 }

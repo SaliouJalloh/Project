@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity{
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
         originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
         //bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
-        //originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
+        //originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths,  options);
 
         //Ouverture des boutons
         createOnClickButton();
@@ -91,10 +91,10 @@ public class MainActivity extends AppCompatActivity{
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pix[] = new int [originbitmap.getHeight()*originbitmap.getWidth()];
-                originbitmap.getPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
-                bitmap.setPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
-                img.setImageBitmap(bitmap);
+                //int pix[] = new int [originbitmap.getHeight()*originbitmap.getWidth()];
+                //originbitmap.getPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
+                //bitmap.setPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
+                img.setImageBitmap(originbitmap);
             }
         });
 
@@ -149,9 +149,9 @@ public class MainActivity extends AppCompatActivity{
                 //img.setImageBitmap(bitmap);
 
                 //Pour convertir l'Uri en Bitmap
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+                //bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
 
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,bitmap);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
 
                 startActivityForResult(intent,REQUEST_TAKE_PHOTO);
 
@@ -193,8 +193,8 @@ public class MainActivity extends AppCompatActivity{
             originbitmap = BitmapFactory.decodeFile(imgPath);
 
             // redimenssioner l'image
-            bitmap = changeSizeBitmap(bitmap,0.8f);
-            originbitmap = changeSizeBitmap(originbitmap,0.8f);
+            //bitmap = changeSizeBitmap(bitmap,0.95f);
+            //originbitmap = changeSizeBitmap(originbitmap,0.95f);
 
             //affichage
             img.setImageBitmap(bitmap);
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity{
      * @return
      */
 
-    private Bitmap changeSizeBitmap(Bitmap bitmap, float proportion){
+    /*private Bitmap changeSizeBitmap(Bitmap bitmap, float proportion){
         // metrique
         DisplayMetrics metrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity{
      * @return
      */
 
-    public Bitmap rotateBitmap(String photoFilePath){
+   /* public Bitmap rotateBitmap(String photoFilePath){
 
         BitmapFactory.Options bounds = new BitmapFactory.Options();
         bounds.inJustDecodeBounds = true;
@@ -287,6 +287,7 @@ public class MainActivity extends AppCompatActivity{
         return rotatedBitmap;
     }
 
+*/
     /**
      * Methode qui grise tous les pixels du Bitmap en
      * utilisant le RenderScript.

@@ -6,7 +6,7 @@ import android.graphics.Color;
 import androidx.renderscript.Allocation;
 import androidx.renderscript.RenderScript;
 
-public class Gray extends MainActivity{
+public class Gray {
 
     public static int width, height, tmp_color;
 
