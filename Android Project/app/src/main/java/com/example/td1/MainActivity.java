@@ -74,10 +74,8 @@ public class MainActivity extends AppCompatActivity{
         options.inMutable = true;
 
         //initialisation des bitmap
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
-        originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime , options);
-        //bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
-        //originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths,  options);
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
+        originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
 
         //Ouverture des boutons
         createOnClickButton();
@@ -188,6 +186,10 @@ public class MainActivity extends AppCompatActivity{
             bitmap = BitmapFactory.decodeFile(imgPath);
             originbitmap = BitmapFactory.decodeFile(imgPath);
 
+            // redimenssioner l'image
+            bitmap = changeSizeBitmap(bitmap,0.95f);
+            originbitmap = changeSizeBitmap(originbitmap,0.95f);
+
             //affichage
             img.setImageBitmap(bitmap);
         }
@@ -197,6 +199,10 @@ public class MainActivity extends AppCompatActivity{
                 //recupere l'image
                 bitmap = BitmapFactory.decodeFile(photoPath);
                 originbitmap = BitmapFactory.decodeFile(photoPath);
+
+                // redimenssioner l'image
+                bitmap = changeSizeBitmap(bitmap,0.95f);
+                originbitmap = changeSizeBitmap(originbitmap,0.95f);
 
                 //affiche l'image
                 img.setImageBitmap(bitmap);
@@ -319,7 +325,6 @@ public class MainActivity extends AppCompatActivity{
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i("-------------- " , "height " + bitmap.getHeight() + "Width " + bitmap.getWidth());
         switch (item.getItemId()){
             case R.id.menu_gray:
                 Toast.makeText(this,"Gray menu selected",Toast.LENGTH_LONG).show();

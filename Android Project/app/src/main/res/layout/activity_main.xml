@@ -89,7 +89,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center|center_horizontal|center_vertical|fill_vertical"
                             android:foregroundGravity="center_vertical|center_horizontal"
-                            android:src="@drawable/leguime" />
+                            android:src="@drawable/fruits_exotiques" />
 
                     </ScrollView>
 
