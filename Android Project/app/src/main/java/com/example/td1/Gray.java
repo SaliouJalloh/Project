@@ -8,7 +8,7 @@ import androidx.renderscript.RenderScript;
 
 public class Gray {
 
-    public static int width, height, tmp_color;
+
 
     /**
      * Methode qui grise tous les pixels du Bitmap en
@@ -16,9 +16,10 @@ public class Gray {
      * @param bmp
      */
     public static void toGray(Bitmap bmp){
-        width = bmp.getWidth();
-        height = bmp.getHeight();
+        int width = bmp.getWidth();
+        int height = bmp.getHeight();
         int red, green, blue, gray;
+        int tmp_color;
 
         for(int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){
@@ -41,9 +42,10 @@ public class Gray {
      * @param bmp
      */
     public static void toGray2(Bitmap bmp){
-        width = bmp.getWidth();
-        height = bmp.getHeight();
+        int width = bmp.getWidth();
+        int height = bmp.getHeight();
         int red, green, blue, gray;
+        int tmp_color;
 
         int[] pixels = new int[width * height];
         bmp.getPixels(pixels,0,width,0,0,width,height);
@@ -59,6 +61,7 @@ public class Gray {
             pixels[x] = Color.rgb(gray,gray,gray);
 
         }
+
         bmp.setPixels(pixels,0,width,0,0,width,height);
     }
 }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void initActivity() {
         // instanciation
-        img = findViewById(R.id.idimage);
+        img = (ImageView) findViewById(R.id.idimage);
         reset = findViewById(R.id.id_reset);
         photo = findViewById(R.id.id_photo);
         loading = findViewById(R.id.loadingID);
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity{
 
         //initialisation des bitmap
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
-        originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime, options);
+        originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.leguime , options);
         //bitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths, options);
         //originbitmap = BitmapFactory.decodeResource(getResources(),R.xml.provider_paths,  options);
 
@@ -91,9 +92,9 @@ public class MainActivity extends AppCompatActivity{
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //int pix[] = new int [originbitmap.getHeight()*originbitmap.getWidth()];
-                //originbitmap.getPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
-                //bitmap.setPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
+                int pix[] = new int [originbitmap.getHeight()*originbitmap.getWidth()];
+                originbitmap.getPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
+                bitmap.setPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
                 img.setImageBitmap(originbitmap);
             }
         });
@@ -144,15 +145,10 @@ public class MainActivity extends AppCompatActivity{
                 // creer l'Uri
                 photoUri = FileProvider.getUriForFile(MainActivity.this, MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
 
-                //rotation de l'image
-                //bitmap = rotateBitmap(photoUri.getPath());
-                //img.setImageBitmap(bitmap);
-
                 //Pour convertir l'Uri en Bitmap
                 //bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
 
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-
                 startActivityForResult(intent,REQUEST_TAKE_PHOTO);
 
             }catch (IOException e){
@@ -192,10 +188,6 @@ public class MainActivity extends AppCompatActivity{
             bitmap = BitmapFactory.decodeFile(imgPath);
             originbitmap = BitmapFactory.decodeFile(imgPath);
 
-            // redimenssioner l'image
-            //bitmap = changeSizeBitmap(bitmap,0.95f);
-            //originbitmap = changeSizeBitmap(originbitmap,0.95f);
-
             //affichage
             img.setImageBitmap(bitmap);
         }
@@ -206,14 +198,7 @@ public class MainActivity extends AppCompatActivity{
                 bitmap = BitmapFactory.decodeFile(photoPath);
                 originbitmap = BitmapFactory.decodeFile(photoPath);
 
-                // redimenssioner l'image
-                //bitmap = changeSizeBitmap(bitmap,0.8f);
-                //originbitmap = changeSizeBitmap(originbitmap,0.8f);
-
-                //rotation de l'image
-                //bitmap = rotateBitmap(photoUri.getPath());
-
-                //afficher l'image
+                //affiche l'image
                 img.setImageBitmap(bitmap);
             }
         }
@@ -227,7 +212,7 @@ public class MainActivity extends AppCompatActivity{
      * @return
      */
 
-    /*private Bitmap changeSizeBitmap(Bitmap bitmap, float proportion){
+    private Bitmap changeSizeBitmap(Bitmap bitmap, float proportion){
         // metrique
         DisplayMetrics metrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -244,7 +229,6 @@ public class MainActivity extends AppCompatActivity{
         float ratio = Math.min(ratioHeight,ratioWidth);
 
         bitmap = Bitmap.createScaledBitmap(bitmap,(int) (bitmapWidth*ratio), (int) (bitmapHeight*ratio), true);
-
         return bitmap;
     }
 
@@ -255,7 +239,7 @@ public class MainActivity extends AppCompatActivity{
      * @return
      */
 
-   /* public Bitmap rotateBitmap(String photoFilePath){
+    public Bitmap rotateBitmap(String photoFilePath){
 
         BitmapFactory.Options bounds = new BitmapFactory.Options();
         bounds.inJustDecodeBounds = true;
@@ -287,7 +271,6 @@ public class MainActivity extends AppCompatActivity{
         return rotatedBitmap;
     }
 
-*/
     /**
      * Methode qui grise tous les pixels du Bitmap en
      * utilisant le RenderScript.
@@ -336,6 +319,7 @@ public class MainActivity extends AppCompatActivity{
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i("-------------- " , "height " + bitmap.getHeight() + "Width " + bitmap.getWidth());
         switch (item.getItemId()){
             case R.id.menu_gray:
                 Toast.makeText(this,"Gray menu selected",Toast.LENGTH_LONG).show();
