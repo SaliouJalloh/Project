@@ -2,6 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/menu_reset"
+        android:icon="@drawable/ic_restore"
+        app:showAsAction="ifRoom"
+        android:title="Reset">
+
+    </item>
+
     <item android:id="@+id/menu_gray"
         android:orderInCategory="100"
         app:showAsAction="never"

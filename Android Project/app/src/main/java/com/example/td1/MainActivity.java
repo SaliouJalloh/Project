@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -12,33 +11,32 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.renderscript.Allocation;
+import androidx.renderscript.RenderScript;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-import androidx.renderscript.Allocation;
-import androidx.renderscript.RenderScript;
-
-import static android.graphics.Color.RGBToHSV;
-import static android.graphics.Color.blue;
-import static android.graphics.Color.green;
-import static android.graphics.Color.red;
-import static android.graphics.Color.rgb;
-
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ImageView img;
     private Bitmap bitmap, originbitmap;
@@ -51,23 +49,41 @@ public class MainActivity extends AppCompatActivity{
 
     Uri photoUri;
 
+    private DrawerLayout drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initActivity();
+        Toolbar toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
 
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
+                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        /*if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MessageFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_message);
+        }*/
+
+        initActivity();
     }
 
     private void initActivity() {
         // instanciation
         img = (ImageView) findViewById(R.id.idimage);
-        reset = findViewById(R.id.id_reset);
-        photo = findViewById(R.id.id_photo);
+        //reset = findViewById(R.id.menu_reset);
+        /*photo = findViewById(R.id.id_photo);
         loading = findViewById(R.id.loadingID);
-        save = findViewById(R.id.id_saved);
+        save = findViewById(R.id.id_saved);*/
 
         // Convertion de l'image
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -78,14 +94,56 @@ public class MainActivity extends AppCompatActivity{
         originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
 
         //Ouverture des boutons
-        createOnClickButton();
+        //createOnClickButton();
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_message:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MessageFragment()).commit();
+                break;
+            case R.id.nav_chat:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatFragment()).commit();
+                break;
+            case R.id.nav_profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ProfileFragment()).commit();
+                break;
+            case R.id.nav_camera:
+                Toast.makeText(this,"Camera",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_gallery:
+                Toast.makeText(this,"Gallery",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_save:
+                Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_send:
+                Toast.makeText(this,"Send",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this,"Share",Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
     }
 
     /**
      * Methode pour la gestion des cliques bouton
      */
-    private void createOnClickButton(){
+    /*private void createOnClickButton(){
 
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +180,7 @@ public class MainActivity extends AppCompatActivity{
              }
         });
     }
-
+*/
     /**
      * Methode qui permet de prendre une photo
      * depuis la ou les camera(s) du telephone
@@ -326,6 +384,10 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.menu_reset:
+                Toast.makeText(this,"Reset menu selected",Toast.LENGTH_LONG).show();
+                img.setImageBitmap(originbitmap);
+                return true;
             case R.id.menu_gray:
                 Toast.makeText(this,"Gray menu selected",Toast.LENGTH_LONG).show();
                 return true;

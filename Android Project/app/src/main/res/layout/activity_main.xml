@@ -1,143 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity"
+    tools:openDrawer="start">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <com.zolad.zoominimageview.ZoomInImageView
+                android:id="@+id/idimage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="clip_vertical|center_horizontal|center_vertical"
-                android:orientation="vertical">
+                android:layout_gravity="center|center_horizontal|center_vertical|fill_vertical"
+                android:foregroundGravity="center_vertical|center_horizontal"
+                android:src="@drawable/fruits_exotiques" />
 
-                <ImageButton
-                    android:id="@+id/id_saved"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="clip_horizontal|clip_vertical|center_vertical|fill_vertical"
-                    android:background="#FFFFFF"
-                    android:tint="#026DF1"
-                    android:translationX="380dp"
-                    android:translationY="10dp"
-                    app:srcCompat="@drawable/save" />
-
-                <ImageButton
-                    android:id="@+id/id_reset"
-                    android:layout_width="61dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="clip_horizontal|center_horizontal|fill_horizontal|center_vertical"
-                    android:background="#FFFFFF"
-                    android:tint="#0A5EF1"
-                    android:translationY="-20dp"
-                    app:srcCompat="@drawable/restore" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="153dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:translationY="-90dp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="clip_vertical|center_horizontal|center_vertical"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="clip_vertical|fill_horizontal|center_vertical"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="748dp"
-                    android:layout_weight="1"
-                    android:gravity="clip_horizontal|center_horizontal|center_vertical"
-                    android:orientation="horizontal">
-
-                    <ScrollView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <com.zolad.zoominimageview.ZoomInImageView
-                            android:id="@+id/idimage"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center|center_horizontal|center_vertical|fill_vertical"
-                            android:foregroundGravity="center_vertical|center_horizontal"
-                            android:src="@drawable/fruits_exotiques" />
-
-                    </ScrollView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="clip_vertical|center_horizontal|fill_horizontal|center_vertical|fill_vertical"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <ImageButton
-                            android:id="@+id/id_photo"
-                            android:layout_width="66dp"
-                            android:layout_height="37dp"
-                            android:layout_gravity="clip_horizontal|clip_vertical|fill_horizontal"
-                            android:layout_weight="1"
-                            android:background="#00F8F8F8"
-                            android:foregroundGravity="center_vertical|center|clip_vertical|center_horizontal"
-                            android:tint="#1B0AF1"
-                            android:translationY="20dp"
-                            app:srcCompat="@drawable/foto" />
-
-                        <ImageButton
-                            android:id="@+id/loadingID"
-                            android:layout_width="wrap_content"
-                            android:layout_height="38dp"
-                            android:layout_gravity="clip_horizontal|clip_vertical|fill_horizontal"
-                            android:layout_weight="1"
-                            android:background="#00FFFFFF"
-                            android:foregroundGravity="fill_horizontal|center_vertical|fill_vertical|clip_vertical|center_horizontal"
-                            android:tint="#0A20E9"
-                            android:translationY="20dp"
-                            app:srcCompat="@drawable/library" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
+        </ScrollView>
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
