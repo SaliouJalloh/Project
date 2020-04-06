@@ -10,10 +10,24 @@
     tools:openDrawer="start">
 
     <RelativeLayout
-        android:id="@+id/laymsg"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <SeekBar
+            android:id="@+id/id_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical">
 
         <ScrollView
             android:layout_width="wrap_content"
@@ -21,17 +35,14 @@
 
             <com.zolad.zoominimageview.ZoomInImageView
                 android:id="@+id/idimage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center|center_horizontal|center_vertical|fill_vertical"
+                android:foregroundGravity="center_vertical|center_horizontal"
                 android:src="@drawable/fruits_exotiques" />
+
         </ScrollView>
 
-        <SeekBar
-            android:id="@+id/id_seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="2dp" />
     </RelativeLayout>
 
     <LinearLayout
@@ -51,9 +62,7 @@
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </FrameLayout>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

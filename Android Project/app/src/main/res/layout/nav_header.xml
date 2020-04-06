@@ -11,7 +11,9 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
+        android:contentDescription="Navigation header"
+        android:paddingTop="8dp"
         android:src="@mipmap/ic_launcher_round" />
 
     <TextView
@@ -19,6 +21,12 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Image Processing"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="https://github.com/SaliouJalloh/Project.git"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>

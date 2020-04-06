@@ -1,28 +1,36 @@
 package com.example.td1;
 
+import android.Manifest;
+import android.app.WallpaperManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -30,26 +38,34 @@ import androidx.renderscript.Allocation;
 import androidx.renderscript.RenderScript;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static androidx.core.view.accessibility.AccessibilityEventCompat.setAction;
+import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ImageView img;
-    private Bitmap bitmap, originbitmap;
-    private ImageButton photo, loading, save, reset;
+    private Bitmap bitmap, origin_bitmap;
     private  String photoPath = null;
 
     // Constantes
-    private static final int REQUEST_TAKE_PHOTO = 10;
+    private static final int REQUEST_TAKE_PHOTO = 100;
     private static final int REQUEST_IMAGE_LOAD = 1;
 
     Uri photoUri;
 
     private DrawerLayout drawer;
+    private SeekBar seekBar;
+    private RelativeLayout laySmg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +85,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        /*if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MessageFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_message);
-        }*/
+
+        seekBar = (SeekBar) findViewById(R.id.id_seekBar);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                //progressBar.setProgress(progress);
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(MainActivity.this,"SeekBar selected",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(MainActivity.this," Stop SeekBar selected",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         initActivity();
     }
@@ -80,10 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initActivity() {
         // instanciation
         img = (ImageView) findViewById(R.id.idimage);
-        //reset = findViewById(R.id.menu_reset);
-        /*photo = findViewById(R.id.id_photo);
-        loading = findViewById(R.id.loadingID);
-        save = findViewById(R.id.id_saved);*/
+        laySmg = (RelativeLayout)findViewById(R.id.laymsg);
 
         // Convertion de l'image
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -91,10 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //initialisation des bitmap
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
-        originbitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
-
-        //Ouverture des boutons
-        //createOnClickButton();
+        origin_bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
 
     }
 
@@ -111,24 +137,151 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ProfileFragment()).commit();
                 break;
             case R.id.nav_camera:
+                takePicture();
                 Toast.makeText(this,"Camera",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_gallery:
+                openGallery();
                 Toast.makeText(this,"Gallery",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_save:
+                startSave();
+               // MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"image saved","description");
                 Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_send:
                 Toast.makeText(this,"Send",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_share:
+                shareImage();
                 Toast.makeText(this,"Share",Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.nav_wallpaper:
+                setImgWallpaper();
+                Toast.makeText(this,"Share",Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + item.getItemId());
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void openGallery() {
+        //Verifie si la permission est activée
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED ){
+
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(galleryIntent,REQUEST_IMAGE_LOAD);
+        }else {
+            //demande une fois de donner la permmission
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE) &&
+                    !ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+
+                String [] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
+                //affiche la demande de permission
+                ActivityCompat.requestPermissions(MainActivity.this,permissions,2);
+                //créer l'intent de la gallery
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent,REQUEST_IMAGE_LOAD);
+            }else {
+                //affiche un message precisant que la permission est oblogatoire
+                messagePermissionRequired();
+            }
+        }
+
+    }
+    private void messagePermissionRequired() {
+        Snackbar.make(laySmg, "Permission Required", LENGTH_LONG).setAction("Parameter", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                final Uri uri = Uri.fromParts("package",MainActivity.this.getPackageName(),null);
+                intent.setData(uri);
+                startActivity(intent);
+
+            }
+        }).show();
+
+    }
+
+    private void startSave(){
+        FileOutputStream fileOutputStream = null;
+        File file = getDisc();
+        if(!file.exists() && !file.mkdirs()){
+            Toast.makeText(this,"can't create directory to save image",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyymmsshhmmss");
+        String data = simpleDateFormat.format(new Date());
+        String name = "Img"+data+".jpeg";
+        String file_name = file.getAbsolutePath()+"/"+name;
+        File new_file = new File(file_name);
+        try {
+            fileOutputStream = new FileOutputStream(new_file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream);
+            Toast.makeText(this,"Save image success",Toast.LENGTH_SHORT).show();
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        refreshGallery(new_file);
+    }
+
+    private void refreshGallery(File file) {
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(Uri.fromFile(file));
+        sendBroadcast(intent);
+    }
+    private File getDisc(){
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        return new File(file, "Image Demo");
+    }
+
+    private void shareImage() {
+        try {
+            Drawable drawable = img.getDrawable();
+            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+            File file = new File(getExternalCacheDir(), "sample.png");
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            file.setReadable(true,false);
+            //sharing intent image
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
+            intent.setType("image/png");
+            startActivity(Intent.createChooser(intent,"Share Image via"));
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            Toast.makeText(this,"File not found",Toast.LENGTH_SHORT).show();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        catch (Exception e){
+           e.printStackTrace();
+        }
+    }
+
+    private void setImgWallpaper(){
+        WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
+        try {
+            wallpaperManager.setBitmap(bitmap);
+            Toast.makeText(this,"Set Wallpaper ...",Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -141,77 +294,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * Methode pour la gestion des cliques bouton
-     */
-    /*private void createOnClickButton(){
-
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pix[] = new int [originbitmap.getHeight()*originbitmap.getWidth()];
-                originbitmap.getPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
-                bitmap.setPixels(pix, 0, originbitmap.getWidth(), 0, 0, originbitmap.getWidth(), originbitmap.getHeight());
-                img.setImageBitmap(originbitmap);
-            }
-        });
-
-        loading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Accès à la gallery photo
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent,REQUEST_IMAGE_LOAD);
-             }
-        });
-
-        photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Accès à la gallery photo
-                takePicture();
-
-             }
-        });
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"image saved","description");
-             }
-        });
-    }
-*/
-    /**
      * Methode qui permet de prendre une photo
      * depuis la ou les camera(s) du telephone
      */
-
     private void takePicture(){
-        // creer un intent pour ouvrir une fenetre pour prendre une photo
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // test pour
-        if(intent.resolveActivity(getPackageManager()) != null){
-            // creer un noveau fichier
-            String time = new SimpleDateFormat("yyyyMMMdd_HHmmss").format(new Date());
-            File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            try {
-                File photoFile = File.createTempFile("photo"+time,".jpg",photoDir);
-                // Enregistrer le chemin complet
-                photoPath = photoFile.getAbsolutePath();
-                // creer l'Uri
-                photoUri = FileProvider.getUriForFile(MainActivity.this, MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
+        //Verifie si la permission est activée
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED  ){
+            // creer un intent pour ouvrir une fenetre pour prendre une photo
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // test pour
+            if(intent.resolveActivity(getPackageManager()) != null){
+                // creer un noveau fichier
+                String time = new SimpleDateFormat("yyyyMMMdd_HHmmss").format(new Date());
+                File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                try {
+                    File photoFile = File.createTempFile("photo"+time,".jpg",photoDir);
+                    // Enregistre le chemin complet
+                    photoPath = photoFile.getAbsolutePath();
+                    // creer l'Uri
+                    photoUri = FileProvider.getUriForFile(MainActivity.this, MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
 
-                //Pour convertir l'Uri en Bitmap
-                //bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+                    startActivityForResult(intent,REQUEST_TAKE_PHOTO);
 
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-                startActivityForResult(intent,REQUEST_TAKE_PHOTO);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }else {
+            //demande une fois de donner la permmission
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,Manifest.permission.CAMERA)){
+                String [] permissions = {Manifest.permission.CAMERA};
+                //affiche la demande de permission
+                ActivityCompat.requestPermissions(MainActivity.this,permissions,2);
 
-            }catch (IOException e){
-                e.printStackTrace();
+            }else {
+                //affiche un message precisant que la permission est oblogatoire
+                messagePermissionRequired();
             }
         }
+
     }
+
 
     /**
      * It redirects to another activity like opens camera, gallery, etc.
@@ -242,25 +367,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             cursor.close();
 
             bitmap = BitmapFactory.decodeFile(imgPath);
-            originbitmap = BitmapFactory.decodeFile(imgPath);
+            origin_bitmap = BitmapFactory.decodeFile(imgPath);
 
             // redimenssioner l'image
             bitmap = changeSizeBitmap(bitmap,0.95f);
-            originbitmap = changeSizeBitmap(originbitmap,0.95f);
+            origin_bitmap = changeSizeBitmap(origin_bitmap,0.95f);
 
             //affichage
             img.setImageBitmap(bitmap);
         }
         else { //Camera
             if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK ){
-
                 //recupere l'image
                 bitmap = BitmapFactory.decodeFile(photoPath);
-                originbitmap = BitmapFactory.decodeFile(photoPath);
+                origin_bitmap = BitmapFactory.decodeFile(photoPath);
 
                 // redimenssioner l'image
                 bitmap = changeSizeBitmap(bitmap,0.95f);
-                originbitmap = changeSizeBitmap(originbitmap,0.95f);
+                origin_bitmap = changeSizeBitmap(origin_bitmap,0.95f);
 
                 //affiche l'image
                 img.setImageBitmap(bitmap);
@@ -386,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()){
             case R.id.menu_reset:
                 Toast.makeText(this,"Reset menu selected",Toast.LENGTH_LONG).show();
-                img.setImageBitmap(originbitmap);
+                img.setImageBitmap(origin_bitmap);
                 return true;
             case R.id.menu_gray:
                 Toast.makeText(this,"Gray menu selected",Toast.LENGTH_LONG).show();
