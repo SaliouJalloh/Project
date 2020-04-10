@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawer;
     private SeekBar seekBar;
-    private RelativeLayout laySmg;
+    private LinearLayout laySmg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initActivity() {
         // instanciation
         img = (ImageView) findViewById(R.id.idimage);
-        laySmg = (RelativeLayout)findViewById(R.id.laymsg);
+        laySmg = (LinearLayout)findViewById(R.id.laymsg);
 
         // Convertion de l'image
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -293,6 +294,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void openCamera(){
+        // creer un intent pour ouvrir une fenetre pour prendre une photo
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // test pour
+        if(intent.resolveActivity(getPackageManager()) != null){
+            // creer un noveau fichier
+            String time = new SimpleDateFormat("yyyyMMMdd_HHmmss").format(new Date());
+            File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            try {
+                File photoFile = File.createTempFile("photo"+time,".jpg",photoDir);
+                // Enregistre le chemin complet
+                photoPath = photoFile.getAbsolutePath();
+                // creer l'Uri
+                photoUri = FileProvider.getUriForFile(MainActivity.this, MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
+
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+                startActivityForResult(intent,REQUEST_TAKE_PHOTO);
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
     /**
      * Methode qui permet de prendre une photo
      * depuis la ou les camera(s) du telephone
@@ -301,27 +325,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Verifie si la permission est activée
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED  ){
-            // creer un intent pour ouvrir une fenetre pour prendre une photo
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // test pour
-            if(intent.resolveActivity(getPackageManager()) != null){
-                // creer un noveau fichier
-                String time = new SimpleDateFormat("yyyyMMMdd_HHmmss").format(new Date());
-                File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                try {
-                    File photoFile = File.createTempFile("photo"+time,".jpg",photoDir);
-                    // Enregistre le chemin complet
-                    photoPath = photoFile.getAbsolutePath();
-                    // creer l'Uri
-                    photoUri = FileProvider.getUriForFile(MainActivity.this, MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
-
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-                    startActivityForResult(intent,REQUEST_TAKE_PHOTO);
-
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
+            openCamera();
         }else {
             //demande une fois de donner la permmission
             if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,Manifest.permission.CAMERA)){
@@ -329,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //affiche la demande de permission
                 ActivityCompat.requestPermissions(MainActivity.this,permissions,2);
 
+                openCamera();
             }else {
                 //affiche un message precisant que la permission est oblogatoire
                 messagePermissionRequired();
