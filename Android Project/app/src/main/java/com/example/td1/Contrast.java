@@ -171,12 +171,15 @@ public class Contrast {
      * @return
      */
     public static int[] greyScale(Bitmap im) {
+        int width = im.getWidth();
+        int height = im.getHeight();
+        int[] pixels = new int[width * height];
+        im.getPixels(pixels,0,width,0,0,width,height);
         int[] hist = new int[256];
-        for (int i = 0; i < im.getWidth() - 1; i++) {
-            for (int j = 0; j < im.getHeight() - 1; j++) {
-                int greyLevel = red(im.getPixel(i, j));
-                hist[greyLevel]++;
-            }
+        for(int x = 0; x < width*height; x++){
+
+            int greyLevel = red(pixels[x]);
+            hist[greyLevel]++;
         }
         return hist;
     }
@@ -292,5 +295,64 @@ public class Contrast {
         im.setPixels(pixels, 0, width, 0, 0, width, height);
     }
 
+    /**
+     *Calcule de l'histogramme cumulé
+     * @param img
+     * @return histogram
+     */
+    public static int[] histogram_acumulate(Bitmap img){
 
+        int[] histogram = greyScale(img);
+
+        for(int i=1; i<256; i++){
+
+            histogram[i] = histogram[i-1] + histogram[i];
+
+        }
+
+        return histogram;
+
+    }
+
+    /**
+     * Egalisation d'histogramme et amélioration du contraste
+     * @param img
+     * @return
+     */
+    public static Bitmap histogram_equalize(Bitmap img){
+
+        int width = img.getWidth();
+        int height = img.getHeight();
+        int[] pixels = new int[width * height];
+        img.getPixels(pixels,0,width,0,0,width,height);
+
+        Bitmap new_image = Bitmap.createBitmap(width, height, img.getConfig());
+
+        int[] histogram_acumulate = histogram_acumulate(img);
+
+        int MN = img.getHeight() * img.getWidth();
+        int G1 = 256-1;
+        double fator = (double)G1/MN;
+
+        int[] T = new int[256];
+
+
+        for(int i=1; i<256; i++){
+
+
+            T[i] = (int)(fator*histogram_acumulate[i]);
+
+        }
+        for(int x = 0; x < width*height; x++){
+            int pixel = pixels[x];
+            int red = Color.red(pixel);
+            pixel = Color.rgb(T[red], T[red], T[red]);
+            pixels[x] = Color.rgb(pixel,pixel,pixel);
+
+        }
+
+        new_image.setPixels(pixels,0,width,0,0,width,height);
+
+        return new_image;
+    }
 }

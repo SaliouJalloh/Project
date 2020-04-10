@@ -87,6 +87,9 @@
                 android:orderInCategory="100"
                 app:showAsAction="never"
                 android:title="@string/down_contrast_lut_item" />
+            <item
+                android:id="@+id/menu_EqualHistogram"
+                android:title="EqualHistogram" />
         </menu>
     </item>
 

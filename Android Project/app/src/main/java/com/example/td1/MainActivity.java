@@ -465,7 +465,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param bmp
      */
     public void toGrayRS(Bitmap bmp) {
-        // 1) Creer un contexte RenderScript
+      /*  // 1) Creer un contexte RenderScript
         RenderScript rs = RenderScript.create(this);
         // 2) Creer des Allocations pour passer les donnees
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         input.destroy();
         output.destroy();
         grayScript.destroy();
-        rs.destroy();
+        rs.destroy();*/
     }
 
     /**
@@ -576,6 +576,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"down contrast selected",Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.menu_EqualHistogram:
+                Toast.makeText(this,"Egalisation Histogramme",Toast.LENGTH_LONG).show();
+                img.setImageBitmap(Contrast.histogram_equalize(bitmap));
+                return true;
             case R.id.menu_to_convolution:
                 Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
                 Convolution.convolutionMoy(bitmap,13);
@@ -591,6 +595,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Convolution.convolutionSobel(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
