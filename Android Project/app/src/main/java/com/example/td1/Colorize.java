@@ -57,7 +57,8 @@ public class Colorize {
      * @param h
      */
 
-    public  static void RGBToHSV_new(int red, int green, int blue, float[] h) {
+
+    public static void RGBToHSV_new(int red, int green, int blue, float[] h) {
         float hh = 0;
         float r = (float) red / 255;
         float g = (float) green / 255;
@@ -145,7 +146,7 @@ public class Colorize {
 
         img.getPixels(pixels, 0, width, 0, 0, width, height);
 
-        for(int i = 0; i< width*height; i++){
+        for(int i = 0; i < width*height; i++){
             color = pixels[i];
 
             red = Color.red(color);
@@ -161,61 +162,108 @@ public class Colorize {
         }
         img.setPixels(pixels, 0, width, 0, 0, width, height);
 
-
     }
 
-    /**
-     * Ré-ecrire de le methode HSVtoRGB
-     * @param hue
-     * @param saturation
-     * @param brightness
-     * @return
-     */
-    public static int HSVtoRGB(float hue, float saturation, float brightness) {
-        int r = 0, g = 0, b = 0;
-        if (saturation == 0) {
-            r = g = b = (int) (brightness * 255.0f + 0.5f);
-        } else {
-            float h = (hue - (float)Math.floor(hue)) * 6.0f;
-            float f = h - (float)java.lang.Math.floor(h);
-            float p = brightness * (1.0f - saturation);
-            float q = brightness * (1.0f - saturation * f);
-            float t = brightness * (1.0f - (saturation * (1.0f - f)));
-            switch ((int) h) {
-                case 0:
-                    r = (int) (brightness * 255.0f + 0.5f);
-                    g = (int) (t * 255.0f + 0.5f);
-                    b = (int) (p * 255.0f + 0.5f);
-                    break;
-                case 1:
-                    r = (int) (q * 255.0f + 0.5f);
-                    g = (int) (brightness * 255.0f + 0.5f);
-                    b = (int) (p * 255.0f + 0.5f);
-                    break;
-                case 2:
-                    r = (int) (p * 255.0f + 0.5f);
-                    g = (int) (brightness * 255.0f + 0.5f);
-                    b = (int) (t * 255.0f + 0.5f);
-                    break;
-                case 3:
-                    r = (int) (p * 255.0f + 0.5f);
-                    g = (int) (q * 255.0f + 0.5f);
-                    b = (int) (brightness * 255.0f + 0.5f);
-                    break;
-                case 4:
-                    r = (int) (t * 255.0f + 0.5f);
-                    g = (int) (p * 255.0f + 0.5f);
-                    b = (int) (brightness * 255.0f + 0.5f);
-                    break;
-                case 5:
-                    r = (int) (brightness * 255.0f + 0.5f);
-                    g = (int) (p * 255.0f + 0.5f);
-                    b = (int) (q * 255.0f + 0.5f);
-                    break;
-            }
+    private static void HSVtoRGB(float h, float s, float v , int [] rgb)
+    {
+        int i;
+        float f, p, q, t;
+
+        if (rgb == null) {
+            rgb = new int[3];
         }
-        return 0xff000000 | (r << 16) | (g << 8) | (b << 0);
+
+        if( s == 0 ) {
+            // achromatic (grey)
+            rgb[0] = rgb[1] = rgb[3] = (int) v;
+            return;
+        }
+        h /= 60;			// sector 0 to 5
+        i = (int) Math.floor( h );
+        f = h - i;			// factorial part of h
+        p = v * ( 1 - s );
+        q = v * ( 1 - s * f );
+        t = v * ( 1 - s * ( 1 - f ) );
+        switch( i ) {
+            case 0:
+			    rgb[0] = (int) v;
+			    rgb[1] = (int) t;
+			    rgb[2] = (int) p;
+                break;
+            case 1:
+                rgb[0] = (int) q;
+                rgb[0] = (int) v;
+                rgb[0] = (int) p;
+                break;
+            case 2:
+                rgb[0] = (int) p;
+                rgb[0] = (int) v;
+                rgb[0]= (int) t;
+                break;
+            case 3:
+                rgb[0] = (int) p;
+                rgb[0] = (int) q;
+                rgb[0] = (int) v;
+                break;
+            case 4:
+                rgb[0] = (int) t;
+                rgb[0] = (int) p;
+                rgb[0] = (int) v;
+                break;
+            default:		// case 5:
+                rgb[0] = (int) v;
+                rgb[0] = (int) p;
+                rgb[0] = (int) q;
+                break;
+        }
     }
+
+    // r,g,b values are from 0 to 1
+    // h = [0,360], s = [0,1], v = [0,1]
+    // if s == 0, then h = -1 (undefined)
+    /*public  static void RGBToHSV_new(int red, int green, int blue, float[] hsv) {
+        float H = 0, S = 0, V = 0;
+        float r = (float) red / 255;
+        float g = (float) green / 255;
+        float b = (float) blue / 255;
+
+        float max = Math.max(Math.max(r, g), b);
+        float min = Math.min(Math.min(r, g), b);
+        float delta = max - min;
+
+        if (hsv == null) {
+            hsv = new float[3];
+        }
+        // Calcul de V
+        V = max;
+        // Calcul de S
+        if (max != 0){
+            S = delta / max;        // S
+        }
+        else {
+            // r = g = b = 0		// S = 0, V is undefined
+            S = 0;
+            H = -1;
+            return;
+        }
+        // Calcul de H
+        if( r == max )
+		    H = ( g - b ) / delta;		// between yellow & magenta
+        else if( g == max )
+            H = 2 + ( r - g ) / delta;	// between cyan & yellow
+        else
+            H = 4 + ( r - g ) / delta;	// between magenta & cyan
+
+        //Calcule de S
+        H *= 60.0;				// degrees
+        if( H < 0 )  H += 360;
+
+        hsv[0] = H;
+        hsv[1] = S;
+        hsv[2] = max;
+
+    }
+*/
 
     /**
      * Methode applique une teinte choisie aleatoirement au Bitmap
