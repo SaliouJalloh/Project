@@ -54,6 +54,7 @@ import static com.google.android.material.snackbar.Snackbar.make;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    //Saliou Diallo
     private ImageView img;
     private Bitmap bitmap, origin_bitmap;
     private  String photoPath = null;
