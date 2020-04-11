@@ -10,6 +10,7 @@ import static android.graphics.Color.RGBToHSV;
 
 public class Colorize {
 
+    //Diallo
     private static int width;
     private static int height;
     private static int tmp_color;
