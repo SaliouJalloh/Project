@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_save:
                 startSave();
-               // MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"image saved","description");
+                // MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"image saved","description");
                 Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_send:
@@ -173,9 +173,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void openGallery() {
         //Verifie si la permission est activée
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED &&
+                == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED ){
+                        == PackageManager.PERMISSION_GRANTED ){
 
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent,REQUEST_IMAGE_LOAD);
@@ -236,10 +236,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this,"Problem opening camera",Toast.LENGTH_LONG).show();
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> e178c17d8671622f9ace9e6a4a344b9c244ddedf
     /**
      * Methode qui permet de prendre une photo
      * depuis la ou les camera(s) du telephone
@@ -381,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
         catch (Exception e){
-           e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -477,7 +473,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param bmp
      */
     public void toGrayRS(Bitmap bmp) {
-      /*  // 1) Creer un contexte RenderScript
+        // 1) Creer un contexte RenderScript
         RenderScript rs = RenderScript.create(this);
         // 2) Creer des Allocations pour passer les donnees
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -496,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         input.destroy();
         output.destroy();
         grayScript.destroy();
-        rs.destroy();*/
+        rs.destroy();
     }
 
     /**
@@ -588,10 +584,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"down contrast selected",Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.menu_EqualHistogram:
-                Toast.makeText(this,"Egalisation Histogramme",Toast.LENGTH_LONG).show();
-                img.setImageBitmap(Contrast.histogram_equalize(bitmap));
-                return true;
             case R.id.menu_to_convolution:
                 Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
                 Convolution.convolutionMoy(bitmap,13);
@@ -607,7 +599,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Convolution.convolutionSobel(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
