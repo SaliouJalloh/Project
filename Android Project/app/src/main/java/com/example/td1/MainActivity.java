@@ -210,6 +210,111 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private void openCamera(){
+        // creer un intent pour ouvrir une fenetre pour prendre une photo
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // test pour
+        if(intent.resolveActivity(getPackageManager()) != null){
+            // creer un noveau fichier
+            String time = new SimpleDateFormat("yyyyMMMdd_HHmmss").format(new Date());
+            File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            try {
+                File photoFile = File.createTempFile("photo"+time,".jpg",photoDir);
+                // Enregistre le chemin complet
+                photoPath = photoFile.getAbsolutePath();
+                // creer l'Uri
+                photoUri = FileProvider.getUriForFile(MainActivity.this, MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
+
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+                startActivityForResult(intent,REQUEST_TAKE_PHOTO);
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }else {
+            Toast.makeText(this,"Problem opening camera",Toast.LENGTH_LONG).show();
+        }
+    }
+    /**
+     * Methode qui permet de prendre une photo
+     * depuis la ou les camera(s) du telephone
+     */
+    private void takePicture(){
+        //Verifie si la permission est activée
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED  ){
+            openCamera();
+        }else {
+            //demande une fois de donner la permmission
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,Manifest.permission.CAMERA)){
+                String [] permissions = {Manifest.permission.CAMERA};
+                //affiche la demande de permission
+                ActivityCompat.requestPermissions(MainActivity.this,permissions,2);
+                openCamera();
+            }else {
+                //affiche un message precisant que la permission est oblogatoire
+                messagePermissionRequired();
+            }
+        }
+
+    }
+
+
+    /**
+     * It redirects to another activity like opens camera, gallery, etc.
+     * After taking image from gallery or camera then come back to current activity first method that calls is
+     * onActivityResult(int requestCode, int resultCode, Intent data) . We get the result in this method like taken image from camera or gallery.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Verifie si une image est recuperée
+        if(requestCode == REQUEST_IMAGE_LOAD && resultCode == RESULT_OK ){
+
+            // Accès à  l'image à  partir de data
+            Uri selectImage = data.getData();
+            String [] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            Cursor cursor = this.getContentResolver().query(selectImage,filePathColumn,null,null,null);
+
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String imgPath = cursor.getString(columnIndex);
+            cursor.close();
+
+            bitmap = BitmapFactory.decodeFile(imgPath);
+            origin_bitmap = BitmapFactory.decodeFile(imgPath);
+
+            // redimenssioner l'image
+            bitmap = changeSizeBitmap(bitmap,0.95f);
+            origin_bitmap = changeSizeBitmap(origin_bitmap,0.95f);
+
+            //affichage
+            img.setImageBitmap(bitmap);
+        }
+        else { //Camera
+            if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK ){
+                //recupere l'image
+                bitmap = BitmapFactory.decodeFile(photoPath);
+                origin_bitmap = BitmapFactory.decodeFile(photoPath);
+
+                // redimenssioner l'image
+                bitmap = changeSizeBitmap(bitmap,0.95f);
+                origin_bitmap = changeSizeBitmap(origin_bitmap,0.95f);
+
+                //affiche l'image
+                img.setImageBitmap(bitmap);
+            }
+        }
+
+    }
+
     private void startSave(){
         FileOutputStream fileOutputStream = null;
         File file = getDisc();
@@ -294,109 +399,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void openCamera(){
-        // creer un intent pour ouvrir une fenetre pour prendre une photo
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // test pour
-        if(intent.resolveActivity(getPackageManager()) != null){
-            // creer un noveau fichier
-            String time = new SimpleDateFormat("yyyyMMMdd_HHmmss").format(new Date());
-            File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            try {
-                File photoFile = File.createTempFile("photo"+time,".jpg",photoDir);
-                // Enregistre le chemin complet
-                photoPath = photoFile.getAbsolutePath();
-                // creer l'Uri
-                photoUri = FileProvider.getUriForFile(MainActivity.this, MainActivity.this.getApplicationContext().getPackageName()+ ".provider",photoFile);
-
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-                startActivityForResult(intent,REQUEST_TAKE_PHOTO);
-
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
-    /**
-     * Methode qui permet de prendre une photo
-     * depuis la ou les camera(s) du telephone
-     */
-    private void takePicture(){
-        //Verifie si la permission est activée
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED  ){
-            openCamera();
-        }else {
-            //demande une fois de donner la permmission
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,Manifest.permission.CAMERA)){
-                String [] permissions = {Manifest.permission.CAMERA};
-                //affiche la demande de permission
-                ActivityCompat.requestPermissions(MainActivity.this,permissions,2);
-
-                openCamera();
-            }else {
-                //affiche un message precisant que la permission est oblogatoire
-                messagePermissionRequired();
-            }
-        }
-
-    }
-
-
-    /**
-     * It redirects to another activity like opens camera, gallery, etc.
-     * After taking image from gallery or camera then come back to current activity first method that calls is
-     * onActivityResult(int requestCode, int resultCode, Intent data) . We get the result in this method like taken image from camera or gallery.
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Verifie si une image est recuperée
-        if(requestCode == REQUEST_IMAGE_LOAD && resultCode == RESULT_OK ){
-
-            // Accès à  l'image à  partir de data
-            Uri selectImage = data.getData();
-            String [] filePathColumn = {MediaStore.Images.Media.DATA};
-
-            Cursor cursor = this.getContentResolver().query(selectImage,filePathColumn,null,null,null);
-
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String imgPath = cursor.getString(columnIndex);
-            cursor.close();
-
-            bitmap = BitmapFactory.decodeFile(imgPath);
-            origin_bitmap = BitmapFactory.decodeFile(imgPath);
-
-            // redimenssioner l'image
-            bitmap = changeSizeBitmap(bitmap,0.95f);
-            origin_bitmap = changeSizeBitmap(origin_bitmap,0.95f);
-
-            //affichage
-            img.setImageBitmap(bitmap);
-        }
-        else { //Camera
-            if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK ){
-                //recupere l'image
-                bitmap = BitmapFactory.decodeFile(photoPath);
-                origin_bitmap = BitmapFactory.decodeFile(photoPath);
-
-                // redimenssioner l'image
-                bitmap = changeSizeBitmap(bitmap,0.95f);
-                origin_bitmap = changeSizeBitmap(origin_bitmap,0.95f);
-
-                //affiche l'image
-                img.setImageBitmap(bitmap);
-            }
-        }
-
-    }
 
     /**
      * Methode permettant de ré-dimensionner une image selon une certaine proportion.
