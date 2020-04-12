@@ -3,14 +3,10 @@ package com.example.td1;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import androidx.renderscript.Allocation;
-import androidx.renderscript.RenderScript;
-
 import static android.graphics.Color.RGBToHSV;
 
 public class Colorize {
 
-    //Saliou
     private static int width;
     private static int height;
     private static int tmp_color;
