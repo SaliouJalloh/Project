@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private SeekBar seekBar;
     private LinearLayout laySmg;
+    //instansce de classe
+    private Gray gray;
+    private Colorize colorize;
+    private Colorize canned;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +127,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //initialisation des bitmap
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
         origin_bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
+        //init constructeur
+        gray = new Gray(bitmap,this);
+        colorize = new Colorize(bitmap, this);
+        canned = new Colorize(bitmap,this);
+
 
     }
 
@@ -468,34 +477,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * Methode qui grise tous les pixels du Bitmap en
-     * utilisant le RenderScript.
-     * @param bmp
-     */
-    public void toGrayRS(Bitmap bmp) {
-        // 1) Creer un contexte RenderScript
-        RenderScript rs = RenderScript.create(this);
-        // 2) Creer des Allocations pour passer les donnees
-        Allocation input = Allocation.createFromBitmap(rs, bmp);
-        Allocation output = Allocation.createTyped(rs, input.getType());
-        // 3) Creer le script
-        ScriptC_grays grayScript = new ScriptC_grays(rs);
-        // 4) Copier les donnees dans les Allocations
-        // ...
-        // 5) Initialiser les variables globales potentielles
-        // ...
-        // 6) Lancer le noyau
-        grayScript.forEach_toGray(input, output);
-        // 7) Recuperer les donnees des Allocation (s)
-        output.copyTo(bmp);
-        // 8) Detruire le context , les Allocation (s) et le script
-        input.destroy();
-        output.destroy();
-        grayScript.destroy();
-        rs.destroy();
-    }
-
-    /**
      * pour la creation du menu
      * @param menu
      * @return
@@ -525,34 +506,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case R.id.menu_to_gray1:
                 Toast.makeText(this,"to gray selected",Toast.LENGTH_LONG).show();
-                Gray.toGray(bitmap);
+                gray.toGray(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_gray2:
                 Toast.makeText(this,"to grays selected",Toast.LENGTH_LONG).show();
-                Gray.toGray2(bitmap);
+                gray.toGray2(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_grayRS:
                 Toast.makeText(this,"to graysRS selected",Toast.LENGTH_LONG).show();
-                toGrayRS(bitmap);
+                gray.toGrayRS(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_colorize:
                 Toast.makeText(this,"colorize menu selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_to_colorized:
-                Colorize.colorized(bitmap);
+                colorize.colorized(bitmap);
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"to colorized selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_to_colorize:
-                Colorize.colorize(bitmap);
+                float[] hsv = new float[3];
+                colorize.colorize(bitmap,hsv[0]);
+                Toast.makeText(this,"to colorize selected",Toast.LENGTH_LONG).show();
+                img.setImageBitmap(bitmap);
+                return true;
+            case R.id.menu_to_colorizeRS:
+                hsv = new float[3];
+                colorize.colorizeRS(bitmap,hsv[0]);
                 Toast.makeText(this,"to colorize selected",Toast.LENGTH_LONG).show();
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_canned_color:
-                Colorize.cannedColor(bitmap);
+                colorize.cannedColor(bitmap);
+                img.setImageBitmap(bitmap);
+                Toast.makeText(this,"canned color selected",Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_canned_colorRS:
+                canned.cannedColorRS(bitmap,90);
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"canned color selected",Toast.LENGTH_LONG).show();
                 return true;

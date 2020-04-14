@@ -1,22 +1,42 @@
 package com.example.td1;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import androidx.renderscript.Allocation;
+import androidx.renderscript.RenderScript;
+
+import static android.graphics.Color.HSVToColor;
 import static android.graphics.Color.RGBToHSV;
 
 public class Colorize {
 
+    private final Bitmap imageBitmap;
+    private final Context context;
     private static int width;
     private static int height;
     private static int tmp_color;
+
+    public Colorize(Bitmap imageBitmap, Context context) {
+        this.imageBitmap = imageBitmap;
+        this.context = context;
+    }
+
+    public Bitmap getImageBitmap() {
+        return imageBitmap;
+    }
+
+    public Context getContext() {
+        return context;
+    }
 
     /**
      * Methode applique une teinte choisie aleatoirement au Bitmap
      * methode colorize sans re-écrire RGBToHSV()/HSVToRGB()
      */
 
-    public static void colorized (Bitmap bmp){
+    public void colorized (Bitmap bmp){
         width = bmp.getWidth();
         height = bmp.getHeight();
 
@@ -39,7 +59,7 @@ public class Colorize {
 
             hsv[0] = rand;
 
-            pixels[x] = Color.HSVToColor(hsv);
+            pixels[x] = HSVToColor(hsv);
 
         }
         bmp.setPixels(pixels,0,width,0,0,width,height);
@@ -47,49 +67,54 @@ public class Colorize {
     }
 
     /**
-     * Ré-ecrire de le methode RGBToHSV
-     * @param red
-     * @param green
-     * @param blue
-     * @param h
+     * Function that converts from RGB to HSV
+     *
+     * @param redInput   the red value
+     * @param greenInput the green value
+     * @param blueInput  the blue value
+     * @param hsv        a floating array of 3 empty boxes
      */
-
-
-    public static void RGBToHSV_new(int red, int green, int blue, float[] h) {
-        float hh = 0;
-        float r = (float) red / 255;
-        float g = (float) green / 255;
-        float b = (float) blue / 255;
-
-        float cmax = Math.max(Math.max(r, g), b);
-        float cmin = Math.min(Math.min(r, g), b);
-        float diff = cmax - cmin;
-
-        // Calcule de H
-        if (cmax == 0) {
-            h[0] = 0;
-            h[1] = 0;
-            h[2] = 0;
+    public static void RGBToHSV_new(int redInput, int greenInput, int blueInput, float[] hsv) {
+        float cMax, cMin, delta, saturation, value, hue = 0;
+        float red = (float) (redInput / 255.0);
+        float green = (float) (greenInput / 255.0);
+        float blue = (float) (blueInput / 255.0);
+        cMin = Math.min(Math.min(red, green), blue);
+        cMax = Math.max(Math.max(red, green), blue);
+        delta = cMax - cMin;
+        if (cMax == 0) {
+            for (int i = 0; i < 3; i++) {
+                hsv[i] = 0;
+            }
             return;
-        } else if (cmax == r)
-            hh = (g - b) / diff;
-        else if (cmax == g)
-            hh = (r - g) / diff + 2;
-        else if (cmax == b)
-            hh = 4 + (r - g) / diff;
+        } else if (cMax == red)
+            hue = (float) (60.0 * (((green - blue) / delta)));
+        else if (cMax == green)
+            hue = (float) (60.0 * (((blue - red) / delta) + 2));
+        else if (cMax == blue)
+            hue = (float) (60.0 * (((red - green) / delta) + 4));
+        hsv[0] = hue;
+        saturation = delta / cMax;
+        value = (cMax);
+        hsv[1] = saturation;
+        hsv[2] = value;
+    }
 
-        hh *= 60.0;
-
-        //Calcule de S
-        if (hh < 0)
-            hh += 360;
-
-        float s = diff / cmax;
-
-        h[0] = hh;
-        h[1] = s;
-        h[2] = cmax;
-
+    /**
+     * Function that converts from HSV to RGB
+     *
+     * @param hsvColor An array of float that contains the three HSV values of the color
+     * @return Color in RGB
+     */
+    public static int HSVToColor_new(float[] hsvColor) {
+        float r, g, b, k;
+        k = (float) (5 + (hsvColor[0] / 60.0)) % 6;
+        r = (int) ((hsvColor[2] - hsvColor[2] * hsvColor[1] * Math.max(Math.min(Math.min(k, 4 - k), 1), 0)) * 255.0);
+        k = (float) (3 + (hsvColor[0] / 60.0)) % 6;
+        g = (int) ((hsvColor[2] - hsvColor[2] * hsvColor[1] * Math.max(Math.min(Math.min(k, 4 - k), 1), 0)) * 255.0);
+        k = (float) (1 + (hsvColor[0] / 60.0)) % 6;
+        b = (int) ((hsvColor[2] - hsvColor[2] * hsvColor[1] * Math.max(Math.min(Math.min(k, 4 - k), 1), 0)) * 255.0);
+        return Color.rgb((int) r, (int) g, (int) b);
     }
 
     /**
@@ -98,7 +123,7 @@ public class Colorize {
      * @param bmp
      */
 
-    public static void colorize (Bitmap bmp){
+    public void colorize (Bitmap bmp, float new_hue){
         width = bmp.getWidth();
         height = bmp.getHeight();
 
@@ -106,11 +131,9 @@ public class Colorize {
         float [] hsv = new float[3];
         int red, green, blue;
 
-        int random = (int) (Math.random()*(360+1));
-        float rand = (float) random;
         bmp.getPixels(pixels,0,width,0,0,width,height);
 
-        for (int x = 0; x < width*height; x++){
+        for (int x = 0; x < width*height-1; x++){
             tmp_color = pixels[x];
 
             red = Color.red(tmp_color);
@@ -119,21 +142,22 @@ public class Colorize {
 
             RGBToHSV_new(red,green,blue,hsv);
 
-            hsv[0] = rand;
+            hsv[0] = new_hue;
 
-            pixels[x] = Color.HSVToColor(hsv);
+            pixels[x] = HSVToColor_new(hsv);
 
         }
         bmp.setPixels(pixels,0,width,0,0,width,height);
 
     }
 
+
     /**
      * Methode qui Conserver la couleur rouge
      * @param img
      */
 
-    public static void cannedColor(Bitmap img) {
+    public void cannedColor(Bitmap img) {
         int width = img.getWidth();
         int height = img.getHeight();
         float[] hsv = new float[3];
@@ -161,116 +185,16 @@ public class Colorize {
 
     }
 
-    private static void HSVtoRGB(float h, float s, float v , int [] rgb)
-    {
-        int i;
-        float f, p, q, t;
-
-        if (rgb == null) {
-            rgb = new int[3];
-        }
-
-        if( s == 0 ) {
-            // achromatic (grey)
-            rgb[0] = rgb[1] = rgb[3] = (int) v;
-            return;
-        }
-        h /= 60;			// sector 0 to 5
-        i = (int) Math.floor( h );
-        f = h - i;			// factorial part of h
-        p = v * ( 1 - s );
-        q = v * ( 1 - s * f );
-        t = v * ( 1 - s * ( 1 - f ) );
-        switch( i ) {
-            case 0:
-                rgb[0] = (int) v;
-                rgb[1] = (int) t;
-                rgb[2] = (int) p;
-                break;
-            case 1:
-                rgb[0] = (int) q;
-                rgb[0] = (int) v;
-                rgb[0] = (int) p;
-                break;
-            case 2:
-                rgb[0] = (int) p;
-                rgb[0] = (int) v;
-                rgb[0]= (int) t;
-                break;
-            case 3:
-                rgb[0] = (int) p;
-                rgb[0] = (int) q;
-                rgb[0] = (int) v;
-                break;
-            case 4:
-                rgb[0] = (int) t;
-                rgb[0] = (int) p;
-                rgb[0] = (int) v;
-                break;
-            default:		// case 5:
-                rgb[0] = (int) v;
-                rgb[0] = (int) p;
-                rgb[0] = (int) q;
-                break;
-        }
-    }
-
-    // r,g,b values are from 0 to 1
-    // h = [0,360], s = [0,1], v = [0,1]
-    // if s == 0, then h = -1 (undefined)
-    /*public  static void RGBToHSV_new(int red, int green, int blue, float[] hsv) {
-        float H = 0, S = 0, V = 0;
-        float r = (float) red / 255;
-        float g = (float) green / 255;
-        float b = (float) blue / 255;
-
-        float max = Math.max(Math.max(r, g), b);
-        float min = Math.min(Math.min(r, g), b);
-        float delta = max - min;
-
-        if (hsv == null) {
-            hsv = new float[3];
-        }
-        // Calcul de V
-        V = max;
-        // Calcul de S
-        if (max != 0){
-            S = delta / max;        // S
-        }
-        else {
-            // r = g = b = 0		// S = 0, V is undefined
-            S = 0;
-            H = -1;
-            return;
-        }
-        // Calcul de H
-        if( r == max )
-		    H = ( g - b ) / delta;		// between yellow & magenta
-        else if( g == max )
-            H = 2 + ( r - g ) / delta;	// between cyan & yellow
-        else
-            H = 4 + ( r - g ) / delta;	// between magenta & cyan
-
-        //Calcule de S
-        H *= 60.0;				// degrees
-        if( H < 0 )  H += 360;
-
-        hsv[0] = H;
-        hsv[1] = S;
-        hsv[2] = max;
-
-    }
-*/
 
     /**
      * Methode applique une teinte choisie aleatoirement au Bitmap
      * en utilisant le RenderScript.
      * @param bmp
      */
-    /*
-    private void colorizeRS ( Bitmap bmp ) {
+
+    public void colorizeRS ( Bitmap bmp, float newHue ) {
         // 1) Creer un contexte RenderScript
-        RenderScript rs = RenderScript.create (this) ;
+        RenderScript rs = RenderScript.create (context) ;
         // 2) Creer des Allocations pour passer les donnees
         Allocation input = Allocation.createFromBitmap (rs,bmp) ;
         Allocation output = Allocation.createTyped (rs,input.getType()) ;
@@ -279,9 +203,9 @@ public class Colorize {
         // 4) Copier les donnees dans les Allocations
         // ...
         // 5) Initialiser les variables globales potentielles
-        // ...
+        colorizeScript.set_new_hue(newHue);
         // 6) Lancer le noyau
-        colorizeScript.forEach_colorized(input,output) ;
+        colorizeScript.forEach_Colorize(input,output) ;
         // 7) Recuperer les donnees des Allocation (s)
         output.copyTo (bmp) ;
         // 8) Detruire le context , les Allocation (s) et le script
@@ -291,24 +215,25 @@ public class Colorize {
         rs.destroy();
     }
 
+
     /**
      * Methode qui Conserver la couleur rouge
      * en utilisant le RenderScript.
      * @param bmp
      */
-/*
-    private void cannedColorRS ( Bitmap bmp ) {
+
+    public void cannedColorRS ( Bitmap bmp, float colorToKeep ) {
         // 1) Creer un contexte RenderScript
-        RenderScript rs = RenderScript.create (this) ;
+        RenderScript rs = RenderScript.create (context) ;
         // 2) Creer des Allocations pour passer les donnees
         Allocation input = Allocation.createFromBitmap (rs,bmp) ;
         Allocation output = Allocation.createTyped (rs,input.getType()) ;
         // 3) Creer le script
         ScriptC_cannedColor cannedColorScript = new ScriptC_cannedColor(rs) ;
         // 4) Copier les donnees dans les Allocations
-        // ...
+
         // 5) Initialiser les variables globales potentielles
-        // ...
+        cannedColorScript.set_color_to_keep(colorToKeep);
         // 6) Lancer le noyau
         cannedColorScript.forEach_cannedColor(input,output) ;
         // 7) Recuperer les donnees des Allocation (s)
@@ -319,5 +244,5 @@ public class Colorize {
         cannedColorScript.destroy();
         rs.destroy();
     }
-*/
+
 }

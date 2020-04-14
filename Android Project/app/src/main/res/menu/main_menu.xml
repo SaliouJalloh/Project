@@ -46,15 +46,22 @@
                 app:showAsAction="never"
                 android:title="@string/to_colorize_item" />
 
+            <item android:id="@+id/menu_to_colorizeRS"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:title="@string/to_colorizeRS_item" />
+
             <item android:id="@+id/menu_canned_color"
                 android:orderInCategory="100"
                 app:showAsAction="never"
                 android:title="@string/canned_color_item" />
 
-            <item android:id="@+id/menu_to_colorizeRS"
+            <item android:id="@+id/menu_canned_colorRS"
                 android:orderInCategory="100"
                 app:showAsAction="never"
-                android:title="@string/to_colorizeRS_item" />
+                android:title="@string/canned_colorRS_item" />
+
+
         </menu>
     </item>
 

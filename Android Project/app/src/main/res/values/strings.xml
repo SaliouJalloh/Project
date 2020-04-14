@@ -16,6 +16,7 @@
     <string name="to_colorized_item">Colorized</string>
     <string name="to_colorize_item">Colorize</string>
     <string name="canned_color_item">Canned Color</string>
+    <string name="canned_colorRS_item">Canned ColorRS</string>
     <string name="to_colorizeRS_item">ColorizeRS</string>
 
     <string name="contrast_item">Contrast</string>
