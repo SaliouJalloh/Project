@@ -2,6 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/menu_EqualHistogram"
+        android:title="EqualHistogram" />
     <item android:id="@+id/menu_reset"
         android:icon="@drawable/ic_restore"
         app:showAsAction="ifRoom"
@@ -94,9 +97,6 @@
                 android:orderInCategory="100"
                 app:showAsAction="never"
                 android:title="@string/down_contrast_lut_item" />
-            <item
-                android:id="@+id/menu_EqualHistogram"
-                android:title="EqualHistogram" />
         </menu>
     </item>
 

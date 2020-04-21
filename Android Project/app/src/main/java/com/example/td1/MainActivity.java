@@ -626,6 +626,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"down contrast selected",Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.menu_EqualHistogram:
+                img.setImageBitmap(Contrast.histogram_equalize(bitmap));
+                Toast.makeText(this,"equal histogramme selected",Toast.LENGTH_LONG).show();
+                return true;
             case R.id.menu_to_convolution:
                 Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
                 Convolution.convolutionMoy(bitmap,13);
