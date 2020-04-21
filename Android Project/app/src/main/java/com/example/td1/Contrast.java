@@ -1,7 +1,16 @@
 package com.example.td1;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+
+import com.android.rssample.ScriptC_minmax;
+import com.android.rssample.ScriptC_contrastRGB;
+import com.android.rssample.ScriptC_minmaxRGB;
+
+import androidx.renderscript.Allocation;
+import androidx.renderscript.Int2;
+import androidx.renderscript.RenderScript;
 
 import static android.graphics.Color.blue;
 import static android.graphics.Color.green;
@@ -10,9 +19,13 @@ import static android.graphics.Color.rgb;
 
 public class Contrast {
 
-    private static int width;
-    private static int height;
-    private static int tmp_color;
+    private final Bitmap imageBitmap;
+    private final Context context;
+
+    public Contrast(Bitmap imageBitmap, Context context) {
+        this.imageBitmap = imageBitmap;
+        this.context = context;
+    }
 
     // Image en niveaux de gris augmentation/diminution du contraste par extension du dynamique.
 
@@ -339,7 +352,6 @@ public class Contrast {
 
         for(int i=1; i<256; i++){
 
-
             T[i] = (int)(fator*histogram_acumulate[i]);
 
         }
@@ -355,4 +367,37 @@ public class Contrast {
 
         return new_image;
     }
+    /**
+     * Function that increases the contrast of a color image (RGB)
+     * (Using RenderScript)
+     * @param imageBitmap a Bitmap image
+     */
+    public void contrastPlusRGB_RS(Bitmap imageBitmap){
+        RenderScript rs = RenderScript.create(context);
+
+        Allocation input = Allocation.createFromBitmap(rs,imageBitmap);
+        Allocation output = Allocation.createTyped(rs,input.getType());
+
+        ScriptC_minmaxRGB FindMinMaxRGBScript = new ScriptC_minmaxRGB(rs);
+
+        Int2[] MinMax = FindMinMaxRGBScript.reduce_findMinAndMaxRGB(input).get();
+        FindMinMaxRGBScript.destroy();
+
+        ScriptC_contrastRGB LutRGBScript = new ScriptC_contrastRGB(rs);
+
+        LutRGBScript.set_MinAndMaxR(MinMax[0]);
+        LutRGBScript.set_MinAndMaxG(MinMax[1]);
+        LutRGBScript.set_MinAndMaxB(MinMax[2]);
+
+        LutRGBScript.invoke_ContrastPlusRGB(input,output);
+
+        LutRGBScript.destroy();
+
+        output.copyTo(imageBitmap);
+
+        input.destroy();
+        output.destroy();
+        rs.destroy();
+    }
+
 }

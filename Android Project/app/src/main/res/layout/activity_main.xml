@@ -9,33 +9,37 @@
     tools:context=".MainActivity"
     tools:openDrawer="start">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/laymsg"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <com.davemorrissey.labs.subsampling-scale-image-view
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/fruits_exotiques" />
 
-            <com.zolad.zoominimageview.ZoomInImageView
-                android:id="@+id/idimage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
-                android:src="@drawable/fruits_exotiques" />
-        </ScrollView>
+        <com.zolad.zoominimageview.ZoomInImageView
+            android:id="@+id/idimage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/fruits_exotiques" />
 
         <SeekBar
             android:id="@+id/id_seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="16dp"/>
-    </LinearLayout>
+            android:layout_marginBottom="16dp" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

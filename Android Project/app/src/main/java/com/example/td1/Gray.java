@@ -85,7 +85,7 @@ public class Gray {
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
         // 3) Creer le script
-        ScriptC_grays grayScript = new ScriptC_grays(rs);
+        ScriptC_gray grayScript = new ScriptC_gray(rs);
         // 4) Copier les donnees dans les Allocations
         // ...
         // 5) Initialiser les variables globales potentielles
