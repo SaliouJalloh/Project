@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity"
     tools:openDrawer="start">
-
+    <!--//@author Saliou Diallo!-->
     <FrameLayout
         android:id="@+id/laymsg"
         android:layout_width="match_parent"
@@ -32,13 +32,6 @@
             android:foregroundGravity="center"
             android:scaleType="fitCenter"
             android:src="@drawable/fruits_exotiques" />
-
-        <SeekBar
-            android:id="@+id/id_seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="16dp" />
     </FrameLayout>
 
     <LinearLayout

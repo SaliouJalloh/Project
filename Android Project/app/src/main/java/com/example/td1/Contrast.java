@@ -37,7 +37,7 @@ public class Contrast {
      * @param img
      * @return
      */
-    public static boolean isGris(Bitmap img){
+    public boolean isGris(Bitmap img){
         int width=img.getWidth();
         int height=img.getHeight();
         int[] pixels = new int[width*height];
@@ -58,7 +58,7 @@ public class Contrast {
      * @param im
      * @return
      */
-    public static int[] redScale(Bitmap im) {
+    public int[] redScale(Bitmap im) {
         int[] hist = new int[256];
 
         for (int i = 0; i < im.getWidth() ; i++) {
@@ -75,7 +75,7 @@ public class Contrast {
      * @param im
      * @return
      */
-    public static int[] blueScale(Bitmap im) {
+    public int[] blueScale(Bitmap im) {
         int[] hist = new int[256];
         for (int i = 0; i < im.getWidth() ; i++) {
             for (int j = 0; j < im.getHeight() ; j++) {
@@ -91,7 +91,7 @@ public class Contrast {
      * @param im
      * @return
      */
-    public static int[] greenScale(Bitmap im) {
+    public  int[] greenScale(Bitmap im) {
         int[] hist = new int[256];
         for (int i = 0; i < im.getWidth() ; i++) {
             for (int j = 0; j < im.getHeight(); j++) {
@@ -107,7 +107,7 @@ public class Contrast {
      * @param im
      */
 
-    public static void downContrasteColor(Bitmap im) {
+    public  void downContrasteColor(Bitmap im) {
 
         int[] histR = redScale(im);
         int[] histG = greenScale(im);
@@ -148,7 +148,7 @@ public class Contrast {
      *
      * @param im
      */
-    public  static void UpContrasteColor(Bitmap im){
+    public   void UpContrasteColor(Bitmap im){
         int[] hist1 = redScale(im);
         int[] hist2 = blueScale(im);
         int[] hist3 = greenScale(im);
@@ -183,7 +183,7 @@ public class Contrast {
      * @param im
      * @return
      */
-    public static int[] greyScale(Bitmap im) {
+    public  int[] greyScale(Bitmap im) {
         int width = im.getWidth();
         int height = im.getHeight();
         int[] pixels = new int[width * height];
@@ -197,7 +197,7 @@ public class Contrast {
         return hist;
     }
 
-    public static int minArray(int[] array) {
+    public  int minArray(int[] array) {
         int i = 0;
         while (array[i] == 0) {
             i++;
@@ -205,7 +205,7 @@ public class Contrast {
         return i;
     }
 
-    public static int maxArray(int[] array) {
+    public  int maxArray(int[] array) {
         int i = (array.length) - 1;
         while (array[i] == 0) {
             i--;
@@ -216,7 +216,7 @@ public class Contrast {
      *augmentation du contraste d'une image grise par égalité d'histogramme
      */
 
-    public static void  increasesContrast(Bitmap im) {
+    public  void  increasesContrast(Bitmap im) {
 
         int[] hist = greyScale(im);
         int width = im.getWidth();
@@ -240,11 +240,11 @@ public class Contrast {
     }
 
     /**
-     *    augmentation du contraste d'une image couleur par extension dynamique
+     * augmentation du contraste d'une image couleur par extension dynamique
      * @param im
      * si l'image de depart est gris max-min=0 .!isGris(im) pour eviter une division de zero
      */
-    public static void increasesContrastLUT(Bitmap im) {
+    public void increasesContrastLUT(Bitmap im) {
         if(!isGris(im)) {
             int[] hist1 = redScale(im);
             int[] hist2 = blueScale(im);
@@ -280,7 +280,7 @@ public class Contrast {
      * diminution du contraste d'une image grise
      * @param im
      */
-    public static  void decreasesContrastLUT(Bitmap im) {
+    public   void decreasesContrastLUT(Bitmap im) {
         int[] hist = greyScale(im);
         int width = im.getWidth();
         int height = im.getHeight();
@@ -309,11 +309,11 @@ public class Contrast {
     }
 
     /**
-     *Calcule de l'histogramme cumulé
+     *Calcul de l'histogramme cumulé
      * @param img
      * @return histogram
      */
-    public static int[] histogram_acumulate(Bitmap img){
+    public  int[] histogram_acumulate(Bitmap img){
 
         int[] histogram = greyScale(img);
 
@@ -332,7 +332,7 @@ public class Contrast {
      * @param img
      * @return
      */
-    public static Bitmap histogram_equalize(Bitmap img){
+    public  Bitmap histogram_equalize(Bitmap img){
 
         int width = img.getWidth();
         int height = img.getHeight();

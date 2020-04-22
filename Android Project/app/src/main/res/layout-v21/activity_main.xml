@@ -29,10 +29,6 @@
                 android:src="@drawable/fruits_exotiques" />
         </ScrollView>
 
-        <SeekBar
-            android:id="@+id/id_seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="2dp" />
     </LinearLayout>
 
     <LinearLayout

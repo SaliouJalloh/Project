@@ -1,12 +1,27 @@
 package com.example.td1;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import static com.example.td1.Gray.toGray2;
 
 public class Convolution {
+    private final Bitmap imageBitmap;
+    private final Context context;
 
-    protected static void convolutionMoy(Bitmap bmp ,int n){
+    /**
+     * @author Saliou Diallo
+     * Constructeur de la classe gray
+     * @param imageBitmap
+     * @param context
+     */
+    public Convolution(Bitmap imageBitmap, Context context) {
+        this.imageBitmap = imageBitmap;
+        this.context = context;
+    }
+
+
+    protected  void convolutionMoy(Bitmap bmp ,int n){
         int h = bmp.getHeight(), w = bmp.getWidth();    //Get the size of the bmp
         int pixels[] = new int[h*w];                    //Create a table to contain the pixels of the bmp
         bmp.getPixels(pixels, 0, w, 0, 0, w, h);    //Get the pixels of the bmp in the table
@@ -33,7 +48,7 @@ public class Convolution {
 
 
     //n the half size of the filter
-    protected  static void convolutionGaussN(Bitmap bmp,int n) {
+    protected   void convolutionGaussN(Bitmap bmp,int n) {
         int height = bmp.getHeight();
         int width = bmp.getWidth();
         int size = height * width;
@@ -91,8 +106,7 @@ public class Convolution {
     }
 
 
-
-    protected  static void teeeeest(Bitmap bmp,int n) {
+    protected  void teeeeest(Bitmap bmp,int n) {
         int height = bmp.getHeight();
         int width = bmp.getWidth();
         int size = height * width;
@@ -151,7 +165,7 @@ public class Convolution {
         bmp.setPixels(pixel, 0, width, 0, 0, width, height);
     }
 
-    protected static void convolutionSobel(Bitmap bmp){
+    public void convolutionSobel(Bitmap bmp){
         toGray2(bmp);
         int height = bmp.getHeight();
         int width = bmp.getWidth();

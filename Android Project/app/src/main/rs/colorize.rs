@@ -3,6 +3,7 @@
 #pragma rs_fp_relaxed
 
 #include "rs_debug.rsh"
+//@author Saliou Diallo
 
 float new_hue ;
 
@@ -54,7 +55,6 @@ static uchar4 hsvTorgb(float4 hsv) {
     long        i;
     float4      out;
 
-    //out.a = hsv.a ;
     if(hsv.y <= 0.0) {       // < is bogus, just shuts up warnings
         out.r = hsv.b;
         out.g = hsv.b;

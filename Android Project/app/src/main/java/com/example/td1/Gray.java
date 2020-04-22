@@ -12,6 +12,12 @@ public class Gray {
     private final Bitmap imageBitmap;
     private final Context context;
 
+    /**
+     * @author Saliou Diallo
+     * Constructeur de la classe gray
+     * @param imageBitmap
+     * @param context
+     */
     public Gray(Bitmap imageBitmap, Context context) {
         this.imageBitmap = imageBitmap;
         this.context = context;
@@ -19,6 +25,7 @@ public class Gray {
 
 
     /**
+     * @author Saliou Diallo
      * Methode qui grise tous les pixels du Bitmap en
      * utilisant les m´ethodes getPixel et setPixel de la classe Bitmap.
      * @param bmp
@@ -45,7 +52,8 @@ public class Gray {
     }
 
     /**
-     *Methode qui grise tous les pixels du Bitmap en
+     * @author Saliou Diallo
+     * Methode qui grise tous les pixels du Bitmap en
      * utilisant les methodes getPixels et setPixels de la classe Bitmap.
      * @param bmp
      */
@@ -74,6 +82,7 @@ public class Gray {
     }
 
     /**
+     * @author Saliou Diallo
      * Methode qui grise tous les pixels du Bitmap en
      * utilisant le RenderScript.
      * @param bmp

@@ -4,7 +4,7 @@
 # include "rs_debug.rsh"
 
 #define ARRAY_SIZE 256
-
+//@author Saliou Diallo
 int2 MinAndMaxR ;
 int2 MinAndMaxG ;
 int2 MinAndMaxB ;

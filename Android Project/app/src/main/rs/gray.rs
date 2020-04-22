@@ -2,6 +2,7 @@
 #pragma rs java_package_name (com.example.td1)
 #pragma rs_fp_relaxed
 
+//@author Saliou Diallo
 static const float4 weight = {0.299f , 0.587f , 0.114f , 0.0f} ;
 
 uchar4 RS_KERNEL toGray ( uchar4 in ) {

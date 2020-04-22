@@ -6,6 +6,7 @@
 #include "colorize.rs"
 
 #define Radius 15
+//@author Saliou Diallo
 
 float color_to_keep ;
 

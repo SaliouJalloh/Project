@@ -2,8 +2,6 @@ package com.example.td1;
 
 import android.Manifest;
 import android.app.WallpaperManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -20,29 +18,23 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.renderscript.Allocation;
-import androidx.renderscript.RenderScript;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -54,9 +46,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static androidx.core.view.accessibility.AccessibilityEventCompat.setAction;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
-import static com.google.android.material.snackbar.Snackbar.make;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -67,9 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int REQUEST_TAKE_PHOTO = 100;
     private static final int REQUEST_IMAGE_LOAD = 1;
 
-    File photoFile = null;
-    String mCurrentPhotoPath;
-
     private DrawerLayout drawer;
     private SeekBar seekBar;
     private LinearLayout laySmg;
@@ -77,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Gray gray;
     private Colorize colorize;
     private Colorize canned;
+    private Contrast constrast;
+    private Convolution convolution;
     private String photoPath;
 
     @Override
@@ -98,29 +87,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        seekBar = (SeekBar) findViewById(R.id.id_seekBar);
-        seekBar.setProgress(50);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                //progressBar.setProgress(progress);
-                float max = 2.0f;
-                float min = 0.0f;
-                float f = (float) ((max - min) * (progress / 100.0) + min);
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(MainActivity.this,"SeekBar selected",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(MainActivity.this," Stop SeekBar selected",Toast.LENGTH_SHORT).show();
-            }
-        });
-
         initActivity();
 
     }
@@ -137,13 +103,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //initialisation des bitmap
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
         origin_bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.fruits_exotiques, options);
-        //init constructeur
+        //init constructor
         gray = new Gray(bitmap,this);
         colorize = new Colorize(bitmap, this);
         canned = new Colorize(bitmap,this);
+        constrast = new Contrast(bitmap,this);
+        convolution = new Convolution(bitmap,this);
 
     }
 
+    /**
+     * @author Saliou Diallo
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -166,8 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_save:
                 saveImage(bitmap);
-                //startSave();
-                //MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"image saved","description");
                 Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_send:
@@ -189,11 +160,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /**
+     * @author Saliou Diallo!-->
+     * ouvre la gallery sans demander de permission
+     */
     private void gallery(){
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent,REQUEST_IMAGE_LOAD);
     }
     /**
+     * @author Saliou Diallo
      * Method of access in the gallery phone
      */
     private void openGallery() {
@@ -220,6 +196,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * @author Saliou Diallo
+     * this method affiche un message precisant que la permission est oblogatoire
+     */
     private void messagePermissionRequired() {
         Snackbar.make(laySmg, "Permission Required", LENGTH_LONG).setAction("Parameter", new View.OnClickListener() {
             @Override
@@ -234,6 +214,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /**
+     * @author Saliou Diallo
+     * ouvre la camera sans demander de permission
+     */
     private void openCamera(){
         // creer un intent pour ouvrir une fenetre pour prendre une photo
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -260,8 +244,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
     /**
+     * @author Saliou Diallo
      * Methode qui permet de prendre une photo
-     * depuis la ou les camera(s) du telephone
+     * depuis la ou les camera(s) du telephone avec les permissions necessaires
      */
     private void takePicture(){
         //Verifie si la permission est activée
@@ -283,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
+     * @author Saliou Diallo
      * It redirects to another activity like opens camera, gallery, etc.
      * After taking image from gallery or camera then come back to current activity first method that calls is
      * onActivityResult(int requestCode, int resultCode, Intent data) . We get the result in this method like taken image from camera or gallery.
@@ -337,7 +323,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     /**
-     * @author Saliou
+     * @author Saliou Diallo
+     * Methode pour la demande des permissions necessaires pour l'ouverture de la camera et gallery
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -354,6 +341,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /**
+     * @author Saliou Diallo
+     * Methode pour la sauvegarde de l'image dans la gallery du telephone
+     * @param finalBitmap
+     */
     private void saveImage(Bitmap finalBitmap) {
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
         File myDir = new File(root + "/Image_Studio");
@@ -373,6 +365,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Tell the media scanner about the new file so that it is immediately available to the user.
         MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null, null);
     }
+
+    /**
+     * @author Saliou Diallo
+     *  Methode pour la sauvegarde de l'image dans la gallery du telephone
+     */
 
     private void startSave(){
         FileOutputStream fileOutputStream = null;
@@ -400,6 +397,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         refreshGallery(new_file);
     }
 
+    /**
+     * @author Saliou Diallo
+     * Methode pour actualiser la gallery
+     * @param file
+     */
     private void refreshGallery(File file) {
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(Uri.fromFile(file));
@@ -409,6 +411,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         return new File(file, "Image Demo");
     }
+
+    /**
+     * @author Saliou Diallo
+     * Methode de partage d'image reseau social et e-mail
+     */
 
     private void shareImage() {
         try {
@@ -439,6 +446,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * @author Saliou Diallo
+     * Methode pour definir l'image comme fond d'ecran du telephone
+     */
     private void setImgWallpaper(){
         WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
         try {
@@ -460,6 +471,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     /**
+     * @author Saliou Diallo
      * Methode permettant de ré-dimensionner une image selon une certaine proportion.
      * @param bitmap
      * @param proportion
@@ -487,6 +499,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
+     * @author Saliou Diallo
      * Methode qui retourne la photo prise depuis la camera dans le bon sens
      * car la photo prise aura subit une rotation
      * @param photoFilePath
@@ -526,6 +539,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
+     * @author Saliou Diallo
      * pour la creation du menu
      * @param menu
      * @return
@@ -539,6 +553,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
+     * @author Saliou Diallo
      * pour la creation du menu et l'appel des differentes methodes implementées
      * @param item
      * @return
@@ -549,19 +564,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_reset:
                 Toast.makeText(this,"Reset menu selected",Toast.LENGTH_LONG).show();
                 img.setImageBitmap(origin_bitmap);
-                return true;
-            case R.id.menu_gray:
-                Toast.makeText(this,"Gray menu selected",Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.menu_to_gray1:
-                Toast.makeText(this,"to gray selected",Toast.LENGTH_LONG).show();
-                gray.toGray(bitmap);
-                img.setImageBitmap(bitmap);
-                return true;
-            case R.id.menu_to_gray2:
-                Toast.makeText(this,"to grays selected",Toast.LENGTH_LONG).show();
-                gray.toGray2(bitmap);
-                img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_grayRS:
                 Toast.makeText(this,"to graysRS selected",Toast.LENGTH_LONG).show();
@@ -602,47 +604,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this,"contrast menu selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_increasesContrast:
-                Contrast.increasesContrast(bitmap);
+                constrast.increasesContrast(bitmap);
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"increases selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_increasesContrastLut:
                 Toast.makeText(this,"increases lut selected",Toast.LENGTH_LONG).show();
-                Contrast.increasesContrastLUT(bitmap);
+                constrast.increasesContrastLUT(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_decreasesContrastLut:
-                Contrast.decreasesContrastLUT(bitmap);
+                constrast.decreasesContrastLUT(bitmap);
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"decreases selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_upContrastLut:
-                Contrast.UpContrasteColor(bitmap);
+                constrast.UpContrasteColor(bitmap);
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"up contrast selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_downContrastLut:
-                Contrast.downContrasteColor(bitmap);
+                constrast.downContrasteColor(bitmap);
                 img.setImageBitmap(bitmap);
                 Toast.makeText(this,"down contrast selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_EqualHistogram:
-                img.setImageBitmap(Contrast.histogram_equalize(bitmap));
+                img.setImageBitmap(constrast.histogram_equalize(bitmap));
                 Toast.makeText(this,"equal histogramme selected",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_to_convolution:
                 Toast.makeText(this,"Convolution Moy selected",Toast.LENGTH_LONG).show();
-                Convolution.convolutionMoy(bitmap,13);
+                convolution.convolutionMoy(bitmap,13);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_convolutionGaus:
                 Toast.makeText(this,"Convolution Gauss selected",Toast.LENGTH_LONG).show();
-                Convolution.convolutionGaussN(bitmap,9);
+                convolution.convolutionGaussN(bitmap,9);
                 img.setImageBitmap(bitmap);
                 return true;
             case R.id.menu_to_convolutionSobel:
                 Toast.makeText(this,"Contour selected",Toast.LENGTH_LONG).show();
-                Convolution.convolutionSobel(bitmap);
+                convolution.convolutionSobel(bitmap);
                 img.setImageBitmap(bitmap);
                 return true;
             default:

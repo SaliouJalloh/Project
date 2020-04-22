@@ -3,6 +3,7 @@
 #pragma rs_fp_relaxed
 # include "rs_debug.rsh"
 
+//@author Saliou Diallo
 #define ARRAY_SIZE 256
 #define MAX_VALUE 256
 #define MIN_VALUE 0

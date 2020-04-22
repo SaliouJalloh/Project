@@ -6,7 +6,7 @@ const static float3 gMonoMult = {0.299f, 0.587f, 0.114f};
 
 float saturationValue = 0.f;
 
-/*
+/**@author Saliou Diallo
  * RenderScript kernel that performs saturation manipulation.
  */
 uchar4 __attribute__((kernel)) saturation(uchar4 in){

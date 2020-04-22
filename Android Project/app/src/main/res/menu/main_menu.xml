@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--//@author Saliou Diallo!-->
     <item
         android:id="@+id/menu_EqualHistogram"
         android:title="EqualHistogram" />
@@ -12,27 +13,10 @@
 
     </item>
 
-    <item android:id="@+id/menu_gray"
+    <item android:id="@+id/menu_to_grayRS"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="@string/gray_item" >
-        <menu>
-            <item android:id="@+id/menu_to_gray1"
-                android:orderInCategory="100"
-                app:showAsAction="never"
-                android:title="@string/to_gray_item" />
-
-            <item android:id="@+id/menu_to_gray2"
-                android:orderInCategory="100"
-                app:showAsAction="never"
-                android:title="@string/to_grays_item" />
-
-            <item android:id="@+id/menu_to_grayRS"
-                android:orderInCategory="100"
-                app:showAsAction="never"
-                android:title="@string/to_grayRS_item" />
-        </menu>
-    </item>
+        android:title="@string/to_grayRS_item" />
 
     <item android:id="@+id/menu_colorize"
         android:orderInCategory="100"

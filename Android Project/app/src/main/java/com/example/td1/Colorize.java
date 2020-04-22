@@ -18,6 +18,12 @@ public class Colorize {
     private static int height;
     private static int tmp_color;
 
+    /**
+     * @author Saliou Diallo
+     * Constructeur de la classe colorize
+     * @param imageBitmap
+     * @param context
+     */
     public Colorize(Bitmap imageBitmap, Context context) {
         this.imageBitmap = imageBitmap;
         this.context = context;
@@ -32,8 +38,10 @@ public class Colorize {
     }
 
     /**
+     * @author Saliou Diallo
      * Methode applique une teinte choisie aleatoirement au Bitmap
      * methode colorize sans re-écrire RGBToHSV()/HSVToRGB()
+     * @param bmp
      */
 
     public void colorized (Bitmap bmp){
@@ -67,6 +75,7 @@ public class Colorize {
     }
 
     /**
+     * @author Saliou Diallo
      * Function that converts from RGB to HSV
      *
      * @param redInput   the red value
@@ -101,6 +110,7 @@ public class Colorize {
     }
 
     /**
+     * @author Saliou Diallo
      * Function that converts from HSV to RGB
      *
      * @param hsvColor An array of float that contains the three HSV values of the color
@@ -118,6 +128,7 @@ public class Colorize {
     }
 
     /**
+     * @author Saliou Diallo
      * Methode applique une teinte choisie aleatoirement au Bitmap
      * methode colorize avec la nouvelle methode RGBToHSV
      * @param bmp
@@ -153,6 +164,7 @@ public class Colorize {
 
 
     /**
+     * @author Saliou Diallo
      * Methode qui Conserver la couleur rouge
      * @param img
      */
@@ -187,6 +199,7 @@ public class Colorize {
 
 
     /**
+     * @author Saliou Diallo
      * Methode applique une teinte choisie aleatoirement au Bitmap
      * en utilisant le RenderScript.
      * @param bmp
@@ -217,6 +230,7 @@ public class Colorize {
 
 
     /**
+     * @author Saliou Diallo
      * Methode qui Conserver la couleur rouge
      * en utilisant le RenderScript.
      * @param bmp
